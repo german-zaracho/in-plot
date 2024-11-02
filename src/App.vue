@@ -10,4 +10,5 @@ export default {
 
 <template>
     <Home />
+    <h2>asd</h2>
 </template>
