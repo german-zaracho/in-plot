@@ -10,18 +10,18 @@ export default {
             comments: [
                 {
                     id: 1,
-                    email: 'sara@za.com',
-                    text: 'Hola, ¿cómo andan?',
+                    email: '123@456.com',
+                    text: 'first comment',
                 },
                 {
                     id: 2,
-                    email: 'pepe@trueno.com',
-                    text: 'hola sara q tal???',
+                    email: 'asd@asd.com',
+                    text: 'second comment',
                 },
                 {
                     id: 3,
-                    email: 'sara@za.com',
-                    text: 'Hola Pepe, bien, ¿y vos?',
+                    email: '123@456.com',
+                    text: 'third comment',
                 },
             ],
         }
@@ -31,8 +31,7 @@ export default {
             // add the comment to the array.
             this.comments.push({
                 id: this.comments.length + 1,
-                // email: newComment.email,
-                // text: newComment.text,
+                // email + text
                 ...newComment,
             });
         }
