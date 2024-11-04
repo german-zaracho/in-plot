@@ -1,18 +1,18 @@
 <script>
-import Navbar from './components/Navbar.vue';
-import Footer from './components/Footer.vue';
+import AppNavbar from './components/AppNavbar.vue';
+import AppFooter from './components/AppFooter.vue';
 
 export default {
     name: 'App',
-    components: { Navbar, Footer },
+    components: { AppNavbar, AppFooter },
 }
 
 </script>
 
 <template>
-    <Navbar />
-    <main>
+    <AppNavbar />
+    <main class="container mx-auto p-4">
         <router-view />
     </main>
-    <Footer />
+    <AppFooter />
 </template>
