@@ -1,40 +1,36 @@
 <script>
 import CommentForm from './CommentForm.vue';
 import CommentList from './CommentList.vue';
+import { db } from '../../services/firebase';
+import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 export default {
     name: 'Comment',
     components: { CommentForm, CommentList },
     data() {
         return {
-            comments: [
-                {
-                    id: 1,
-                    email: '123@456.com',
-                    text: 'first comment',
-                },
-                {
-                    id: 2,
-                    email: 'asd@asd.com',
-                    text: 'second comment',
-                },
-                {
-                    id: 3,
-                    email: '123@456.com',
-                    text: 'third comment',
-                },
-            ],
+            comments: [],
         }
     },
     methods: {
         addComment(newComment) {
-            // add the comment to the array.
-            this.comments.push({
-                id: this.comments.length + 1,
-                // email + text
+            const commentRef = collection(db, 'comments');
+            addDoc(commentRef, {
                 ...newComment,
             });
         }
+    },
+    async mounted() {
+        const commentRef = collection(db, 'comments');
+        onSnapshot(commentRef, snapshot => {
+            this.comments = snapshot.docs.map(doc => {
+                return {
+                    id: doc.id,
+                    email: doc.data().email,
+                    text: doc.data().text,
+                }
+            });
+        });
     }
 }
 </script>
