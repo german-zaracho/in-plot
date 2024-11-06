@@ -1,8 +1,7 @@
 <script>
 import CommentForm from './CommentForm.vue';
 import CommentList from './CommentList.vue';
-import { db } from '../../services/firebase';
-import { collection, addDoc, onSnapshot } from 'firebase/firestore';
+import { saveChatComment, subscribeToChatComments } from '../../services/comment';
 
 export default {
     name: 'Comment',
@@ -14,23 +13,11 @@ export default {
     },
     methods: {
         addComment(newComment) {
-            const commentRef = collection(db, 'comments');
-            addDoc(commentRef, {
-                ...newComment,
-            });
+            saveChatComment(newComment);
         }
     },
     async mounted() {
-        const commentRef = collection(db, 'comments');
-        onSnapshot(commentRef, snapshot => {
-            this.comments = snapshot.docs.map(doc => {
-                return {
-                    id: doc.id,
-                    email: doc.data().email,
-                    text: doc.data().text,
-                }
-            });
-        });
+        subscribeToChatComments(newComments => this.comments = newComments);
     }
 }
 </script>
