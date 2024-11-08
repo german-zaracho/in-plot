@@ -107,14 +107,14 @@ export default {
 
                 <!-- NavBar options -->
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <img class="h-10 w-10" src="./../public/inPlot.ico" alt="logo">
+                    <div class="flex flex-shrink-0 items-center">
+                        <img class="h-10 w-10" src="./../inPlot.ico" alt="logo">
                         <router-link :to="{ name: 'home' }" class="text-xl">InPlot</router-link>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
 
-                            <ul>
+                            <ul class="flex items-center">
                                 <li><router-link class="block py-2 px-4" :to="{ name: 'home' }">Home</router-link></li>
 
                                 <template v-if="loggedUser.id !== null">
@@ -221,7 +221,7 @@ export default {
             <div class="border-t border-gray-700 pb-3 pt-4">
                 <div class="flex items-center px-5">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="./../public/assets/imgs/anakin-skywalker.webp" alt="user-image">
+                        <img class="h-10 w-10 rounded-full" src="./../assets/imgs/anakin-skywalker.webp" alt="user-image">
                     </div>
                     <div class="ml-3">
                         <div class="text-base font-medium leading-none text-white">Nombre del usuario</div>
