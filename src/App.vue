@@ -1,10 +1,8 @@
 <script>
-import { onAuthStateChanged } from 'firebase/auth';
 import Home from './pages/Home.vue';
-import { auth } from './services/firebase';
 import AppNavbar from './components/AppNavbar.vue';
 import AppFooter from './components/AppFooter.vue';
-import { logout } from './services/auth';
+import { logout, subscribeToAuth } from './services/auth';
 
 export default {
     name: 'App',
@@ -20,25 +18,10 @@ export default {
     methods: {
         handleLogout() {
             logout();
-            this.$router.push('/login');
         },
     },
     mounted() {
-
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                this.loggedUser = {
-                    id: user.uid,
-                    email: user.email,
-                }
-            } else {
-                this.loggedUser = {
-                    id: null,
-                    email: null,
-                }
-            }
-        });
-
+        subscribeToAuth(newUserData => this.loggedUser = newUserData);
     },
 
 }

@@ -8,7 +8,7 @@ export async function getUserProfileById(id){
     return {
         id: profileSnapshot.id,
         email: profileSnapshot.data().email,
-        myName: profileSnapshot.data().myName,
+        displayName: profileSnapshot.data().displayName,
         favMovie: profileSnapshot.data().favMovie,
         favSeries: profileSnapshot.data().favSeries,
         anAdditionalComment: profileSnapshot.data().anAdditionalComment,
@@ -18,10 +18,10 @@ export async function getUserProfileById(id){
 /**
  * Edit the profile data of the user indicated by their ID.
  * @param {string} id - The ID of the user.
- * @param {{myName: string, favMovie: string, favSeries: string, anAdditionalComment:string }} data
+ * @param {{displayName: string, favMovie: string, favSeries: string, anAdditionalComment:string }} data
  */
 
-export async function editUserProfile(id, { myName, favMovie, favSeries, anAdditionalComment }) {
+export async function editUserProfile(id, { displayName, favMovie, favSeries, anAdditionalComment }) {
     const profileDoc = doc(db, `user-profiles/${id}`);
-    return await updateDoc(profileDoc, { myName, favMovie, favSeries, anAdditionalComment });
+    return await updateDoc(profileDoc, { displayName, favMovie, favSeries, anAdditionalComment });
 }
