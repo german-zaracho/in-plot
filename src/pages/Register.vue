@@ -1,39 +1,39 @@
 <script>
-import { register } from '../services/auth';
+// import { register } from '../services/auth';
 
 export default {
     name:'Register',
-    data() {
-        return {
-            user: {
-                email: '',
-                password: '',
-            },
-            loading: false,
-        };
-    },
-    methods: {
-        async handleSubmit() {
-            this.loading = true;
+    // data() {
+    //     return {
+    //         user: {
+    //             email: '',
+    //             password: '',
+    //         },
+    //         loading: false,
+    //     };
+    // },
+    // methods: {
+    //     async handleSubmit() {
+    //         this.loading = true;
 
-            try {
-                await register({
-                    ...this.user,
-                });
-            } catch (error) {
-                console.error("[Login handleSubmit] Authentication error: ", error);
-            }
+    //         try {
+    //             await register({
+    //                 ...this.user,
+    //             });
+    //         } catch (error) {
+    //             console.error("[Login handleSubmit] Authentication error: ", error);
+    //         }
 
-            this.loading = false;
-        }
-    }
+    //         this.loading = false;
+    //     }
+    // }
 }
 </script>
 
 <template>
     <h1>Create your account</h1>
 
-    <form action="#" @submit.prevent="handleSubmit">
+    <!-- <form action="#" @submit.prevent="handleSubmit">
 
         <div class="mb-4">
             <label class="block mb-2" for="email">Email</label>
@@ -49,5 +49,5 @@ export default {
             Register
         </button>
 
-    </form>
+    </form> -->
 </template>
