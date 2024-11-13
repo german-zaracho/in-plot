@@ -1,6 +1,6 @@
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
-import { editUserProfile, getUserProfileById } from "./user-profile";
+import { editUserProfile, getUserProfileById, createUserProfile } from "./user-profile";
 
 let userData = {
     id: null,
@@ -9,37 +9,52 @@ let userData = {
     favMovie: null,
     favSeries: null,
     anAdditionalComment: null,
+    fullProfileLoaded: false,
 }
 
 let observers = [];
 
-onAuthStateChanged(auth, async user => {
-    if(user) {
-        userData = {
+onAuthStateChanged(auth, user => {
+    if (user) {
+        updateUserData = {
             id: user.uid,
             email: user.email,
             displayName: user.displayName,
         }
 
-        const fullProfile = await getUserProfileById(userData.id);
-        userData = {
-            ...userData,
-            favMovie: fullProfile.favMovie,
-            favSeries: fullProfile.favSeries,
-            anAdditionalComment: fullProfile.anAdditionalComment,
-        }
+        getUserProfileById(userData.id).then(fullProfile => {
+            updateUserData({
+                favMovie: fullProfile.favMovie,
+                favSeries: fullProfile.favSeries,
+                anAdditionalComment: fullProfile.anAdditionalComment,
+                fullProfileLoaded: true,
+            });
+        });
+
     } else {
-        userData = {
+        updateUserData({
             id: null,
             email: null,
             displayName: null,
             favMovie: null,
             favSeries: null,
             anAdditionalComment: null,
-        }
+            fullProfileLoaded: false,
+        });
     }
-    notifyAll();
-})
+});
+
+export async function register({ email, password }) {
+
+    try {
+        const credentials = await createUserWithEmailAndPassword(auth, email, password);
+        await createUserProfile(credentials.user.uid, { email });
+    } catch (error) {
+        console.error("[auth.js register] Error trying to register user: ", error);
+        throw error;
+    }
+
+}
 
 export async function login({ email, password }) {
 
@@ -58,11 +73,21 @@ export async function login({ email, password }) {
  * @param {{ displayName: string, favMovie: string, favSeries: string, anAdditionalComment: string }} data
  */
 
-export async function editMyProfile({ displayName, favMovie, favSeries, anAdditionalComment}) {
+export async function editMyProfile({ displayName, favMovie, favSeries, anAdditionalComment }) {
     try {
-        await updateProfile(auth.currentUser, { displayName });
-        await editUserProfile(user.id, { displayName, favMovie, favSeries, anAdditionalComment });
-    } catch(error) {
+
+        const promiseAuth = updateProfile(auth.currentUser, { displayName });
+        const promiseStore = editUserProfile(userData.id, { display, favMovie, favSeries, anAdditionalComment });
+        await Promise.all([promiseAuth, promiseStore]);
+
+        updateUserData({
+            ...userData,
+            displayName,
+            favMovie,
+            favSeries,
+            anAdditionalComment,
+        });
+    } catch (error) {
         console.error("[auth.js editMyProfile] Error editing user profile: ", error);
     }
 }
@@ -75,11 +100,16 @@ export async function logout() {
 /**
  * Subscribe an observer to be notified of authentication state changes
  * @param { Function } callback
+ * @returns {Function}
  */
 
 export function subscribeToAuth(callback) {
     observers.push(callback);
     notify(callback);
+
+    return () => {
+        observers = observers.filter(obs => obs !== callback)
+    };
 }
 
 /**
@@ -88,7 +118,7 @@ export function subscribeToAuth(callback) {
  * @param {Function} callback 
  */
 function notify(callback) {
-    callback({...userData});
+    callback({ ...userData });
 }
 
 /**
@@ -96,4 +126,15 @@ function notify(callback) {
  */
 function notifyAll() {
     observers.forEach(callback => notify(callback));
+}
+
+/**
+ * @param {{}} newData 
+ */
+function updateUserData(newData) {
+    userData = {
+        ...userData,
+        ...newData,
+    }
+    notifyAll();
 }
