@@ -1,8 +1,12 @@
 <script>
 import { subscribeToAuth } from '../services/auth';
+import SkeletonLoader from '../components/SkeletonLoader.vue';
+
+let unsubscribeFromAuth = () => {};
 
 export default {
     name: 'MyProfile',
+    components: { SkeletonLoader, },
     data() {
         return {
             loggedUser: {
@@ -12,12 +16,16 @@ export default {
                 favMovie: null,
                 favSeries: null,
                 anAdditionalComment: null,
+                fullProfileLoaded: false,
             }
         }
     },
     mounted() {
-        subscribeToAuth(newUserData => this.loggedUser = newUserData);
-    }
+        unsubscribeFromAuth = subscribeToAuth(newUserData => this.loggedUser = newUserData);
+    },
+    unmounted() {
+        unsubscribeFromAuth();
+    },
 }
 </script>
 
@@ -31,11 +39,24 @@ export default {
         <dt class="font-bold">Email</dt>
         <dd class="mb-3">{{ loggedUser.email }}</dd>
         <dt class="font-bold">User name</dt>
-        <dd class="mb-3">{{ loggedUser.displayName || 'Not specified' }}</dd>
+        <dd class="mb-3">
+            <span v-if="loggedUser.fullProfileLoaded">{{ loggedUser.displayName || 'Not specified' }}</span>
+            <SkeletonLoader class="w-96 h-5" v-else />
+        </dd>
         <dt class="font-bold">Movie</dt>
-        <dd class="mb-3">{{ loggedUser.favMovie || 'Not specified' }}</dd>
+        <dd class="mb-3">
+            <span v-if="loggedUser.fullProfileLoaded">{{ loggedUser.favMovie || 'Not specified' }}</span>
+            <SkeletonLoader class="w-96 h-5" v-else />
+        </dd>
         <dt class="font-bold">Series</dt>
-        <dd class="mb-3">{{ loggedUser.favSeries || 'Not specified' }}</dd>
-        <dd class="mb-3">{{ loggedUser.anAdditionalComment || 'Not specified' }}</dd>
+        <dd class="mb-3">
+            <span v-if="loggedUser.fullProfileLoaded">{{ loggedUser.favSeries || 'Not specified' }}</span>
+            <SkeletonLoader class="w-96 h-5" v-else />
+        </dd>
+        <dt class="font-bold">Additional Comments</dt>
+        <dd class="mb-3">
+            <span v-if="loggedUser.fullProfileLoaded">{{ loggedUser.anAdditionalComment || 'Not specified' }}</span>
+            <SkeletonLoader class="w-96 h-5" v-else />
+        </dd>
     </dl>
 </template>

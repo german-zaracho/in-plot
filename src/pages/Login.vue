@@ -1,8 +1,10 @@
 <script>
 import { login } from '../services/auth';
+import Loader from '../components/Loader.vue';
 
 export default {
     name: 'Login',
+    components: { Loader },
     data() {
         return {
             user: {
@@ -14,12 +16,15 @@ export default {
     },
     methods: {
         async handleSubmit() {
+            if(this.loading) return;
+
             this.loading = true;
 
             try {
                 await login({
                     ...this.user,
                 });
+                this.$router.push('/myProfile');
             } catch (error) {
                 console.error("[Login handleSubmit] Error authenticating user: ", error);
             }
@@ -37,16 +42,18 @@ export default {
 
         <div class="mb-4">
             <label class="block mb-2" for="email">Email</label>
-            <input type="email" id="email" class="w-full p-2 border rounded" v-model="user.email">
+            <input type="email" id="email" class="w-full p-2 border rounded" :readonly="loading" v-model="user.email">
         </div>
 
         <div class="mb-4">
             <label class="block mb-2" for="password">Password</label>
-            <input type="password" id="password" class="w-full p-2 border rounded" v-model="user.password">
+            <input type="password" id="password" class="w-full p-2 border rounded" :readonly="loading" v-model="user.password">
         </div>
 
         <button type="submit" class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
-            Log in
+            <span v-if="!loading">
+                Log in
+            </span>
         </button>
 
     </form>

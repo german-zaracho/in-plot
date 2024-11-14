@@ -5,14 +5,15 @@ import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import MyProfile from "../pages/MyProfile.vue";
 import MyProfileEdit from "../pages/MyProfileEdit.vue";
+import { subscribeToAuth } from "../services/auth";
 
 const routes = [
-    { path: '/', name:'home', component:Home },
+    { path: '/', name:'home', component:Home, },
     { path: '/feed', name:'feed', component:Feed, meta: { requiresAuth: true } },
     { path: '/login', name:'login', component:Login, },
     { path: '/register', name:'register', component:Register, },
-    { path: '/myProfile', name:'myProfile', component:MyProfile, },
-    { path: '/myProfileEdit', name:'myProfileEdit', component:MyProfileEdit, },
+    { path: '/myProfile', name:'myProfile', component:MyProfile, meta: { requiresAuth: true }, },
+    { path: '/myProfileEdit', name:'myProfileEdit', component:MyProfileEdit,  meta: { requiresAuth: true }, },
 ]
 
 const router = createRouter({
@@ -20,12 +21,16 @@ const router = createRouter({
     history: createWebHashHistory(),
 });
 
-// let loggedUser = {
-//     id: null,
-//     email: null,
-// }
+let loggedUser = {
+    id: null,
+    email: null,
+    displayName: null,
+    favMovie: null,
+    favSeries: null,
+    anAdditionalComment: null,
+}
 
-// subscribeToAuth(newUserData => loggedUser = newUserData)
+subscribeToAuth(newUserData => loggedUser = newUserData)
 
 router.beforeEach((to, from) => {
     if(to.meta.requiresAuth && loggedUser.id == null) {
