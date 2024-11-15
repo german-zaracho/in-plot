@@ -19,7 +19,7 @@ export default {
             this.$emit('close-menus', event);
         },
         closeMenus(event) {
-            // Cierra el menú si se hace clic fuera
+            // Closes menu if clicked outside
             if (!this.$refs.userMenuButton.contains(event.target) &&
                 !this.$refs.userMenu.contains(event.target)) {
                 this.isUserMenuOpen = false;
@@ -30,7 +30,7 @@ export default {
             }
         },
         handleLogout() {
-            this.$emit('logout'); // Emitir el evento al componente padre (App.vue)
+            this.$emit('logout'); // Emit the event to the parent component (App.vue)
         }
     },
     mounted() {
