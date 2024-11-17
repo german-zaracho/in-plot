@@ -13,6 +13,7 @@ export async function getUserProfileById(id){
         id: profileSnapshot.id,
         email: profileSnapshot.data().email,
         displayName: profileSnapshot.data().displayName,
+        photoURL: profileSnapshot.data().photoURL,
         favMovie: profileSnapshot.data().favMovie,
         favSeries: profileSnapshot.data().favSeries,
         anAdditionalComment: profileSnapshot.data().anAdditionalComment,
@@ -35,10 +36,10 @@ export async function createUserProfile(id, { email }) {
 /**
  * Edit the profile data of the user indicated by their ID.
  * @param {string} id - The ID of the user.
- * @param {{displayName: string, favMovie: string, favSeries: string, anAdditionalComment:string }} data
+ * @param {{displayName: string, favMovie: string, favSeries: string, anAdditionalComment:string, photoURL: string }} data
  */
 
-export async function editUserProfile(id, { displayName, favMovie, favSeries, anAdditionalComment }) {
+export async function editUserProfile(id, data ) {
     const profileRef = doc(db, `user-profiles/${id}`);
-    return await updateDoc(profileRef, { displayName, favMovie, favSeries, anAdditionalComment });
+    return await updateDoc(profileRef, data);
 }

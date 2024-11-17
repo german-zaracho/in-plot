@@ -1,6 +1,7 @@
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { editUserProfile, getUserProfileById, createUserProfile } from "./user-profile";
+import { getFileURL, uploadFile } from "./file-storage";
 
 let userData = {
     id: null,
@@ -9,7 +10,12 @@ let userData = {
     favMovie: null,
     favSeries: null,
     anAdditionalComment: null,
+    photoURL: null,
     fullProfileLoaded: false,
+}
+
+if(localStorage.getItem('user')) {
+    userData = JSON.parse(localStorage.getItem('user'));
 }
 
 let observers = [];
@@ -20,6 +26,7 @@ onAuthStateChanged(auth, user => {
             id: user.uid,
             email: user.email,
             displayName: user.displayName,
+            photoURL: user.photoURL,
         }
 
         getUserProfileById(userData.id).then(fullProfile => {
@@ -39,6 +46,7 @@ onAuthStateChanged(auth, user => {
             favMovie: null,
             favSeries: null,
             anAdditionalComment: null,
+            photoURL: null,
             fullProfileLoaded: false,
         });
     }
@@ -92,6 +100,31 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
     }
 }
 
+/**
+ * 
+ * @param {File} photo 
+ */
+export async function editMyProfilePhoto(photo) {
+    try {
+
+        const filepath = `users/${userData.id}/avatar.jpg`;
+
+        await uploadFile(filepath, photo);
+
+        const photoURL = await getFileURL(filepath);
+        const promiseAuth = updateProfile(auth.currentUser, { photoURL });
+        const promiseFirestore = editUserProfile(userData.id, { photoURL });
+
+        await Promise.all([promiseAuth, promiseFirestore]);
+
+        updateUserData({ photoURL });
+
+    } catch (error) {
+        console.error('[auth.js editMyProfilePhoto] Error editing profile photo: ', error);
+        throw error;
+    }
+}
+
 export async function logout() {
     return signOut(auth);
 }
@@ -137,4 +170,5 @@ function updateUserData(newData) {
         ...newData,
     }
     notifyAll();
+    localStorage.setItem('user', JSON.stringify(userData));
 }

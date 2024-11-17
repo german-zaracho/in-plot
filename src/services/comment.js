@@ -3,7 +3,7 @@ import { db } from "./firebase";
 
 /**
  * 
- * @param {{email: string, text: string}} newComment 
+ * @param {{id: string, email: string, text: string}} newComment 
  * @returns {Promise<void>}
  */
 
@@ -33,8 +33,10 @@ export function subscribeToChatComments(callback) {
         const comments = snapshot.docs.map(doc => {
             return {
                 id: doc.id,
+                user_id: doc.data().user_id,
                 email: doc.data().email,
                 text: doc.data().text,
+                created_at: doc.data().created_at?.toDate(),
             }
         });
 
