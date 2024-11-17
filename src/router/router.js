@@ -6,6 +6,9 @@ import Register from "../pages/Register.vue";
 import MyProfile from "../pages/MyProfile.vue";
 import MyProfileEdit from "../pages/MyProfileEdit.vue";
 import { subscribeToAuth } from "../services/auth";
+import MyProfileEditPhoto from '../pages/MyProfileEditPhoto.vue';
+import UserProfile from '../pages/UserProfile.vue';
+import PrivateChat from '../pages/PrivateChat.vue';
 
 const routes = [
     { path: '/', name:'home', component:Home, },
@@ -13,7 +16,10 @@ const routes = [
     { path: '/login', name:'login', component:Login, },
     { path: '/register', name:'register', component:Register, },
     { path: '/myProfile', name:'myProfile', component:MyProfile, meta: { requiresAuth: true }, },
-    { path: '/myProfileEdit', name:'myProfileEdit', component:MyProfileEdit,  meta: { requiresAuth: true }, },
+    { path: '/myProfile/edit', name:'myProfileEdit', component:MyProfileEdit,  meta: { requiresAuth: true }, },
+    { path: '/myProfile/edit/photo', name: 'myProfileEditPhoto', component: MyProfileEditPhoto,  meta: { requiresAuth: true }, },
+    { path: '/users/:id', name: 'userProfile', component: UserProfile, meta: { requiresAuth: true }, },
+    { path: '/users/:id/chat', name: 'userProfileChat', component: PrivateChat, meta: { requiresAuth: true }, },
 ]
 
 const router = createRouter({
