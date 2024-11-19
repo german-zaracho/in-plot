@@ -12,13 +12,17 @@ export default {
                 password: '',
             },
             loading: false,
+            feedback: {
+                message: null,
+            }
         };
     },
     methods: {
         async handleSubmit() {
             // So that it doesn't run more than once per click (anxious proof)
-            if(this.loading) return;
+            if (this.loading) return;
 
+            this.feedback.message = null;
             this.loading = true;
 
             try {
@@ -27,6 +31,7 @@ export default {
                 });
                 this.$router.push('/myProfile');
             } catch (error) {
+                this.feedback.message = error;
                 console.error("[Login handleSubmit] Error authenticating user: ", error);
             }
 
@@ -39,19 +44,26 @@ export default {
 <template>
     <h1>Log in to your account</h1>
 
+    <div v-if="feedback.message !== null" class="p-4 mb-4 bg-red-200 rounded">
+        {{ feedback.message }}
+    </div>
+
     <form action="#" @submit.prevent="handleSubmit">
 
         <div class="mb-4">
             <label class="block mb-2" for="email">Email</label>
-            <input type="email" id="email" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading" v-model="user.email">
+            <input type="email" id="email" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading"
+                v-model="user.email">
         </div>
 
         <div class="mb-4">
             <label class="block mb-2" for="password">Password</label>
-            <input type="password" id="password" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading" v-model="user.password">
+            <input type="password" id="password" class="w-full p-2 border rounded read-only:bg-gray-200"
+                :readonly="loading" v-model="user.password">
         </div>
 
-        <button type="submit" class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+        <button type="submit"
+            class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
             <span v-if="!loading">
                 Log in
             </span>

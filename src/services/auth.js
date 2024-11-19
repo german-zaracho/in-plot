@@ -3,6 +3,13 @@ import { auth } from "./firebase";
 import { editUserProfile, getUserProfileById, createUserProfile } from "./user-profile";
 import { getFileURL, uploadFile } from "./file-storage";
 
+//Check the different errors in the documentation to add messages
+const AUTH_ERROR_MESSAGES = {
+    'auth/invalid-credential': 'The credentials entered do not match our records.',
+    'auth/missing-password': 'The password cannot be empty.',
+    'auth/invalid-email': 'The email does not have a valid email format.',
+}
+
 let userData = {
     id: null,
     email: null,
@@ -72,7 +79,8 @@ export async function login({ email, password }) {
         console.log("Successfully authenticated.");
     } catch (error) {
         console.error("[auth.js login] Authentication error: ", error);
-        throw error;
+        //example of how to do it
+        throw AUTH_ERROR_MESSAGES[error.code] ?? error;
     }
 
 }
