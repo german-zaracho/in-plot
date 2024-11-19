@@ -49,6 +49,7 @@ onAuthStateChanged(auth, user => {
             photoURL: null,
             fullProfileLoaded: false,
         });
+        localStorage.removeItem('user');
     }
 });
 
@@ -97,6 +98,7 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
         });
     } catch (error) {
         console.error("[auth.js editMyProfile] Error editing user profile: ", error);
+        throw error;
     }
 }
 

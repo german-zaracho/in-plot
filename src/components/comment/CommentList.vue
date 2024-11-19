@@ -14,7 +14,7 @@ export default {
         formatDate(date) {
             if (!date) return null;
 
-            const formatter = new Intl.DateTimeFormat('en-US', {
+            const formatter = new Intl.DateTimeFormat('es-AR', {
                 day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
             });

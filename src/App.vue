@@ -18,6 +18,7 @@ export default {
     methods: {
         handleLogout() {
             logout();
+            this.$router.push('/login');
         },
     },
     mounted() {

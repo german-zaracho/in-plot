@@ -63,7 +63,7 @@ export default {
 
                                 <template v-if="loggedUser.id !== null">
                                     <li><router-link class="block py-2 px-4" to="/feed">Feed</router-link></li>
-                                    <li><router-link class="block py-2 px-4" to="/feed">My Profile</router-link></li>
+                                    <li><router-link class="block py-2 px-4" to="/myProfile">My Profile</router-link></li>
                                     <li>
                                         <form action="#" @submit.prevent="handleLogout">
                                             <button type="submit" class="block py-2 px-4">{{ loggedUser.email }} (Log
