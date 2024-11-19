@@ -43,12 +43,12 @@ export default {
 
         <div class="mb-4">
             <label class="block mb-2" for="email">Email</label>
-            <input type="email" id="email" class="w-full p-2 border rounded" :readonly="loading" v-model="user.email">
+            <input type="email" id="email" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading" v-model="user.email">
         </div>
 
         <div class="mb-4">
             <label class="block mb-2" for="password">Password</label>
-            <input type="password" id="password" class="w-full p-2 border rounded" :readonly="loading" v-model="user.password">
+            <input type="password" id="password" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading" v-model="user.password">
         </div>
 
         <button type="submit" class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">

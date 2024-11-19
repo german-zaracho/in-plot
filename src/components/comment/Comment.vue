@@ -3,6 +3,8 @@ import CommentForm from './CommentForm.vue';
 import CommentList from './CommentList.vue';
 import { saveChatComment, subscribeToChatComments } from '../../services/comment';
 
+let unsubscribeFromChat = () => {};
+
 export default {
     name: 'Comment',
     components: { CommentForm, CommentList },
@@ -16,8 +18,11 @@ export default {
             saveChatComment(newComment);
         }
     },
-    async mounted() {
-        subscribeToChatComments(newComments => this.comments = newComments);
+    mounted() {
+        unsubscribeFromChat = subscribeToChatComments(newComments => this.comments = newComments);
+    },
+    unmounted() {
+        unsubscribeFromChat();
     }
 }
 </script>

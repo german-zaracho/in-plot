@@ -15,6 +15,7 @@ export default {
                 photoURL: null,
                 favMovie: null,
                 favSeries: null,
+                anAdditionalComment: null,
             },
             loading: true,
         }
