@@ -3,7 +3,7 @@ import { db } from "./firebase";
 
 /**
  * 
- * @param {{id: string, email: string, text: string}} newComment 
+ * @param {{user_id: string, email: string, text: string}} newComment 
  * @returns {Promise<void>}
  */
 
@@ -21,6 +21,7 @@ export async function saveChatComment(newComment) {
 /**
  * 
  * @param {(comments: []{}) => void} callback 
+ * @returns {import("firebase/firestore").Unsubscribe}
  */
 
 export function subscribeToChatComments(callback) {
@@ -28,7 +29,7 @@ export function subscribeToChatComments(callback) {
     const commentRef = collection(db, 'comments');
     const commentQuery = query(commentRef, orderBy('created_at'));
 
-    onSnapshot(commentQuery, snapshot => {
+    return onSnapshot(commentQuery, snapshot => {
 
         const comments = snapshot.docs.map(doc => {
             return {
