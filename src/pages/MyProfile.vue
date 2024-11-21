@@ -35,7 +35,6 @@ export default {
     <div class="flex items-end gap-4">
         <h1>My Profile</h1>
         <router-link class="mb-4 text-blue-700 underline" to="/myProfile/edit">Edit</router-link>
-        <router-link class="mb-4 text-blue-700 underline" to="/myProfile/edit/photo">Edit my photo</router-link>
     </div>
 
     <ProfileData :loading="!loggedUser.fullProfileLoaded" :user="loggedUser" />
