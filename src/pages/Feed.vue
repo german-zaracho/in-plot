@@ -8,7 +8,7 @@ export default {
 </script>
 
 <template>
-    <h1>Feed</h1>
+    <h1>Media reviews</h1>
 
     <Comment />
 </template>

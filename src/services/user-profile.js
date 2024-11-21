@@ -5,11 +5,15 @@ import { db } from "./firebase";
  * @param {string} id 
  * @returns 
  */
+// {{id: string, email: string, displayName: string|null, favMovie: string|null, favSeries: string|null, photoURL: string|null}}
 export async function getUserProfileById(id){
     const profileRef = doc(db, `user-profiles/${id}`);
+    // console.log(db, 'id',id, 'profileRef', profileRef.data());
     const profileSnapshot = await getDoc(profileRef);
 
     return {
+        // id,
+        // ...profileSnapshot.data(),
         id: profileSnapshot.id,
         email: profileSnapshot.data().email,
         displayName: profileSnapshot.data().displayName,
@@ -18,6 +22,7 @@ export async function getUserProfileById(id){
         favSeries: profileSnapshot.data().favSeries,
         anAdditionalComment: profileSnapshot.data().anAdditionalComment,
     }
+    
 }
 
 /**

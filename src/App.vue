@@ -22,18 +22,16 @@ export default {
         },
     },
     mounted() {
-        subscribeToAuth(newUserData => this.loggedUser = newUserData);
+        subscribeToAuth(newUserData => (this.loggedUser = newUserData));
     },
-
-}
-
+};
 </script>
 
 <template>
     <AppNavbar :loggedUser="loggedUser" @logout="handleLogout" />
-
     <main class="container mx-auto p-4">
         <router-view />
     </main>
+
     <AppFooter />
 </template>

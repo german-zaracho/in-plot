@@ -29,12 +29,12 @@ let observers = [];
 
 onAuthStateChanged(auth, user => {
     if (user) {
-        updateUserData = {
+        updateUserData({
             id: user.uid,
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL,
-        }
+        });
 
         getUserProfileById(userData.id).then(fullProfile => {
             updateUserData({
@@ -65,6 +65,7 @@ export async function register({ email, password }) {
     try {
         const credentials = await createUserWithEmailAndPassword(auth, email, password);
         await createUserProfile(credentials.user.uid, { email });
+        // console.log('id', credentials.user.uid);
     } catch (error) {
         console.error("[auth.js register] Error trying to register user: ", error);
         throw error;
@@ -94,7 +95,7 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
     try {
 
         const promiseAuth = updateProfile(auth.currentUser, { displayName });
-        const promiseStore = editUserProfile(userData.id, { display, favMovie, favSeries, anAdditionalComment });
+        const promiseStore = editUserProfile(userData.id, { displayName, favMovie, favSeries, anAdditionalComment });
         await Promise.all([promiseAuth, promiseStore]);
 
         updateUserData({

@@ -8,6 +8,6 @@ export default {
 
 <template>
     <footer>
-        <p>here will be the footer</p>
+        <p>here will be the footer / Modify the AppFooter.vue</p>
     </footer>
 </template>
