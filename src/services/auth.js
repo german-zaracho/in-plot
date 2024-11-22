@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile,
 import { auth } from "./firebase";
 import { editUserProfile, getUserProfileById, createUserProfile } from "./user-profile";
 import { getFileURL, uploadFile } from "./file-storage";
+import { createNewReview } from './media-reviews';
 
 //Check the different errors in the documentation to add messages
 const AUTH_ERROR_MESSAGES = {
@@ -21,7 +22,7 @@ let userData = {
     fullProfileLoaded: false,
 }
 
-if(localStorage.getItem('user')) {
+if (localStorage.getItem('user')) {
     userData = JSON.parse(localStorage.getItem('user'));
 }
 
@@ -135,6 +136,30 @@ export async function editMyProfilePhoto(photo) {
         throw error;
     }
 }
+
+/**
+ * Creates a new review for the authenticated user.
+ * @param {{ title: string, synopsis: string, trailer: string, year: string }} data
+ */
+export async function createReviewForAuthenticatedUser(data) {
+    try {
+        //I need to verify this
+        const user = auth.currentUser;
+
+        if (!user) {
+            console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
+            throw error;
+        }
+
+        await createNewReview(userData.id, data);
+
+        console.log('Review created successfully!');
+    } catch (error) {
+        console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
+        throw error;
+    }
+}
+
 
 export async function logout() {
     return signOut(auth);

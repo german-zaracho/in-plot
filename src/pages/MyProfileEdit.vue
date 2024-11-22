@@ -27,6 +27,7 @@ export default {
 
             try {
                 await editMyProfile({...this.editData});
+                this.$router.push('/myProfile');
             } catch (error) {
                 console.error('[MyProfileEdit handleSubmit] Error editing profile: ', error);
             }

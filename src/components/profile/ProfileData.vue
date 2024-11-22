@@ -24,13 +24,13 @@ export default {
 
             <div class="relative flex items-center justify-center ">
                 <div
-                    class="w-full h-full rounded-full overflow-hidden bg-gray-200 max-w-[250px] max-h-[250px] border-[#BC2B41] border-[2px] shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
+                    class="w-full h-full rounded-full overflow-hidden bg-gray-200 max-w-[250px] max-h-[250px] shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
                     <img :src="user.photoURL || '/assets/imgs/no-image.jpg'" alt="Profile image"
                         class="h-full w-full object-cover">
                 </div>
 
                 <div
-                    class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]">
+                    class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]  ">
                     <router-link @mouseenter="showTooltip = true" @mouseleave="showTooltip = false"
                         class="relative flex items-center justify-center h-8 w-8 rounded-full bg-gray-800 hover:bg-gray-700 text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px]"
                         aria-label="Edit my photo" to="/myProfile/edit/photo">

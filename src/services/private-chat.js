@@ -95,7 +95,6 @@ export async function savePrivateChatMessage(senderId, receiverId, text) {
     });
 }
 
-
 /**
  * 
  * @param {string} senderId 

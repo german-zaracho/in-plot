@@ -20,6 +20,7 @@ export default {
 
             try {
                 await editMyProfilePhoto(this.editData.photo);
+                this.$router.push('/myProfile');
             } catch (error) {
                 //check this later
             }
