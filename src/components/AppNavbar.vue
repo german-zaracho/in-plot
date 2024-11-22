@@ -61,18 +61,18 @@ export default {
                     <div class="flex items-center">
                         <img class="h-10 w-10" src="./../../inPlot.ico" alt="logo">
                         <router-link :to="{ name: 'home' }" class=" text-white text-xl logo">
-                            In<span class="text-[#fcba50]">Plot</span>
+                            In<span class="text-[#f09224]">Plot</span>
                         </router-link>
                     </div>
                     <div class="hidden md:block">
-                        <ul class="flex items-center space-x-4 font-medium text-white">
-                            <li><router-link class="py-2 px-4" :to="{ name: 'home' }">Home</router-link></li>
+                        <ul class="flex items-center space-x-4 font-medium text-[#f09224]">
+                            <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" :to="{ name: 'home' }">Home</router-link></li>
                             <template v-if="loggedUser.id">
-                                <li><router-link class="py-2 px-4" to="/feed">Media Reviews</router-link></li>
+                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/feed">Media Reviews</router-link></li>
                             </template>
                             <template v-if="!loggedUser.id">
-                                <li><router-link class="py-2 px-4" to="/register">Register</router-link></li>
-                                <li><router-link class="py-2 px-4" to="/login">Login</router-link></li>
+                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/register">Register</router-link></li>
+                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/login">Login</router-link></li>
                             </template>
                         </ul>
                     </div>
@@ -87,12 +87,12 @@ export default {
                                 alt="user">
                         </button>
                         <div v-if="isUserMenuOpen" ref="userMenu"
-                            class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
+                            class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
                             <ul>
-                                <li><router-link class="block px-4 py-2 text-sm text-gray-700" to="/myProfile">My Profile</router-link></li>
-                                <li class="block px-4 py-2 text-sm text-gray-700">
+                                <li><router-link class="block px-4 py-2 text-sm text-[#f09224] hover:text-[wheat]" to="/myProfile">My Profile</router-link></li>
+                                <li class="block px-4 py-2 text-sm text-[#f09224] hover:text-[wheat]">
                                     <form @submit.prevent="handleLogout">
-                                        <button type="submit" class="py-2 px-4">Logout</button>
+                                        <button type="submit" class="py-2 px-4 ">Logout</button>
                                     </form>
                                 </li>
                             </ul>
@@ -105,7 +105,7 @@ export default {
                 <div class="-mr-2 flex md:hidden">
                     <!-- Mobile menu button -->
                     <button ref="mobileMenuButton" @click="toggleMobileMenu" type="button"
-                        class="relative inline-flex items-center justify-center rounded-md bg-[#f09224] p-2 text-gray-400 hover:bg-[#fcba50] hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        class="relative inline-flex items-center justify-center rounded-md bg-[#f09224] p-2 text-gray-400 hover:bg-[wheat] hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         id="mobile-menu-button">
                         <span class="absolute -inset-0.5"></span>
 
@@ -131,7 +131,7 @@ export default {
 
             <!-- NavBar Options -->
             <div v-show="isMobileMenuOpen" ref="mobileMenu"
-                class="space-y-1 px-2 pb-3 pt-2 sm:px-3 bg-[#56141E] rounded-bl-[20px] rounded-br-[20px] relative border-b border-[#BC2B41]">
+                class="space-y-1 px-2 pb-3 pt-2 sm:px-3 bg-[#56141E] rounded-bl-[20px] rounded-br-[20px] relative border-b border-[#BC2B41] z-[100]">
                 <ul class="text-white flex flex-col items-center">
                     <li><router-link class="block py-2 px-4" :to="{ name: 'home' }">Home</router-link></li>
                     
