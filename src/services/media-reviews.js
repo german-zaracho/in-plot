@@ -4,9 +4,9 @@ import { db } from "./firebase";
 /**
  * 
  * @param { string } id 
- * @param {{ title: string, synopsis: string, trailer: string, year: string, coverURL: string }} data 
+ * @param {{ title: string, synopsis: string, trailer: string, year: string, coverURL: string, contentType: string, }} data 
  */
-export async function createNewReview(id, {title, synopsis, trailer, year, coverURL}) {
+export async function createNewReview(id, {title, synopsis, trailer, year, coverURL, contentType}) {
 
     
     const reviewRef = collection(db, `media-reviews`);
@@ -17,6 +17,7 @@ export async function createNewReview(id, {title, synopsis, trailer, year, cover
         synopsis,
         trailer,
         year,
+        contentType,
         coverURL,
         created_at: serverTimestamp(),
     });

@@ -141,11 +141,11 @@ export async function editMyProfilePhoto(photo) {
 /**
  * Creates a new review for the authenticated user.
  * @param {File}
- * @param {{ title: string, synopsis: string, trailer: string, year: string }} data
+ * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
  */
 export async function createReviewForAuthenticatedUser(coverImage, data) {
     try {
-        console.log('cover', cover, 'data', data);
+        // console.log('cover', cover, 'data', data);
         //I need to verify this
         const user = auth.currentUser;
 

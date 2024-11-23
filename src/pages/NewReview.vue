@@ -13,6 +13,7 @@ export default {
                 synopsis: '',
                 trailer: '',
                 year: '2024',
+                contentType: '',
             },
             coverImage: null,
             coverPreview: null,
@@ -84,11 +85,6 @@ export default {
                 v-model="reviewData.title">
         </div>
 
-        <!-- <div class="mb-4">
-            <label class="block mb-2" for="cover">Cover</label>
-            <input type="file" id="cover" class="w-full p-2 border rounded" @change="handleFileSelection">
-        </div> -->
-
         <div class="mb-4">
             <label for="cover" class="block mb-2">Cover</label>
             <input type="file" id="cover" @change="handleFileSelection" class="w-full p-2 border rounded">
@@ -128,6 +124,16 @@ export default {
                 </div>
             </div>
         </div>
+
+        <div class="mb-4 max-w-[200px]">
+            <label class="block mb-2" for="contentType">Type (Movie or Series)</label>
+            <select id="contentType" class="w-full p-2 border rounded bg-white" v-model="reviewData.contentType">
+                <option value="Movie">Movie</option>
+                <option value="Series">Series</option>
+            </select>
+        </div>
+
+
 
         <div class="mb-4">
             <label class="block mb-2" for="trailer">Trailer (YouTube URL)</label>
