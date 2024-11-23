@@ -19,6 +19,7 @@ export default {
             this.editing = true;
 
             try {
+                console.log('photo',this.editData.photo )
                 await editMyProfilePhoto(this.editData.photo);
                 this.$router.push('/myProfile');
             } catch (error) {

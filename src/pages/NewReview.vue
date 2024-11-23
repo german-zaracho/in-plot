@@ -10,11 +10,12 @@ export default {
         return {
             reviewData: {
                 title: '',
-                cover: '',
                 synopsis: '',
                 trailer: '',
                 year: '2024',
             },
+            coverImage: null,
+            coverPreview: null,
             years: Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i),
             adding: false,
             dropdownVisible: false,
@@ -28,18 +29,31 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            if(this.adding) return;
+            if (this.adding) return;
 
             this.adding = true;
 
             try {
-                await createReviewForAuthenticatedUser({...this.reviewData});
+                console.log('Datos enviados:', this.coverImage, this.reviewData);
+                await createReviewForAuthenticatedUser(this.coverImage, this.reviewData);
                 this.$router.push('/feed');
             } catch (error) {
                 console.error('[NewReview handleSubmit] Error trying to create a new review:: ', error);
             }
 
             this.adding = false;
+        },
+        handleFileSelection(event) {
+
+            this.coverImage = event.target.files[0];
+
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                this.coverPreview = reader.result;
+            };
+
+            reader.readAsDataURL(this.coverImage);
         },
         toggleDropdown(event) {
             event.stopPropagation();
@@ -70,9 +84,18 @@ export default {
                 v-model="reviewData.title">
         </div>
 
-        <div class="mb-4">
+        <!-- <div class="mb-4">
             <label class="block mb-2" for="cover">Cover</label>
             <input type="file" id="cover" class="w-full p-2 border rounded" @change="handleFileSelection">
+        </div> -->
+
+        <div class="mb-4">
+            <label for="cover" class="block mb-2">Cover</label>
+            <input type="file" id="cover" @change="handleFileSelection" class="w-full p-2 border rounded">
+            <div v-if="coverPreview" class="mt-2">
+                <h2>Preview</h2>
+                <img :src="coverPreview" alt="Cover preview" class="max-w-xs">
+            </div>
         </div>
 
         <div class="mb-4">

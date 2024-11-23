@@ -4,9 +4,11 @@ import { db } from "./firebase";
 /**
  * 
  * @param { string } id 
- * @param {{ title: string, synopsis: string, trailer: string, year: string }} data 
+ * @param {{ title: string, synopsis: string, trailer: string, year: string, coverURL: string }} data 
  */
-export async function createNewReview(id, {title, synopsis, trailer, year}) {
+export async function createNewReview(id, {title, synopsis, trailer, year, coverURL}) {
+
+    
     const reviewRef = collection(db, `media-reviews`);
     
     await addDoc(reviewRef, {
@@ -15,20 +17,18 @@ export async function createNewReview(id, {title, synopsis, trailer, year}) {
         synopsis,
         trailer,
         year,
+        coverURL,
         created_at: serverTimestamp(),
     });
 }
 
-/**
- * Obtiene todas las reviews de Firestore.
- * @returns {Promise<Array<Object>>} Una lista de reviews.
- */
+
 export async function getAllReviews() {
     const reviewsCollection = collection(db, "media-reviews");
     const reviewsSnapshot = await getDocs(reviewsCollection);
 
     return reviewsSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
     }));
 }

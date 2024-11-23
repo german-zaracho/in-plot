@@ -118,6 +118,7 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
  */
 export async function editMyProfilePhoto(photo) {
     try {
+        console.log('photo', photo);
 
         const filepath = `users/${userData.id}/avatar.jpg`;
 
@@ -139,10 +140,12 @@ export async function editMyProfilePhoto(photo) {
 
 /**
  * Creates a new review for the authenticated user.
+ * @param {File}
  * @param {{ title: string, synopsis: string, trailer: string, year: string }} data
  */
-export async function createReviewForAuthenticatedUser(data) {
+export async function createReviewForAuthenticatedUser(coverImage, data) {
     try {
+        console.log('cover', cover, 'data', data);
         //I need to verify this
         const user = auth.currentUser;
 
@@ -151,7 +154,24 @@ export async function createReviewForAuthenticatedUser(data) {
             throw error;
         }
 
-        await createNewReview(userData.id, data);
+        let coverImageURL = '';
+
+        if (coverImage) {
+
+            const folderPath = `reviews/${user.uid}/`;
+            const filePath = `${folderPath}${Date.now()}_cover.jpg`;
+
+            await uploadFile(filePath, coverImage);
+
+            coverImageURL = await getFileURL(filePath);
+        }
+
+        const fullReviewData = {
+            ...data,
+            coverURL: coverImageURL || '',
+        };
+
+        await createNewReview(userData.id, fullReviewData);
 
         console.log('Review created successfully!');
     } catch (error) {
@@ -159,6 +179,8 @@ export async function createReviewForAuthenticatedUser(data) {
         throw error;
     }
 }
+
+
 
 
 export async function logout() {
