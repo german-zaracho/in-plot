@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 
 /**
@@ -19,3 +19,16 @@ export async function createNewReview(id, {title, synopsis, trailer, year}) {
     });
 }
 
+/**
+ * Obtiene todas las reviews de Firestore.
+ * @returns {Promise<Array<Object>>} Una lista de reviews.
+ */
+export async function getAllReviews() {
+    const reviewsCollection = collection(db, "media-reviews");
+    const reviewsSnapshot = await getDocs(reviewsCollection);
+
+    return reviewsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+}

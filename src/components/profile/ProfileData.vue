@@ -23,10 +23,8 @@ export default {
         <div class="flex gap-4  flex-col max-width-[250px]">
 
             <div class="relative flex items-center justify-center ">
-                <div
-                    class="w-full h-full rounded-full overflow-hidden bg-gray-200 max-w-[250px] max-h-[250px] shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
-                    <img :src="user.photoURL || '/assets/imgs/no-image.jpg'" alt="Profile image"
-                        class="h-full w-full object-cover">
+                <div class="w-full h-full rounded-full overflow-hidden bg-gray-200 max-w-[250px] max-h-[250px] shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
+                    <img :src="user.photoURL || '/assets/imgs/no-image.jpg'" alt="Profile image" class="h-full w-full object-cover">
                 </div>
 
                 <div

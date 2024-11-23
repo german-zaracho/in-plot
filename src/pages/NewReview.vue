@@ -2,6 +2,7 @@
 import { createReviewForAuthenticatedUser } from '../services/auth';
 import Loader from '../components/Loader.vue';
 
+
 export default {
     name: 'NewReview',
     components: { Loader },
