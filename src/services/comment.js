@@ -7,7 +7,7 @@ import { db } from "./firebase";
  * @param {string} reviewId
  * @returns {Promise<DocumentReference>}
  */
-// Consigue el chat de comentarios si es que existe, sino lo crea, y luego pasa la id de la collection
+// Get the comments chat if it exists, if not create it, and then pass the collection id
 async function getChatCommentDoc(reviewId) {
 
     const chatRef = collection(db, 'comments');
@@ -36,7 +36,7 @@ async function getChatCommentDoc(reviewId) {
  * @param {string} reviewId 
  * @param {string} text 
  */
-// se conecta con la collection y se guarda el mensaje comentario nuevo
+// Connects to the collection and saves the new comment
 export async function saveChatComment(reviewId, newComment) {
 
     const chatDoc = await getChatCommentDoc(reviewId);
@@ -58,7 +58,7 @@ export async function saveChatComment(reviewId, newComment) {
  * @returns {import("firebase/firestore").Unsubscribe}
  */
 
-// consigue los mensajes actualizados y los pasa
+// Gets the updated comments and passes them
 export async function subscribeToReviewComments(reviewId, callback) {
     const chatDoc = await getChatCommentDoc(reviewId);
     console.log('el id que tengo que verificar',chatDoc.id);

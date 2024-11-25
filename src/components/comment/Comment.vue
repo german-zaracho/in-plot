@@ -3,32 +3,40 @@ import CommentForm from './CommentForm.vue';
 import CommentList from './CommentList.vue';
 import { saveChatComment, subscribeToReviewComments } from '../../services/comment';
 
-let unsubscribeFromComments = () => {};
-
 export default {
     name: 'Comment',
     components: { CommentForm, CommentList },
     props: {
-        reviewId: { type: String, required: true,}
+        reviewId: { type: String, required: true, }
     },
     data() {
         return {
             comments: [],
+            unsubscribeFromComments: null,
         }
     },
     methods: {
         addComment(newComment) {
-            console.log('estoy pasando', newComment, this.reviewId);
+            // console.log('passing newComment and reviewId', newComment, this.reviewId);
             saveChatComment(this.reviewId, newComment);
-            console.log('comments', this.comments);
+            // console.log('comments', this.comments);
         }
     },
-    mounted() {
-        unsubscribeFromComments = subscribeToReviewComments(this.reviewId, newComments => this.comments = newComments);
-        console.log('reviewId', this.reviewId, 'callback', newComments => this.comments = newComments);
+    async mounted() {
+        try {
+            this.unsubscribeFromComments = await subscribeToReviewComments(
+                this.reviewId,
+                (newComments) => {
+                    this.comments = newComments;
+                }
+            );
+            // console.log('Subscribed to comments for Review ID', this.reviewId);
+        } catch (error) {
+            console.error('Error when subscribing to comments: ', error);
+        }
     },
     unmounted() {
-        unsubscribeFromComments();
+        this.unsubscribeFromComments();
     }
 }
 </script>

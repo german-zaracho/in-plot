@@ -80,12 +80,9 @@ async function getPrivateChatDoc(senderId, receiverId) {
  * @param {string} text 
  */
 export async function savePrivateChatMessage(senderId, receiverId, text) {
-    // Para poder grabar el mensaje, primero necesitamos tener la el id documento del chat privado.
-    // Ya sea porque lo creamos si no existe, o usando el id del que ya exista.
+
     const chatDoc = await getPrivateChatDoc(senderId, receiverId);
 
-    // Ahora que tenemos el documento del chat, y por extensión, el id que le corresponde, podemos proceder a grabar
-    // el mensaje en la subcollection de mensajes.
     const messagesRef = collection(db, `private-chats/${chatDoc.id}/messages`);
 
     await addDoc(messagesRef, {

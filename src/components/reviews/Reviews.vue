@@ -53,7 +53,7 @@ export default {
         <ul v-else class="space-y-4">
             <li v-for="review in reviews" :key="review.id"
                 class="p-4 flex items-start space-x-4  rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px]">
-                <!-- Cover Image -->
+
                 <div class="flex-shrink-0 w-32 h-48 overflow-hidden rounded bg-gray-200">
                     <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
                         class="w-full h-full object-cover">
@@ -62,7 +62,6 @@ export default {
                     </p>
                 </div>
 
-                <!-- Review Details -->
                 <div class="flex-1">
                     <h2 class="text-xl font-semibold">{{ review.title }}</h2>
                     <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
