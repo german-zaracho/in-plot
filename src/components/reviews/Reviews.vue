@@ -10,8 +10,19 @@ export default {
         return {
             reviews: [],
             loading: true,
-            
+            activeComments: {},
         };
+    },
+    methods: {
+        toggleComment(reviewId) {
+            if (this.activeComments.hasOwnProperty(reviewId)) {
+                // Toggle state
+                this.activeComments[reviewId] = !this.activeComments[reviewId];
+            } else {
+                // Add a new state
+                this.activeComments[reviewId] = true;
+            }
+        }
     },
     async mounted() {
         try {
@@ -66,11 +77,14 @@ export default {
                         </a>
 
                         <button type="button"
-                            class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10">
+                            class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
+                            @click="toggleComment(review.id)">
                             <img src="/assets/icons/comment-icon.png" alt="Icon"
                                 class="w-6 h-6 filter invert brightness-0">
                         </button>
                     </div>
+
+                    <Comment v-if="activeComments[review.id]" :reviewId="review.id" />
 
                 </div>
             </li>

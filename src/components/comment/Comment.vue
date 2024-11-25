@@ -1,13 +1,16 @@
 <script>
 import CommentForm from './CommentForm.vue';
 import CommentList from './CommentList.vue';
-import { saveChatComment, subscribeToChatComments } from '../../services/comment';
+import { saveChatComment, subscribeToReviewComments } from '../../services/comment';
 
-let unsubscribeFromChat = () => {};
+let unsubscribeFromComments = () => {};
 
 export default {
     name: 'Comment',
     components: { CommentForm, CommentList },
+    props: {
+        reviewId: { type: String, required: true,}
+    },
     data() {
         return {
             comments: [],
@@ -15,14 +18,17 @@ export default {
     },
     methods: {
         addComment(newComment) {
-            saveChatComment(newComment);
+            console.log('estoy pasando', newComment, this.reviewId);
+            saveChatComment(this.reviewId, newComment);
+            console.log('comments', this.comments);
         }
     },
     mounted() {
-        unsubscribeFromChat = subscribeToChatComments(newComments => this.comments = newComments);
+        unsubscribeFromComments = subscribeToReviewComments(this.reviewId, newComments => this.comments = newComments);
+        console.log('reviewId', this.reviewId, 'callback', newComments => this.comments = newComments);
     },
     unmounted() {
-        unsubscribeFromChat();
+        unsubscribeFromComments();
     }
 }
 </script>
