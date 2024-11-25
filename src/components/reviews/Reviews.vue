@@ -11,6 +11,7 @@ export default {
             reviews: [],
             loading: true,
             activeComments: {},
+            expandedSynopsis: {},
         };
     },
     methods: {
@@ -22,7 +23,14 @@ export default {
                 // Add a new state
                 this.activeComments[reviewId] = true;
             }
-        }
+        },
+        toggleSynopsis(reviewId) {
+            if (this.expandedSynopsis.hasOwnProperty(reviewId)) {
+                this.expandedSynopsis[reviewId] = !this.expandedSynopsis[reviewId];
+            } else {
+                this.expandedSynopsis[reviewId] = true;
+            }
+        },
     },
     async mounted() {
         try {
@@ -31,7 +39,7 @@ export default {
             console.error('[Reviews.vue] Error fetching reviews: ', error);
         } finally {
             this.loading = false;
-            console.log('reviews', this.reviews);
+            // console.log('reviews', this.reviews);
         }
     }
 };
@@ -66,7 +74,16 @@ export default {
                     <h2 class="text-xl font-semibold">{{ review.title }}</h2>
                     <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
                     <p class="text-sm text-gray-600 mb-2">Type: {{ review.contentType }}</p>
-                    <p class="text-gray-800">{{ review.synopsis }}</p>
+                    <!-- <p class="text-gray-800">{{ review.synopsis }}</p> -->
+                    <p class="text-white">
+                        <span :class="{ 'line-clamp-3': !expandedSynopsis[review.id] }">
+                            {{ review.synopsis }}
+                        </span>
+                    </p>
+
+                    <button type="button" class="text-blue-500 hover:underline" @click="toggleSynopsis(review.id)">
+                        {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
+                    </button>
 
                     <div class="flex flex-row justify-between">
                         <a v-if="review.trailer" :href="review.trailer"

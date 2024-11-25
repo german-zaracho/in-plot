@@ -1,4 +1,4 @@
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, getDocs, where, DocumentReference, limit } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, getDocs, doc, getDoc, where, DocumentReference, limit } from "firebase/firestore";
 import { db } from "./firebase";
 
 /**
@@ -12,7 +12,7 @@ async function getChatCommentDoc(reviewId) {
 
     const chatRef = collection(db, 'comments');
 
-    const q = query(chatRef, where('reviewId', '==', {[reviewId]: true,}), limit(1));
+    const q = query(chatRef, where('reviewId', '==', { [reviewId]: true, }), limit(1));
 
     const chatSnapshot = await getDocs(q);
     let chatDoc;
@@ -61,22 +61,45 @@ export async function saveChatComment(reviewId, newComment) {
 // Gets the updated comments and passes them
 export async function subscribeToReviewComments(reviewId, callback) {
     const chatDoc = await getChatCommentDoc(reviewId);
-    console.log('el id que tengo que verificar',chatDoc.id);
+    // console.log('id that i have to verify',chatDoc.id);
     const commentsRef = collection(db, `comments/${chatDoc.id}/actualComments`);
 
     const commentsQuery = query(commentsRef, orderBy('created_at'));
 
-    return onSnapshot(commentsQuery, snapshot => {
-        const comments = snapshot.docs.map(doc => {
-            return {
-                id: doc.id,
-                user_id: doc.data().user_id,
-                email: doc.data().email,
-                text: doc.data().text,
-                created_at: doc.data().created_at?.toDate(),
-            }
-        });
-        console.log('Comments updated in Firestore:', comments);
+    return onSnapshot(commentsQuery, async (snapshot) => {
+
+        const comments = await Promise.all(
+            snapshot.docs.map(async (doc) => {
+
+                const commentData = doc.data();
+
+                const userProfileRef = collection(db, `user-profiles`);
+                const userQuery = query(userProfileRef, where('email', '==', commentData.email), limit(1));
+                const userProfileSnap = await getDocs(userQuery);
+
+                // console.log('passing userProfileSnap', userProfileSnap);
+
+                let displayName = null;
+
+                if (!userProfileSnap.empty) {
+                    const userProfileDoc = userProfileSnap.docs[0];
+                    displayName = userProfileDoc.data().displayName || null;
+                }
+
+                // console.log('passing displayName', displayName);
+
+                return {
+                    id: doc.id,
+                    user_id: commentData.user_id,
+                    email: commentData.email,
+                    text: commentData.text,
+                    created_at: commentData.created_at?.toDate(),
+                    displayName,
+                };
+            })
+        );
+
+        // console.log('Comments updated in Firestore:', comments);
         callback([...comments]);
     });
 }

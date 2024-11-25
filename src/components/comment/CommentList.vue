@@ -37,7 +37,7 @@ export default {
                 <div>{{ comment.text }}</div> -->
 
                 <div>
-                    <router-link :to="`/users/${comment.user_id}`" class="text-blue-700 underline font-bold">{{ comment.email }}</router-link>
+                    <router-link :to="`/users/${comment.user_id}`" class="text-blue-700 underline font-bold">{{ comment.displayName || comment.email }}</router-link>
                     wrote:
                 </div>
 

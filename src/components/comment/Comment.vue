@@ -36,7 +36,10 @@ export default {
         }
     },
     unmounted() {
-        this.unsubscribeFromComments();
+        // this.unsubscribeFromComments();
+        if (typeof this.unsubscribeFromComments === 'function') {
+            this.unsubscribeFromComments();
+        }
     }
 }
 </script>
