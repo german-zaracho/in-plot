@@ -12,6 +12,7 @@ export default {
             loading: true,
             activeComments: {},
             expandedSynopsis: {},
+            showUserName: false,
         };
     },
     methods: {
@@ -60,7 +61,7 @@ export default {
 
         <ul v-else class="space-y-4">
             <li v-for="review in reviews" :key="review.id"
-                class="p-4 flex items-start space-x-4  rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px]">
+                class="p-4 flex items-start relative space-x-4  rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px]">
 
                 <div class="flex-shrink-0 w-32 h-48 overflow-hidden rounded bg-gray-200">
                     <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
@@ -70,8 +71,28 @@ export default {
                     </p>
                 </div>
 
+                <div class="absolute top-0 right-0 bg-yellow-500 text-black font-bold text-xs uppercase px-4 py-1 filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
+                    <router-link @mouseenter="showUserName = true" @mouseleave="showUserName = false"
+                        class="relative flex items-center justify-center h-6 w-6  bg-[grey] text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] "
+                        aria-label="See the creator's profile" to="/myProfile/edit/photo">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="h-4 w-4 stroke-[wheat] ">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536m-2.036-2.036a2.25 2.25 0 113.182 3.182l-9.068 9.068a4.5 4.5 0 01-2.121 1.061l-3.066.614.614-3.066a4.5 4.5 0 011.061-2.121l9.068-9.068z" />
+                        </svg>
+
+                        <span
+                            v-bind:class="{ 'opacity-0 max-w-0': !showUserName, 'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out  whitespace-nowrap': showUserName }"
+                            class="ml-2 overflow-hidden inline-block text-white">
+                            UserName
+                        </span>
+                    </router-link>
+                </div>
+
                 <div class="flex-1">
+
                     <h2 class="text-xl font-semibold">{{ review.title }}</h2>
+                    
                     <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
                     <p class="text-sm text-gray-600 mb-2">Type: {{ review.contentType }}</p>
                     <!-- <p class="text-gray-800">{{ review.synopsis }}</p> -->
