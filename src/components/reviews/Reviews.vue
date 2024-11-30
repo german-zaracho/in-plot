@@ -12,10 +12,13 @@ export default {
             loading: true,
             activeComments: {},
             expandedSynopsis: {},
-            showUserName: false,
+            showUserName: {},
         };
     },
     methods: {
+        toggleUserName(reviewId, state) {
+            this.showUserName[reviewId] = state;
+        },
         toggleComment(reviewId) {
             if (this.activeComments.hasOwnProperty(reviewId)) {
                 // Toggle state
@@ -71,28 +74,28 @@ export default {
                     </p>
                 </div>
 
-                <div class="absolute top-0 right-0 bg-yellow-500 text-black font-bold text-xs uppercase px-4 py-1 filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
-                    <router-link @mouseenter="showUserName = true" @mouseleave="showUserName = false"
-                        class="relative flex items-center justify-center h-6 w-6  bg-[grey] text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] "
+                <div
+                    class="absolute top-0 right-0 bg-yellow-500 text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
+                    <router-link @mouseenter="toggleUserName(review.id, true)"
+                        @mouseleave="toggleUserName(review.id, false)"
+                        class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
                         aria-label="See the creator's profile" to="/myProfile/edit/photo">
+                        <span class="material-symbols-rounded">person</span>
 
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="h-4 w-4 stroke-[wheat] ">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.232 5.232l3.536 3.536m-2.036-2.036a2.25 2.25 0 113.182 3.182l-9.068 9.068a4.5 4.5 0 01-2.121 1.061l-3.066.614.614-3.066a4.5 4.5 0 011.061-2.121l9.068-9.068z" />
-                        </svg>
-
-                        <span
-                            v-bind:class="{ 'opacity-0 max-w-0': !showUserName, 'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out  whitespace-nowrap': showUserName }"
-                            class="ml-2 overflow-hidden inline-block text-white">
+                        <span :class="{
+                            'opacity-0 max-w-0': !showUserName[review.id],
+                            'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out whitespace-nowrap': showUserName[review.id]
+                        }" class="ml-2 overflow-hidden inline-block text-white">
                             UserName
                         </span>
                     </router-link>
+
                 </div>
 
                 <div class="flex-1">
 
                     <h2 class="text-xl font-semibold">{{ review.title }}</h2>
-                    
+
                     <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
                     <p class="text-sm text-gray-600 mb-2">Type: {{ review.contentType }}</p>
                     <!-- <p class="text-gray-800">{{ review.synopsis }}</p> -->
@@ -116,8 +119,9 @@ export default {
                         <button type="button"
                             class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
                             @click="toggleComment(review.id)">
-                            <img src="/assets/icons/comment-icon.png" alt="Icon"
-                                class="w-6 h-6 filter invert brightness-0">
+                            <!-- <img src="/assets/icons/comment-icon.png" alt="Icon"
+                                class="w-6 h-6 filter invert brightness-0"> -->
+                            <span class="material-symbols-rounded">chat</span>
                         </button>
                     </div>
 
@@ -128,3 +132,13 @@ export default {
         </ul>
     </section>
 </template>
+
+<style>
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+}
+</style>

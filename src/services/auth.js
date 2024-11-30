@@ -78,7 +78,7 @@ export async function login({ email, password }) {
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        console.log("Successfully authenticated.");
+        // console.log("Successfully authenticated.");
     } catch (error) {
         console.error("[auth.js login] Authentication error: ", error);
         //example of how to do it
