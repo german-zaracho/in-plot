@@ -37,6 +37,6 @@ export default {
         <router-link class="mb-4 text-blue-700 underline" to="/myProfile/edit">Edit</router-link>
     </div>
 
-    <ProfileData :loading="!loggedUser.fullProfileLoaded" :user="loggedUser" />
+    <ProfileData :loading="!loggedUser.fullProfileLoaded" :user="loggedUser" :isMyProfile="true" />
 
 </template>

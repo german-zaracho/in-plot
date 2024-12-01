@@ -1,21 +1,45 @@
 <script>
-import { getAllReviews } from '../../services/media-reviews';
+import { getReviewsByUser } from '../../services/media-reviews';
 import SkeletonLoader from '../SkeletonLoader.vue';
 import Comment from '../comment/Comment.vue';
 
 export default {
-    name: 'Reviews',
+    name: 'UserReviews',
     components: { SkeletonLoader, Comment },
+    props: {
+        userId: { type: String, required: false },
+        isMyProfile: { type: Boolean, required: true },
+    },
     data() {
         return {
             reviews: [],
-            loading: true,
             activeComments: {},
             expandedSynopsis: {},
             showUserName: {},
+            loading: true,
         };
     },
+    watch: {
+        userId: {
+            immediate: true, // Run the function when mounting the component
+            handler(newUserId) {
+                if (newUserId) {
+                    this.fetchReviews(newUserId);
+                }
+            },
+        },
+    },
     methods: {
+        async fetchReviews(userId) {
+            this.loading = true;
+            try {
+                this.reviews = await getReviewsByUser(userId);
+            } catch (error) {
+                console.error(`[UserReviews.vue] Error fetching reviews for user ${userId}:`, error);
+            } finally {
+                this.loading = false;
+            }
+        },
         toggleUserName(reviewId, state) {
             this.showUserName[reviewId] = state;
         },
@@ -36,30 +60,31 @@ export default {
             }
         },
     },
-    async mounted() {
-        try {
-            this.reviews = await getAllReviews();
-        } catch (error) {
-            console.error('[Reviews.vue] Error fetching reviews: ', error);
-        } finally {
-            this.loading = false;
-            // console.log('reviews', this.reviews);
-        }
-    }
+
+
+    // async mounted() {
+    //     try {
+    //         console.log('userId', this.userId);
+    //         this.reviews = await getReviewsByUser(this.userId);
+    //     } catch (error) {
+    //         console.error(`[UserReviews.vue] Error fetching reviews for user ${this.userId}: `, error);
+    //     } finally {
+    //         this.loading = false;
+    //     }
+    // },
 };
 </script>
 
 <template>
     <section class="p-4">
-        <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
+        <h2 class="text-xl font-bold mb-4">My Reviews</h2>
 
         <div v-if="loading">
-            <!--  i have to change this -->
             <SkeletonLoader class="w-full h-20 rounded-lg mb-4" v-for="n in 2" :key="n" />
         </div>
 
         <div v-else-if="reviews.length === 0">
-            <p>No reviews available.</p>
+            <p>No reviews created yet.</p>
         </div>
 
         <ul v-else class="space-y-4">
@@ -74,26 +99,26 @@ export default {
                     </p>
                 </div>
 
-                <div
+                <div v-if="isMyProfile"
                     class="absolute top-0 right-0 bg-yellow-500 text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
                     <router-link @mouseenter="toggleUserName(review.id, true)"
                         @mouseleave="toggleUserName(review.id, false)"
                         class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
-                        aria-label="See the creator's profile" :to="`/users/${review.user_id}`">
-                        <span class="material-symbols-rounded m-2">person</span>
+                        aria-label="See the creator's profile" :to="`/users/:id/editMyReview`">
+
+                        <span class="material-symbols-rounded m-2">edit</span>
 
                         <span :class="{
                             'opacity-0 max-w-0': !showUserName[review.id],
                             'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out whitespace-nowrap': showUserName[review.id]
                         }" class="ml-2 overflow-hidden inline-block text-white">
-                            {{ review.displayName }}
+                            Edit my review
                         </span>
                     </router-link>
 
                 </div>
 
                 <div class="flex-1">
-
                     <h2 class="text-xl font-semibold">{{ review.title }}</h2>
 
                     <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
@@ -119,26 +144,18 @@ export default {
                         <button type="button"
                             class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
                             @click="toggleComment(review.id)">
-                            <!-- <img src="/assets/icons/comment-icon.png" alt="Icon"
-                                class="w-6 h-6 filter invert brightness-0"> -->
-                            <span class="material-symbols-rounded">chat</span>
+                                <span class="material-symbols-rounded">chat</span>
                         </button>
                     </div>
 
                     <Comment v-if="activeComments[review.id]" :reviewId="review.id" />
-
                 </div>
+
+
+
             </li>
         </ul>
     </section>
 </template>
 
-<!-- <style>
-.material-symbols-rounded {
-    font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24
-}
-</style> -->
+

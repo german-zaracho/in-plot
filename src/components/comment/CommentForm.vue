@@ -46,14 +46,7 @@ export default {
 </script>
 
 <template>
-    <h2 class="text-xl mb-4">Send a comment</h2>
     <form action="#" @submit.prevent="handleSubmit">
-        <div class="mb-4">
-            <div class="mb-4">
-                <span class="block mb-2" for="email">Email</span>
-                {{ loggedUser.email }}
-            </div>
-        </div>
         <div class="mb-4">
             <label class="block mb-2" for="text">Comment</label>
             <textarea id="text" class="w-full min-h-20 p-2 border rounded" v-model="newComment.text"></textarea>

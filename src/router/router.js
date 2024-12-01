@@ -10,6 +10,7 @@ import MyProfileEditPhoto from '../pages/MyProfileEditPhoto.vue';
 import UserProfile from '../pages/UserProfile.vue';
 import PrivateChat from '../pages/PrivateChat.vue';
 import NewReview from "../pages/NewReview.vue";
+import EditMyReview from "../pages/EditMyReview.vue";
 
 const routes = [
     { path: '/', name:'home', component:Home, },
@@ -22,6 +23,7 @@ const routes = [
     { path: '/users/:id', name: 'userProfile', component: UserProfile, meta: { requiresAuth: true }, },
     { path: '/users/:id/chat', name: 'userProfileChat', component: PrivateChat, meta: { requiresAuth: true }, },
     { path: '/newReview', name: 'newReview', component: NewReview, meta: { requiresAuth: true }, },
+    { path: '/users/:id/editMyReview', name: 'editMyReview', component: EditMyReview, meta: { requiresAuth: true }, },
 ]
 
 const router = createRouter({

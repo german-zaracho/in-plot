@@ -5,7 +5,7 @@ import Loader from '../components/Loader.vue';
 
 
 export default {
-    name: 'NewReview',
+    name: 'EditMyReview',
     components: { Loader },
     data() {
         return {
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <template>
-    <h1>Create a new review</h1>
+    <h1>Edit your review</h1>
 
     <form action="#" @submit.prevent="handleSubmit">
 
@@ -145,7 +145,7 @@ export default {
 
         <button type="submit"
             class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
-            <span v-if="!adding">Create Review</span>
+            <span v-if="!adding">Save changes</span>
             <Loader v-else />
         </button>
 

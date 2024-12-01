@@ -32,7 +32,8 @@ export default {
 <template>
     <h1>Profile of {{ user.email }}</h1>
 
-    <ProfileData :loading="loading" :user="user" />
+    <ProfileData :loading="loading" :user="user" :isMyProfile="false"/>
+
 
     <hr class="mb-4">
 

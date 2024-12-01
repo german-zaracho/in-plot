@@ -1,12 +1,14 @@
 <script>
 import SkeletonLoader from '../SkeletonLoader.vue';
+import UserReviews from '../reviews/UserReviews.vue';
 
 export default {
     name: 'ProfileData',
-    components: { SkeletonLoader },
+    components: { SkeletonLoader, UserReviews },
     props: {
         loading: { type: Boolean, default: false, },
-        user: { type: Object, required: true, }
+        user: { type: Object, required: true, },
+        isMyProfile: { type: Boolean, required: true },
     },
     data() {
         return {
@@ -15,6 +17,15 @@ export default {
     },
 }
 </script>
+<style>
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+}
+</style>
 
 <template>
 
@@ -23,8 +34,10 @@ export default {
         <div class="flex gap-4  flex-col max-width-[250px]">
 
             <div class="relative flex items-center justify-center ">
-                <div class="w-full h-full rounded-full overflow-hidden bg-gray-200 max-w-[250px] max-h-[250px] shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
-                    <img :src="user.photoURL || '/assets/imgs/no-image.jpg'" alt="Profile image" class="h-full w-full object-cover">
+                <div
+                    class="w-full h-full rounded-full overflow-hidden bg-gray-200 max-w-[250px] max-h-[250px] shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
+                    <img :src="user.photoURL || '/assets/imgs/no-image.jpg'" alt="Profile image"
+                        class="h-full w-full object-cover">
                 </div>
 
                 <div
@@ -33,10 +46,7 @@ export default {
                         class="relative flex items-center justify-center h-8 w-8 rounded-full bg-gray-800 hover:bg-gray-700 text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px]"
                         aria-label="Edit my photo" to="/myProfile/edit/photo">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="h-4 w-4 stroke-[wheat] ">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.232 5.232l3.536 3.536m-2.036-2.036a2.25 2.25 0 113.182 3.182l-9.068 9.068a4.5 4.5 0 01-2.121 1.061l-3.066.614.614-3.066a4.5 4.5 0 011.061-2.121l9.068-9.068z" />
-                        </svg>
+                        <span class="material-symbols-rounded text-[wheat]">edit</span>
 
                         <span
                             v-bind:class="{ 'opacity-0 max-w-0': !showTooltip, 'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out  whitespace-nowrap': showTooltip }"
@@ -80,10 +90,9 @@ export default {
         </div>
 
         <div>
-            <h2>[My Media Reviews]</h2>
+            <UserReviews v-if="user.id" :userId="user.id" :isMyProfile="isMyProfile" />
         </div>
     </div>
 
-
-
 </template>
+
