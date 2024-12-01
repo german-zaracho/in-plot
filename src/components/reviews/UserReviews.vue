@@ -60,8 +60,6 @@ export default {
             }
         },
     },
-
-
     // async mounted() {
     //     try {
     //         console.log('userId', this.userId);
@@ -104,7 +102,7 @@ export default {
                     <router-link @mouseenter="toggleUserName(review.id, true)"
                         @mouseleave="toggleUserName(review.id, false)"
                         class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
-                        aria-label="See the creator's profile" :to="`/users/:id/editMyReview`">
+                        aria-label="See the creator's profile" :to="`/users/${review.id}/editMyReview`">
 
                         <span class="material-symbols-rounded m-2">edit</span>
 
@@ -144,18 +142,14 @@ export default {
                         <button type="button"
                             class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
                             @click="toggleComment(review.id)">
-                                <span class="material-symbols-rounded">chat</span>
+                            <span class="material-symbols-rounded">chat</span>
                         </button>
                     </div>
 
                     <Comment v-if="activeComments[review.id]" :reviewId="review.id" />
                 </div>
 
-
-
             </li>
         </ul>
     </section>
 </template>
-
-

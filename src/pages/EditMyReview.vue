@@ -1,5 +1,5 @@
 <script>
-import { createReviewForAuthenticatedUser } from '../services/auth';
+import { getReviewById, updateReview, uploadCoverImage } from '../services/media-reviews';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
 
@@ -13,49 +13,74 @@ export default {
                 title: '',
                 synopsis: '',
                 trailer: '',
-                year: '2024',
+                year: '',
                 contentType: '',
+                coverURL: '',
+                user_id:'',
             },
             coverImage: null,
+            previewImage: null,
             coverPreview: null,
+            reviewId: '',
             years: Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i),
             adding: false,
             dropdownVisible: false,
+            isUploading: false,
         };
     },
     mounted() {
         document.addEventListener('click', this.handleOutsideClick);
+        this.fetchReviewData();
     },
     beforeDestroy() {
         document.removeEventListener('click', this.handleOutsideClick);
     },
     methods: {
-        async handleSubmit() {
-            if (this.adding) return;
-
-            this.adding = true;
-
+        async fetchReviewData() {
+            const reviewId = this.$route.params.id; // Review id in the url
             try {
-                console.log('Datos enviados:', this.coverImage, this.reviewData);
-                await createReviewForAuthenticatedUser(this.coverImage, this.reviewData);
-                this.$router.push('/feed');
+                const review = await getReviewById(reviewId);
+                this.reviewData = { ...review };
+                this.coverPreview = review.coverURL;
+                this.reviewId = review.id;
             } catch (error) {
-                console.error('[NewReview handleSubmit] Error trying to create a new review:: ', error);
+                console.error('Error getting review data:', error);
             }
-
-            this.adding = false;
         },
-        handleFileSelection(event) {
+        async handleSubmit() {
+            this.isUploading = true;
+            try {
+                let coverURL = this.reviewData.coverURL;
+                // console.log('coverUrl', coverURL, 'coverImage', this.coverImage, "userId", this.reviewData.user_id, );
+                // If a new cover image is selected, upload the image and get the url
+                if (this.coverImage) {
+                    coverURL = await uploadCoverImage(this.coverImage, this.reviewData.user_id, this.reviewData.coverURL);
+                }
+                // Update the review data with the new cover image url (if any)
+                const updatedReview = {
+                    ...this.reviewData,
+                    coverURL,
+                };
+                // update the review in firestore
+                await updateReview(this.reviewId, updatedReview);
+                this.$router.push('/myProfile');
+            } catch (error) {
+                console.error('Error updating review:', error);
+            }
+            this.isUploading = false;
+        },
+        async handleFileSelection(event) {
+            const file = event.target.files[0];
 
-            this.coverImage = event.target.files[0];
-
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                this.coverPreview = reader.result;
-            };
-
-            reader.readAsDataURL(this.coverImage);
+            if (file) {
+                this.coverImage = file;
+                // Preview of the selected image
+                const reader = new FileReader();
+                reader.onload = () => {
+                    this.previewImage = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
         },
         toggleDropdown(event) {
             event.stopPropagation();
@@ -82,22 +107,22 @@ export default {
 
         <div class="mb-4">
             <label class="block mb-2" for="title">Title</label>
-            <input type="text" id="title" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="adding"
+            <input type="text" id="title" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="isUploading"
                 v-model="reviewData.title">
         </div>
 
         <div class="mb-4">
             <label for="cover" class="block mb-2">Cover</label>
             <input type="file" id="cover" @change="handleFileSelection" class="w-full p-2 border rounded">
-            <div v-if="coverPreview" class="mt-2">
+            <div v-if="previewImage" class="mt-2">
                 <h2>Preview</h2>
-                <img :src="coverPreview" alt="Cover preview" class="max-w-xs">
+                <img :src="previewImage" alt="Cover preview" class="max-w-xs">
             </div>
         </div>
 
         <div class="mb-4">
             <label class="block mb-2" for="synopsis">Synopsis</label>
-            <textarea id="synopsis" class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200" :readonly="adding"
+            <textarea id="synopsis" class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200" :readonly="isUploading"
                 v-model="reviewData.synopsis"></textarea>
         </div>
 
@@ -134,19 +159,19 @@ export default {
             </select>
         </div>
 
-
-
         <div class="mb-4">
             <label class="block mb-2" for="trailer">Trailer (YouTube URL)</label>
             <input id="trailer" type="url" class="w-full p-2 border rounded read-only:bg-gray-200"
-                placeholder="Enter a YouTube URL" :readonly="adding" v-model="reviewData.trailer"
+                placeholder="Enter a YouTube URL" :readonly="isUploading" v-model="reviewData.trailer"
                 pattern="https?://(www\.)?youtube\.com/.*" />
         </div>
 
         <button type="submit"
-            class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
-            <span v-if="!adding">Save changes</span>
-            <Loader v-else />
+            class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            <span v-if="!isUploading">Save changes</span>
+            <div v-else class="flex flex-row items-center">Saving changes 
+                <Loader />
+            </div>
         </button>
 
     </form>

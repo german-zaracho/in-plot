@@ -119,8 +119,6 @@ export default {
                         <button type="button"
                             class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
                             @click="toggleComment(review.id)">
-                            <!-- <img src="/assets/icons/comment-icon.png" alt="Icon"
-                                class="w-6 h-6 filter invert brightness-0"> -->
                             <span class="material-symbols-rounded">chat</span>
                         </button>
                     </div>

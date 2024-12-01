@@ -40,7 +40,7 @@ export async function createUserProfile(id, { email }) {
 
 /**
  * Edit the profile data of the user indicated by their ID.
- * @param {string} id - The ID of the user.
+ * @param {string} id - User id
  * @param {{displayName: string, favMovie: string, favSeries: string, anAdditionalComment:string, photoURL: string }} data
  */
 

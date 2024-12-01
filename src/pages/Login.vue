@@ -63,11 +63,11 @@ export default {
         </div>
 
         <button type="submit"
-            class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
-            <span v-if="!loading">
-                Log in
-            </span>
-            <Loader v-else />
+            class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            <span v-if="!loading">Log in</span>
+            <div v-else class="flex flex-row items-center">Logging in
+                <Loader />
+            </div>
         </button>
 
     </form>

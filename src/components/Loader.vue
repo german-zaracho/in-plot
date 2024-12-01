@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-    <div class="lds-dual-ring"></div>
+    <div class="lds-dual-ring ml-[10px]"></div>
 </template>
 
 <style>
@@ -16,18 +16,18 @@ export default {
 
 .lds-dual-ring {
     display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 20px;
+    height: 20px;
 }
 
 .lds-dual-ring:after {
     content: " ";
     display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
+    width: 16px;
+    height: 16px;
+    margin: 2px;
     border-radius: 50%;
-    border: 6.4px solid currentColor;
+    border: 1.6px solid currentColor;
     border-color: currentColor transparent currentColor transparent;
     animation: lds-dual-ring 1.2s linear infinite;
 }

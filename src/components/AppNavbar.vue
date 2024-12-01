@@ -7,7 +7,7 @@ export default {
     data() {
         return {
             isUserMenuOpen: false,
-            isMobileMenuOpen: false, // Definimos isMobileMenuOpen aquí
+            isMobileMenuOpen: false,
         };
     },
     methods: {
@@ -15,7 +15,7 @@ export default {
             this.isUserMenuOpen = !this.isUserMenuOpen;
         },
         toggleMobileMenu() {
-            this.isMobileMenuOpen = !this.isMobileMenuOpen; // Método para alternar el menú móvil
+            this.isMobileMenuOpen = !this.isMobileMenuOpen;
         },
         handleLogout() {
             this.$emit('logout');
@@ -24,7 +24,6 @@ export default {
             const userMenu = this.$refs.userMenu;
             const userMenuButton = this.$refs.userMenuButton;
 
-            // Si se hace clic fuera del menú de usuario y fuera del botón
             if (userMenu && !userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
                 this.isUserMenuOpen = false;
             }
@@ -33,19 +32,16 @@ export default {
             const mobileMenu = this.$refs.mobileMenu;
             const mobileMenuButton = this.$refs.mobileMenuButton;
 
-            // Si se hace clic fuera del menú móvil y fuera del botón
             if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
                 this.isMobileMenuOpen = false;
             }
         }
     },
     mounted() {
-        // Agregar el escuchador de clics al document cuando el componente se monta
         document.addEventListener('click', this.closeUserMenuOnClickOutside);
         document.addEventListener('click', this.closeMobileMenuOnClickOutside);
     },
     beforeUnmount() {
-        // Eliminar el escuchador de clics cuando el componente se desmonte
         document.removeEventListener('click', this.closeUserMenuOnClickOutside);
         document.removeEventListener('click', this.closeMobileMenuOnClickOutside);
     },

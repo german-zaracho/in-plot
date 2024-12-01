@@ -134,8 +134,6 @@ export default {
             </select>
         </div>
 
-
-
         <div class="mb-4">
             <label class="block mb-2" for="trailer">Trailer (YouTube URL)</label>
             <input id="trailer" type="url" class="w-full p-2 border rounded read-only:bg-gray-200"
@@ -144,9 +142,11 @@ export default {
         </div>
 
         <button type="submit"
-            class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
             <span v-if="!adding">Create Review</span>
-            <Loader v-else />
+            <div v-else class="flex flex-row items-center">Creating a review
+                <Loader />
+            </div>
         </button>
 
     </form>

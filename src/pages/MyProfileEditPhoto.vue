@@ -19,7 +19,7 @@ export default {
             this.editing = true;
 
             try {
-                console.log('photo',this.editData.photo )
+                console.log('photo', this.editData.photo)
                 await editMyProfilePhoto(this.editData.photo);
                 this.$router.push('/myProfile');
             } catch (error) {
@@ -54,10 +54,13 @@ export default {
                 <label class="block mb-2" for="photo">New Photo</label>
                 <input type="file" id="photo" class="w-full p-2 border rounded" @change="handleFileSelection">
             </div>
+
             <button type="submit"
-                class="transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+                class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
                 <span v-if="!editing">Update my profile</span>
-                <Loader v-else />
+                <div v-else class="flex flex-row items-center">Updating my profile
+                    <Loader />
+                </div>
             </button>
         </form>
         <div class="w-1/2">
