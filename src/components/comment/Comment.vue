@@ -45,11 +45,11 @@ export default {
 </script>
 
 <template>
-    <div class="flex gap-4">
-        <section class="w-9/12">
+    <div class="flex flex-col gap-4 w-[90%] m-auto">
+        <section class="">
             <CommentList :theComments="comments" />
         </section>
-        <section class="w-3/12">
+        <section class="">
             <CommentForm @new-comment="addComment" />
         </section>
     </div>

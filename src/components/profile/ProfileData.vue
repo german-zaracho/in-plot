@@ -29,9 +29,9 @@ export default {
 
 <template>
 
-    <div class="flex flex-row">
+    <div class="flex flex-col sm:flex-row">
 
-        <div class="flex gap-4  flex-col max-width-[250px]">
+        <div class="flex gap-4  flex-col max-width-[250px] items-center">
 
             <div class="relative flex items-center justify-center ">
                 <div

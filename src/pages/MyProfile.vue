@@ -32,9 +32,9 @@ export default {
 </script>
 
 <template>
-    <div class="flex items-end gap-4">
-        <h1>My Profile</h1>
-        <router-link class="mb-4 text-blue-700 underline" to="/myProfile/edit">Edit</router-link>
+    <div class="flex gap-4 justify-between">
+        <h1 class="text-2xl font-bold">My Profile</h1>
+        <router-link class="mb-4 border-[2px] border-[#BC2B41] rounded-[20px] p-[5px] bg-gray-800 hover:bg-gray-700 text-white" to="/myProfile/edit">Edit my profile</router-link>
     </div>
 
     <ProfileData :loading="!loggedUser.fullProfileLoaded" :user="loggedUser" :isMyProfile="true" />

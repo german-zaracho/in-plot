@@ -46,7 +46,7 @@ export async function getAllReviews() {
             if (userProfileDoc.exists()) {
                 const userProfile = userProfileDoc.data();
                 displayName = userProfile.displayName || userProfile.email;
-                console.log(displayName);
+                // console.log(displayName);
             }
 
             return {

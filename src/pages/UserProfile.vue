@@ -1,11 +1,10 @@
 <script>
 import ProfileData from '../components/profile/ProfileData.vue';
-import SkeletonLoader from '../components/SkeletonLoader.vue';
 import { getUserProfileById } from '../services/user-profile';
 
 export default {
     name: 'UserProfile',
-    components: { SkeletonLoader, ProfileData },
+    components: { ProfileData },
     data() {
         return {
             user: {
