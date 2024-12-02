@@ -3,7 +3,6 @@ import { createReviewForAuthenticatedUser } from '../services/auth';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
 
-
 export default {
     name: 'NewReview',
     components: { Loader },
@@ -31,12 +30,13 @@ export default {
     },
     methods: {
         async handleSubmit() {
+
             if (this.adding) return;
 
             this.adding = true;
 
             try {
-                console.log('Datos enviados:', this.coverImage, this.reviewData);
+                // console.log('Datos enviados:', this.coverImage, this.reviewData);
                 await createReviewForAuthenticatedUser(this.coverImage, this.reviewData);
                 this.$router.push('/feed');
             } catch (error) {
@@ -44,6 +44,7 @@ export default {
             }
 
             this.adding = false;
+
         },
         handleFileSelection(event) {
 
@@ -56,27 +57,34 @@ export default {
             };
 
             reader.readAsDataURL(this.coverImage);
+
         },
         toggleDropdown(event) {
+
             event.stopPropagation();
             this.dropdownVisible = !this.dropdownVisible;
+
         },
         selectYear(year) {
+
             this.reviewData.year = year;
             this.dropdownVisible = false;
+
         },
         handleOutsideClick(event) {
+
             const dropdownContainer = this.$refs.dropdownContainer;
             if (dropdownContainer && !dropdownContainer.contains(event.target)) {
                 this.dropdownVisible = false;
             }
+
         },
     }
 }
 </script>
 
 <template>
-    <h1>Create a new review</h1>
+    <h1 class="text-2xl font-bold mb-4">Create a new review</h1>
 
     <form action="#" @submit.prevent="handleSubmit">
 
@@ -104,9 +112,7 @@ export default {
         <div class="mb-4 max-w-[200px]">
             <label class="block mb-2" for="year">Year</label>
             <div class="relative" ref="dropdownContainer">
-                <button type="button"
-                    class="w-full p-2 border rounded text-left flex items-center justify-between bg-[white]"
-                    @click="toggleDropdown">
+                <button type="button" class="w-full p-2 border rounded text-left flex items-center justify-between bg-[white]" @click="toggleDropdown">
                     <span>{{ reviewData.year || 'Select a year' }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -114,8 +120,7 @@ export default {
                     </svg>
                 </button>
 
-                <div v-if="dropdownVisible"
-                    class="absolute z-10 w-full bg-white border rounded shadow-lg max-h-[200px] overflow-y-auto mt-1">
+                <div v-if="dropdownVisible" class="absolute z-10 w-full bg-white border rounded shadow-lg max-h-[200px] overflow-y-auto mt-1">
                     <ul>
                         <li v-for="year in years" :key="year" class="p-2 cursor-pointer hover:bg-[#0066ff]"
                             @click="selectYear(year)">
@@ -142,7 +147,7 @@ export default {
         </div>
 
         <button type="submit"
-            class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 hover:text-[wheat] text-[#f09224]">
             <span v-if="!adding">Create Review</span>
             <div v-else class="flex flex-row items-center">Creating a review
                 <Loader />

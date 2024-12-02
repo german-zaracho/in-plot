@@ -21,6 +21,7 @@ export default {
     },
     methods: {
         async handleSubmit() {
+
             if (this.editing) return;
 
             this.editing = true;
@@ -33,15 +34,18 @@ export default {
             }
 
             this.editing = false;
+
         },
     },
     mounted() {
+
         unsubscribeFromAuth = subscribeToAuth(userData => this.editData = {
             displayName: userData.displayName || '',
             favMovie: userData.favMovie || '',
             favSeries: userData.favSeries || '',
             anAdditionalComment: userData.anAdditionalComment || '',
         });
+        
     },
     unmounted() {
         unsubscribeFromAuth();
@@ -50,7 +54,7 @@ export default {
 </script>
 
 <template>
-    <h1>Edit my profile</h1>
+    <h1 class="text-center text-lg font-bold mb-4">Edit my profile</h1>
 
     <form action="#" @submit.prevent="handleSubmit">
         <div class="mb-4">
@@ -74,7 +78,7 @@ export default {
                 :readonly="editing" v-model="editData.anAdditionalComment"></textarea>
         </div>
         <button type="submit"
-            class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 hover:text-[wheat] text-[#f09224]">
             <span v-if="!editing">Update my profile</span>
             <div v-else class="flex flex-row items-center">Updating 
                 <Loader />

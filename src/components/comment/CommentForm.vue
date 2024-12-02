@@ -46,13 +46,13 @@ export default {
 </script>
 
 <template>
-    <form action="#" @submit.prevent="handleSubmit" class="flex flex-row w-full items-center justify-center shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-[20px]">
+    <form action="#" @submit.prevent="handleSubmit" class="flex flex-col sm:flex-row w-full items-center justify-center shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-[20px]">
         <div class="mb-4 w-full flex flex-col justify-center">
             <label class="block mb-2" for="text">Comment</label>
             <textarea id="text" class="w-10/12 min-h-20 p-2 border rounded m-auto" v-model="newComment.text"></textarea>
         </div>
         <button type="submit"
-            class="min-w-[150px] max-h-[40px] transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            class="min-w-[150px] max-h-[40px] transition py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 hover:text-[wheat] text-[#f09224]">
             Send
         </button>
     </form>

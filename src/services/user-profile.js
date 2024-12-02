@@ -7,6 +7,7 @@ import { db } from "./firebase";
  */
 // {{id: string, email: string, displayName: string|null, favMovie: string|null, favSeries: string|null, photoURL: string|null}}
 export async function getUserProfileById(id){
+    
     const profileRef = doc(db, `user-profiles/${id}`);
     // console.log(db, 'id',id, 'profileRef', profileRef.data());
     const profileSnapshot = await getDoc(profileRef);
@@ -31,11 +32,13 @@ export async function getUserProfileById(id){
  * @param {{email: string}} data 
  */
 export async function createUserProfile(id, { email }) {
+
     const profileRef = doc(db, `user-profiles/${id}`);
 
     await setDoc(profileRef, {
         email,
     });
+
 }
 
 /**
@@ -43,8 +46,9 @@ export async function createUserProfile(id, { email }) {
  * @param {string} id - User id
  * @param {{displayName: string, favMovie: string, favSeries: string, anAdditionalComment:string, photoURL: string }} data
  */
-
 export async function editUserProfile(id, data ) {
+
     const profileRef = doc(db, `user-profiles/${id}`);
     return await updateDoc(profileRef, data);
+
 }

@@ -1,6 +1,5 @@
 import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs } from "firebase/firestore";
 import { storage, db } from "./firebase";
-//i dont know about that one chief
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 /**
@@ -9,7 +8,6 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage
  * @param {{ title: string, synopsis: string, trailer: string, year: string, coverURL: string, contentType: string, }} data 
  */
 export async function createNewReview(id, { title, synopsis, trailer, year, coverURL, contentType }) {
-
 
     const reviewRef = collection(db, `media-reviews`);
 
@@ -23,6 +21,7 @@ export async function createNewReview(id, { title, synopsis, trailer, year, cove
         coverURL,
         created_at: serverTimestamp(),
     });
+
 }
 
 /**
@@ -31,6 +30,7 @@ export async function createNewReview(id, { title, synopsis, trailer, year, cove
  */
 // Obtains the reviews and checks if the user has displayName, otherwise it passes the email
 export async function getAllReviews() {
+
     const reviewsCollection = collection(db, "media-reviews");
     const reviewsSnapshot = await getDocs(reviewsCollection);
 
@@ -67,12 +67,15 @@ export async function getAllReviews() {
  * @returns {Promise<Array<{ id: string, user_id: string, title: string, synopsis: string, trailer: string, year: string, coverURL: string, contentType: string, displayName: string | null }>>}
  */
 export async function getReviewsByUser(userId) {
+
     const allReviews = await getAllReviews();
     return allReviews.filter(review => review.user_id === userId);
+    
 }
 
 // Compares the params and returns the review information
 export async function getReviewById(id) {
+
     const reviewRef = doc(db, "media-reviews", id);
     const reviewSnapshot = await getDoc(reviewRef);
 
@@ -96,11 +99,14 @@ export async function getReviewById(id) {
     } else {
         throw new Error("Review not found");
     }
+
 }
 
 export async function updateReview(reviewId, reviewData) {
+
     const reviewRef = doc(db, "media-reviews", reviewId);
     await updateDoc(reviewRef, reviewData);
+
 }
 
 /**
@@ -109,8 +115,8 @@ export async function updateReview(reviewId, reviewData) {
  * @param {string} reviewId - 
  * @returns {Promise<string>} image url
  */
-
 export async function uploadCoverImage(file, userId, existingCoverURL = '') {
+
     try {
         // console.log("file", file, "userId", userId, "existingCoverURL", existingCoverURL);
 
@@ -128,5 +134,6 @@ export async function uploadCoverImage(file, userId, existingCoverURL = '') {
         console.error('Error uploading cover image:', error);
         throw new Error('Error uploading image');
     }
+
 }
 

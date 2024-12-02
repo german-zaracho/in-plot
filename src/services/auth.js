@@ -29,6 +29,7 @@ if (localStorage.getItem('user')) {
 let observers = [];
 
 onAuthStateChanged(auth, user => {
+
     if (user) {
         updateUserData({
             id: user.uid,
@@ -36,7 +37,6 @@ onAuthStateChanged(auth, user => {
             displayName: user.displayName,
             photoURL: user.photoURL,
         });
-
         getUserProfileById(userData.id).then(fullProfile => {
             updateUserData({
                 favMovie: fullProfile.favMovie,
@@ -45,7 +45,6 @@ onAuthStateChanged(auth, user => {
                 fullProfileLoaded: true,
             });
         });
-
     } else {
         updateUserData({
             id: null,
@@ -59,6 +58,7 @@ onAuthStateChanged(auth, user => {
         });
         localStorage.removeItem('user');
     }
+
 });
 
 export async function register({ email, password }) {
@@ -91,14 +91,12 @@ export async function login({ email, password }) {
  * Modifies the values ​​of the authenticated user
  * @param {{ displayName: string, favMovie: string, favSeries: string, anAdditionalComment: string }} data
  */
-
 export async function editMyProfile({ displayName, favMovie, favSeries, anAdditionalComment }) {
-    try {
 
+    try {
         const promiseAuth = updateProfile(auth.currentUser, { displayName });
         const promiseStore = editUserProfile(userData.id, { displayName, favMovie, favSeries, anAdditionalComment });
         await Promise.all([promiseAuth, promiseStore]);
-
         updateUserData({
             ...userData,
             displayName,
@@ -110,6 +108,7 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
         console.error("[auth.js editMyProfile] Error editing user profile: ", error);
         throw error;
     }
+    
 }
 
 /**
@@ -117,8 +116,9 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
  * @param {File} photo 
  */
 export async function editMyProfilePhoto(photo) {
+
     try {
-        console.log('photo', photo);
+        // console.log('photo', photo);
 
         const filepath = `users/${userData.id}/avatar.jpg`;
 
@@ -136,6 +136,7 @@ export async function editMyProfilePhoto(photo) {
         console.error('[auth.js editMyProfilePhoto] Error editing profile photo: ', error);
         throw error;
     }
+
 }
 
 /**
@@ -144,9 +145,9 @@ export async function editMyProfilePhoto(photo) {
  * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
  */
 export async function createReviewForAuthenticatedUser(coverImage, data) {
+
     try {
         // console.log('cover', cover, 'data', data);
-        //I need to verify this
         const user = auth.currentUser;
 
         if (!user) {
@@ -160,10 +161,9 @@ export async function createReviewForAuthenticatedUser(coverImage, data) {
 
             const folderPath = `reviews/${user.uid}/`;
             const filePath = `${folderPath}${Date.now()}_cover.jpg`;
-
             await uploadFile(filePath, coverImage);
-
             coverImageURL = await getFileURL(filePath);
+
         }
 
         const fullReviewData = {
@@ -178,29 +178,27 @@ export async function createReviewForAuthenticatedUser(coverImage, data) {
         console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
         throw error;
     }
+
 }
-
-
-
 
 export async function logout() {
     return signOut(auth);
 }
-
 
 /**
  * Subscribe an observer to be notified of authentication state changes
  * @param { Function } callback
  * @returns {Function}
  */
-
 export function subscribeToAuth(callback) {
+
     observers.push(callback);
     notify(callback);
 
     return () => {
         observers = observers.filter(obs => obs !== callback)
     };
+
 }
 
 /**
@@ -209,24 +207,30 @@ export function subscribeToAuth(callback) {
  * @param {Function} callback 
  */
 function notify(callback) {
+
     callback({ ...userData });
+
 }
 
 /**
  * Notifies all observers
  */
 function notifyAll() {
+
     observers.forEach(callback => notify(callback));
+
 }
 
 /**
  * @param {{}} newData 
  */
 function updateUserData(newData) {
+
     userData = {
         ...userData,
         ...newData,
     }
     notifyAll();
     localStorage.setItem('user', JSON.stringify(userData));
+    
 }

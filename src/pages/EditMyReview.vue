@@ -3,7 +3,6 @@ import { getReviewById, updateReview, uploadCoverImage } from '../services/media
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
 
-
 export default {
     name: 'EditMyReview',
     components: { Loader },
@@ -37,6 +36,7 @@ export default {
     },
     methods: {
         async fetchReviewData() {
+
             const reviewId = this.$route.params.id; // Review id in the url
             try {
                 const review = await getReviewById(reviewId);
@@ -46,8 +46,10 @@ export default {
             } catch (error) {
                 console.error('Error getting review data:', error);
             }
+
         },
         async handleSubmit() {
+
             this.isUploading = true;
             try {
                 let coverURL = this.reviewData.coverURL;
@@ -68,8 +70,10 @@ export default {
                 console.error('Error updating review:', error);
             }
             this.isUploading = false;
+
         },
         async handleFileSelection(event) {
+
             const file = event.target.files[0];
 
             if (file) {
@@ -81,29 +85,36 @@ export default {
                 };
                 reader.readAsDataURL(file);
             }
+
         },
         toggleDropdown(event) {
+
             event.stopPropagation();
             this.dropdownVisible = !this.dropdownVisible;
+
         },
         selectYear(year) {
+
             this.reviewData.year = year;
             this.dropdownVisible = false;
+
         },
         handleOutsideClick(event) {
+
             const dropdownContainer = this.$refs.dropdownContainer;
             if (dropdownContainer && !dropdownContainer.contains(event.target)) {
                 this.dropdownVisible = false;
             }
+
         },
     }
 }
 </script>
 
 <template>
-    <h1>Edit your review</h1>
+    <h1 class="mb-[20px] font-bold text-center">Edit your review</h1>
 
-    <form action="#" @submit.prevent="handleSubmit">
+    <form action="#" @submit.prevent="handleSubmit" class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px]">
 
         <div class="mb-4">
             <label class="block mb-2" for="title">Title</label>
@@ -129,21 +140,16 @@ export default {
         <div class="mb-4 max-w-[200px]">
             <label class="block mb-2" for="year">Year</label>
             <div class="relative" ref="dropdownContainer">
-                <button type="button"
-                    class="w-full p-2 border rounded text-left flex items-center justify-between bg-[white]"
-                    @click="toggleDropdown">
+                <button type="button" class="w-full p-2 border rounded text-left flex items-center justify-between bg-[white]" @click="toggleDropdown">
                     <span>{{ reviewData.year || 'Select a year' }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
 
-                <div v-if="dropdownVisible"
-                    class="absolute z-10 w-full bg-white border rounded shadow-lg max-h-[200px] overflow-y-auto mt-1">
+                <div v-if="dropdownVisible" class="absolute z-10 w-full bg-white border rounded shadow-lg max-h-[200px] overflow-y-auto mt-1">
                     <ul>
-                        <li v-for="year in years" :key="year" class="p-2 cursor-pointer hover:bg-[#0066ff]"
-                            @click="selectYear(year)">
+                        <li v-for="year in years" :key="year" class="p-2 cursor-pointer hover:bg-[#0066ff]" @click="selectYear(year)">
                             {{ year }}
                         </li>
                     </ul>
@@ -167,7 +173,7 @@ export default {
         </div>
 
         <button type="submit"
-            class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+            class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 hover:text-[wheat] text-[#f09224]">
             <span v-if="!isUploading">Save changes</span>
             <div v-else class="flex flex-row items-center">Saving changes 
                 <Loader />

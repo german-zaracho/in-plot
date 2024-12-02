@@ -57,9 +57,9 @@ export async function saveChatComment(reviewId, newComment) {
  * @param {Function} callback 
  * @returns {import("firebase/firestore").Unsubscribe}
  */
-
 // Gets the updated comments and passes them
 export async function subscribeToReviewComments(reviewId, callback) {
+
     const chatDoc = await getChatCommentDoc(reviewId);
     // console.log('id that i have to verify',chatDoc.id);
     const commentsRef = collection(db, `comments/${chatDoc.id}/actualComments`);
@@ -99,7 +99,8 @@ export async function subscribeToReviewComments(reviewId, callback) {
             })
         );
 
-        // console.log('Comments updated in Firestore:', comments);
+        // console.log('comments updated in Firestore:', comments);
         callback([...comments]);
     });
+    
 }

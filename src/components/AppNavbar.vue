@@ -21,20 +21,24 @@ export default {
             this.$emit('logout');
         },
         closeUserMenuOnClickOutside(event) {
+
             const userMenu = this.$refs.userMenu;
             const userMenuButton = this.$refs.userMenuButton;
 
             if (userMenu && !userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
                 this.isUserMenuOpen = false;
             }
+
         },
         closeMobileMenuOnClickOutside(event) {
+
             const mobileMenu = this.$refs.mobileMenu;
             const mobileMenuButton = this.$refs.mobileMenuButton;
 
             if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
                 this.isMobileMenuOpen = false;
             }
+
         }
     },
     mounted() {
@@ -54,15 +58,14 @@ export default {
             <div class="flex h-16 items-center justify-between">
                 <!-- NavBar options -->
                 <div class="flex items-center">
-                    <div class="flex items-center">
-                        <img class="h-10 w-10" src="./../../inPlot.ico" alt="logo">
+                    <div class="flex items-center mr-[20px]">
+                        <img class="h-10 w-10 mr-[10px]" src="./../../inPlot.ico" alt="logo">
                         <router-link :to="{ name: 'home' }" class=" text-white text-xl logo">
                             In<span class="text-[#f09224]">Plot</span>
                         </router-link>
                     </div>
                     <div class="hidden md:block">
                         <ul class="flex items-center space-x-4 font-medium text-[#f09224]">
-                            <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" :to="{ name: 'home' }">Home</router-link></li>
                             <template v-if="loggedUser.id">
                                 <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/feed">Media Reviews</router-link></li>
                             </template>
@@ -76,7 +79,7 @@ export default {
 
 
                 <template v-if="loggedUser.id">
-                    <!-- My Profile (only visible on larger screens and when mobile menu is not open) -->
+                    <!-- My Profile / Log Out -->
                     <div v-show="!isMobileMenuOpen" class="relative hidden md:block items-center">
                         <button ref="userMenuButton" @click="toggleUserMenu" class="relative flex items-center">
                             <img class="h-8 w-8 rounded-full" src="./../../assets/imgs/anakin-skywalker.webp"
@@ -95,7 +98,6 @@ export default {
                         </div>
                     </div>
                 </template>
-
 
                 <!-- Hamburger menu -->
                 <div class="-mr-2 flex md:hidden">
@@ -129,7 +131,6 @@ export default {
             <div v-show="isMobileMenuOpen" ref="mobileMenu"
                 class="space-y-1 px-2 pb-3 pt-2 sm:px-3 bg-[#56141E] rounded-bl-[20px] rounded-br-[20px] relative border-b border-[#BC2B41] z-[100]">
                 <ul class="text-white flex flex-col items-center">
-                    <li><router-link class="block py-2 px-4" :to="{ name: 'home' }">Home</router-link></li>
                     
                     <template v-if="loggedUser.id !== null">
                         <li><router-link class="block py-2 px-4" to="/feed">Media Reviews</router-link></li>

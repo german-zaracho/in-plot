@@ -1,12 +1,12 @@
 <script>
-import Home from './pages/Home.vue';
+// import Home from './pages/Home.vue';
 import AppNavbar from './components/AppNavbar.vue';
-import AppFooter from './components/AppFooter.vue';
+// import AppFooter from './components/AppFooter.vue';
 import { logout, subscribeToAuth } from './services/auth';
 
 export default {
     name: 'App',
-    components: { AppNavbar, AppFooter, Home },
+    components: { AppNavbar},
     data() {
         return {
             loggedUser: {
@@ -32,6 +32,4 @@ export default {
     <main class="container mx-auto p-4">
         <router-view />
     </main>
-
-    <AppFooter />
 </template>

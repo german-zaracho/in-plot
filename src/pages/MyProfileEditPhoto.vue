@@ -16,17 +16,19 @@ export default {
     },
     methods: {
         async handleSubmit() {
+
             this.editing = true;
 
             try {
-                console.log('photo', this.editData.photo)
+                //console.log('photo', this.editData.photo);
                 await editMyProfilePhoto(this.editData.photo);
                 this.$router.push('/myProfile');
             } catch (error) {
-                //check this later
+                console.error('[MyProfileEditPhoto handleSubmit] Error editing profile photo: ', error);
             }
 
             this.editing = false;
+
         },
 
         handleFileSelection(ev) {
@@ -46,9 +48,9 @@ export default {
 </script>
 
 <template>
-    <h1>Edit my Profile Photo</h1>
+    <h1 class="mb-[20px] font-bold text-center">Edit my Profile Photo</h1>
 
-    <div class="flex gap-4">
+    <div class="flex gap-4 shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px]">
         <form class="w-1/2" action="#" @submit.prevent="handleSubmit">
             <div class="mb-4">
                 <label class="block mb-2" for="photo">New Photo</label>
@@ -56,7 +58,7 @@ export default {
             </div>
 
             <button type="submit"
-                class="flex flex-row items-center transition py-2 px-4 rounded text-white bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-900">
+                class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 hover:text-[wheat] text-[#f09224]">
                 <span v-if="!editing">Update my profile</span>
                 <div v-else class="flex flex-row items-center">Updating my profile
                     <Loader />
@@ -65,7 +67,7 @@ export default {
         </form>
         <div class="w-1/2">
             <h2 class="mb-2">Preview</h2>
-            <img v-if="editData.photoPreview" :src="editData.photoPreview" alt="">
+            <img v-if="editData.photoPreview" :src="editData.photoPreview" alt="photo preview">
         </div>
     </div>
 </template>

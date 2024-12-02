@@ -19,7 +19,7 @@ export default {
         /**
          * 
          * @param {Date|null} date 
-         * @returns {string} - "DD/MM/AAAA HH:mm" if the object is a Date type, otherwise null.
+         * @returns {string} - "DD/MM/AAAA HH:mm" otherwise null.
          */
         formatDate(date) {
             if (!date) return null;

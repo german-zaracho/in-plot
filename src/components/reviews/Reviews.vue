@@ -5,6 +5,9 @@ import Comment from '../comment/Comment.vue';
 
 export default {
     name: 'Reviews',
+    props: {
+        userId: { type: String, required: true },
+    },
     components: { SkeletonReview, Comment },
     data() {
         return {
@@ -16,10 +19,33 @@ export default {
         };
     },
     methods: {
+        /**
+         * 
+         * @param {Date|null} date 
+         * @returns {string} - "DD/MM/AAAA HH:mm" otherwise null.
+         */
+        formatDate(date) {
+            // console.log('date', date);
+            if (!date) return null;
+
+            const localDate = new Date(date.seconds * 1000);  // Convert seconds to milliseconds
+            localDate.setHours(localDate.getHours() - 3);  // Sets the time for the UTC-3 (Argentina) time zone
+
+            const formatter = new Intl.DateTimeFormat('es-AR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+
+            return formatter.format(localDate).replace(',', '');
+
+        },
         toggleUserName(reviewId, state) {
+
             this.showUserName[reviewId] = state;
+
         },
         toggleComment(reviewId) {
+
             if (this.activeComments.hasOwnProperty(reviewId)) {
                 // Toggle state
                 this.activeComments[reviewId] = !this.activeComments[reviewId];
@@ -27,16 +53,22 @@ export default {
                 // Add a new state
                 this.activeComments[reviewId] = true;
             }
+
         },
         toggleSynopsis(reviewId) {
+
             if (this.expandedSynopsis.hasOwnProperty(reviewId)) {
                 this.expandedSynopsis[reviewId] = !this.expandedSynopsis[reviewId];
             } else {
                 this.expandedSynopsis[reviewId] = true;
             }
+
         },
     },
     async mounted() {
+
+        // console.log('User ID', this.userId);
+
         try {
             this.reviews = await getAllReviews();
         } catch (error) {
@@ -45,19 +77,19 @@ export default {
             this.loading = false;
             // console.log('reviews', this.reviews);
         }
+
     }
 };
 </script>
 
 <template>
     <section class="p-4">
-        <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
 
+        <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
 
         <div v-if="loading" class="m-auto flex flex-col items-center">
             <SkeletonReview class="w-full h-20 rounded-lg mb-4" v-for="n in 3" :key="n" />
         </div>
-
 
         <div v-else-if="reviews.length === 0">
             <p>No reviews available.</p>
@@ -68,6 +100,7 @@ export default {
                 class="p-4 mb-[20px] flex flex-col items-start relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px]">
 
                 <div class="flex flex-row">
+
                     <div class="flex-shrink-0 w-32 h-48 overflow-hidden rounded bg-gray-200 mr-[20px]">
                         <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
                             class="w-full h-full object-cover">
@@ -81,7 +114,7 @@ export default {
                         <router-link @mouseenter="toggleUserName(review.id, true)"
                             @mouseleave="toggleUserName(review.id, false)"
                             class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
-                            aria-label="See the creator's profile" :to="`/users/${review.user_id}`">
+                            aria-label="See the creator's profile" :to="review.user_id === userId ? '/myProfile' : `/users/${review.user_id}`">
                             <span class="material-symbols-rounded m-2">person</span>
 
                             <span :class="{
@@ -91,7 +124,6 @@ export default {
                                 {{ review.displayName }}
                             </span>
                         </router-link>
-
                     </div>
 
                     <div class="flex-1">
@@ -124,16 +156,18 @@ export default {
                                 <span class="material-symbols-rounded">chat</span>
                             </button>
                         </div>
-
-
+                        <div class="text-end p-2"><span class="text-white">Published:</span> {{
+                            formatDate(review.created_at) }}</div>
 
                     </div>
+
                 </div>
 
-
                 <Comment v-if="activeComments[review.id]" :reviewId="review.id" />
+
             </li>
         </ul>
+
     </section>
 </template>
 
