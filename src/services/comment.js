@@ -67,7 +67,7 @@ export async function subscribeToReviewComments(reviewId, callback) {
     const commentsQuery = query(commentsRef, orderBy('created_at'));
 
     return onSnapshot(commentsQuery, async (snapshot) => {
-
+// changes "Promise.all" no coherence
         const comments = await Promise.all(
             snapshot.docs.map(async (doc) => {
 

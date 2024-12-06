@@ -2,13 +2,15 @@
 import { getAllReviews } from '../../services/media-reviews';
 import SkeletonReview from '../SkeletonReview.vue';
 import Comment from '../comment/Comment.vue';
+import VueSkeletonLoader from 'vue3-skeleton-loader';
+import 'vue3-skeleton-loader/dist/style.css';
 
 export default {
     name: 'Reviews',
     props: {
         userId: { type: String, required: true },
     },
-    components: { SkeletonReview, Comment },
+    components: { SkeletonReview, Comment, VueSkeletonLoader },
     data() {
         return {
             reviews: [],
@@ -83,6 +85,32 @@ export default {
 </script>
 
 <template>
+
+    <div>
+        <!-- <div v-if="loading"> -->
+
+        <div class="flex flex-row bg-[white] rounded-lg w-[940px] h-[285px] mx-auto">
+            <div class="m-[20px] ">
+                <VueSkeletonLoader type="image" animation="wave" class="w-[128px] h-[192px]"></VueSkeletonLoader>
+            </div>
+            <div class="mt-[20px] ">
+                <VueSkeletonLoader type="text" width="100px" height="10px" animation="wave" />
+                <VueSkeletonLoader type="text" width="70px" height="6px" animation="wave" />
+                <VueSkeletonLoader type="text" width="500px" height="30px" animation="wave" />
+                <div>
+                    <VueSkeletonLoader type="avatar" />
+                    <VueSkeletonLoader type="avatar" />
+                </div>
+            </div>
+
+        </div>
+
+        <!-- </div>
+        <div v-else>
+            <p>asdasdasdasd</p>
+        </div> -->
+    </div>
+
     <section class="p-4">
 
         <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
@@ -114,7 +142,8 @@ export default {
                         <router-link @mouseenter="toggleUserName(review.id, true)"
                             @mouseleave="toggleUserName(review.id, false)"
                             class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
-                            aria-label="See the creator's profile" :to="review.user_id === userId ? '/myProfile' : `/users/${review.user_id}`">
+                            aria-label="See the creator's profile"
+                            :to="review.user_id === userId ? '/myProfile' : `/users/${review.user_id}`">
                             <span class="material-symbols-rounded m-2">person</span>
 
                             <span :class="{
@@ -170,13 +199,3 @@ export default {
 
     </section>
 </template>
-
-<!-- <style>
-.material-symbols-rounded {
-    font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24
-}
-</style> -->

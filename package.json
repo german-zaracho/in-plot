@@ -18,6 +18,7 @@
   "dependencies": {
     "firebase": "^11.0.1",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-skeleton-loader": "^0.2.0"
   }
 }
