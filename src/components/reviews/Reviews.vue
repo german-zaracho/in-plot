@@ -86,37 +86,29 @@ export default {
 
 <template>
 
-    <div>
-        <!-- <div v-if="loading"> -->
-
-        <div class="flex flex-row bg-[white] rounded-lg w-[940px] h-[285px] mx-auto">
-            <div class="m-[20px] ">
-                <VueSkeletonLoader type="image" animation="wave" class="w-[128px] h-[192px]"></VueSkeletonLoader>
-            </div>
-            <div class="mt-[20px] ">
-                <VueSkeletonLoader type="text" width="100px" height="10px" animation="wave" />
-                <VueSkeletonLoader type="text" width="70px" height="6px" animation="wave" />
-                <VueSkeletonLoader type="text" width="500px" height="30px" animation="wave" />
-                <div>
-                    <VueSkeletonLoader type="avatar" />
-                    <VueSkeletonLoader type="avatar" />
-                </div>
-            </div>
-
-        </div>
-
-        <!-- </div>
-        <div v-else>
-            <p>asdasdasdasd</p>
-        </div> -->
-    </div>
-
     <section class="p-4">
 
         <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
 
-        <div v-if="loading" class="m-auto flex flex-col items-center">
-            <SkeletonReview class="w-full h-20 rounded-lg mb-4" v-for="n in 3" :key="n" />
+        <div v-if="loading" >
+
+            <div class="flex flex-row bg-[white] rounded-lg max-w-[960px] h-[285px] mx-auto mb-4" v-for="n in 3" :key="n">
+                <div class="m-[20px] ">
+                    <VueSkeletonLoader type="image" animation="wave" width="128px" height="192px"></VueSkeletonLoader>
+                </div>
+                <div class="mt-[20px] ">
+                    <VueSkeletonLoader type="text" width="100px" height="20px" animation="wave" class="pb-[5px]" />
+                    <VueSkeletonLoader type="text" width="85px" height="15px" animation="wave" class="pb-[5px]" />
+                    <VueSkeletonLoader type="text" width="85px" height="15px" animation="wave" class="pb-[5px]" />
+                    <VueSkeletonLoader type="text" width="750px" height="80px" animation="wave" class="pb-[5px]" />
+                    <VueSkeletonLoader type="text" width="110px" height="20px" animation="wave" class="pb-[5px]" />
+                    <div class="flex flex-row justify-between">
+                        <VueSkeletonLoader type="text" width="120px" height="40px" animation="wave" />
+                        <VueSkeletonLoader type="avatar" />
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <div v-else-if="reviews.length === 0">
