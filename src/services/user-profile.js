@@ -31,12 +31,13 @@ export async function getUserProfileById(id){
  * @param {string} id 
  * @param {{email: string}} data 
  */
-export async function createUserProfile(id, { email }) {
+export async function createUserProfile(id, { email, role = "role" }) {
 
     const profileRef = doc(db, `user-profiles/${id}`);
 
     await setDoc(profileRef, {
         email,
+        role,
     });
 
 }

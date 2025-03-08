@@ -29,7 +29,7 @@ export default {
                         class="h-full w-full object-cover">
                 </div>
 
-                <div class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]  ">
+                <div v-if="isMyProfile" class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]  ">
                     <router-link @mouseenter="showTooltip = true" @mouseleave="showTooltip = false"
                         class="relative flex items-center justify-center h-8 w-8 rounded-full bg-gray-800 hover:bg-gray-700 text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px]"
                         aria-label="Edit my photo" to="/myProfile/edit/photo">

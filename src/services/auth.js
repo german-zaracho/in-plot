@@ -28,14 +28,16 @@ if (localStorage.getItem('user')) {
 
 let observers = [];
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async (user) => {
 
     if (user) {
+        const userProfile = await getUserProfileById(user.uid);
         updateUserData({
             id: user.uid,
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL,
+            role: userProfile?.role || 'user',
         });
         getUserProfileById(userData.id).then(fullProfile => {
             updateUserData({
@@ -55,17 +57,18 @@ onAuthStateChanged(auth, user => {
             anAdditionalComment: null,
             photoURL: null,
             fullProfileLoaded: false,
+            role: null,
         });
         localStorage.removeItem('user');
     }
 
 });
 
-export async function register({ email, password }) {
+export async function register({ email, password, role = 'user' }) {
 
     try {
         const credentials = await createUserWithEmailAndPassword(auth, email, password);
-        await createUserProfile(credentials.user.uid, { email });
+        await createUserProfile(credentials.user.uid, { email, role });
         // console.log('id', credentials.user.uid);
     } catch (error) {
         console.error("[auth.js register] Error trying to register user: ", error);
@@ -183,6 +186,10 @@ export async function createReviewForAuthenticatedUser(coverImage, data) {
 
 export async function logout() {
     return signOut(auth);
+}
+
+export function isAdmin() {
+    return userData?.role === 'admin';
 }
 
 /**

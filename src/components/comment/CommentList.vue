@@ -6,6 +6,7 @@ export default {
     props: {
         theComments: { type: Array, required: true, }
     },
+    emits: ['updateComment'], //new
     data() {
         return {
             loggedUser: {
@@ -13,6 +14,8 @@ export default {
                 email: null,
                 displayName: null,
             },
+            editingCommentId: null, //new
+            editedText: "" //new
         };
     },
     methods: {
@@ -24,11 +27,28 @@ export default {
         formatDate(date) {
             if (!date) return null;
 
+            //const parsedDate = date instanceof Date ? date : new Date(date); 
+            //new para mantener el fecha y hora de comentario luego de editarlo
             const formatter = new Intl.DateTimeFormat('es-AR', {
                 day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
             });
             return formatter.format(date).replace(',', '');
+        },
+        startEditing(comment) {
+            this.editingCommentId = comment.id;
+            this.editedText = comment.text;
+        },
+        saveEdit(comment) {
+            if (this.editedText.trim() === "" || this.editedText === comment.text) {
+                this.editingCommentId = null;
+                return;
+            }
+            this.$emit('update-comment', comment.id, this.editedText);
+            this.editingCommentId = null;
+        },
+        updateComment(commentId, newText) {
+            this.$emit('updateComment', commentId, newText); // new
         }
     },
     mounted() {
@@ -64,8 +84,21 @@ export default {
                     wrote:
                 </div>
 
-                <div>{{ comment.text }}</div>
-                <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
+                <!-- <div>{{ comment.text }}</div>
+                <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div> -->
+
+                <div v-if="editingCommentId === comment.id">
+                    <input v-model="editedText" class="border p-1 w-full rounded" />
+                    <button @click="saveEdit(comment)" class="text-white bg-green-500 p-1 rounded ml-2">Guardar</button>
+                    <button @click="editingCommentId = null" class="text-white bg-gray-500 p-1 rounded ml-2">Cancelar</button>
+                </div>
+
+                <div v-else>
+                    <div>{{ comment.text }}</div>
+                    <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
+                    <button v-if="comment.user_id === loggedUser.id" @click="startEditing(comment)"
+                        class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button>
+                </div>
 
             </li>
         </ul>

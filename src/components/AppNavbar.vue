@@ -71,7 +71,7 @@ export default {
                             </template>
                             <template v-if="!loggedUser.id">
                                 <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/register">Register</router-link></li>
-                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/login">Login</router-link></li>
+                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/login">Log in</router-link></li>
                             </template>
                         </ul>
                     </div>
@@ -91,7 +91,7 @@ export default {
                                 <li><router-link class="block px-4 py-2 text-sm text-[#f09224] hover:text-[wheat]" to="/myProfile">My Profile</router-link></li>
                                 <li class="block px-4 py-2 text-sm text-[#f09224] hover:text-[wheat]">
                                     <form @submit.prevent="handleLogout">
-                                        <button type="submit" class="py-2 px-4 ">Logout</button>
+                                        <button type="submit" class="py-2 px-4 ">Log out</button>
                                     </form>
                                 </li>
                             </ul>
@@ -144,7 +144,7 @@ export default {
 
                     <template v-else>
                         <li><router-link class="block py-2 px-4" to="/register">Register</router-link></li>
-                        <li><router-link class="block py-2 px-4" to="/login">Login</router-link></li>
+                        <li><router-link class="block py-2 px-4" to="/login">Log in</router-link></li>
                     </template>
                 </ul>
 

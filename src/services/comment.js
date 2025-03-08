@@ -1,4 +1,4 @@
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, getDocs, doc, getDoc, where, DocumentReference, limit } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, getDocs, doc, getDoc, where, DocumentReference, limit, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 /**
@@ -67,7 +67,7 @@ export async function subscribeToReviewComments(reviewId, callback) {
     const commentsQuery = query(commentsRef, orderBy('created_at'));
 
     return onSnapshot(commentsQuery, async (snapshot) => {
-// changes "Promise.all" no coherence
+        // changes "Promise.all" no coherence
         const comments = await Promise.all(
             snapshot.docs.map(async (doc) => {
 
@@ -102,5 +102,21 @@ export async function subscribeToReviewComments(reviewId, callback) {
         // console.log('comments updated in Firestore:', comments);
         callback([...comments]);
     });
-    
+
+}
+
+//new para actualizar los comentarios al editarlos
+/**
+ * 
+ * @param {string} reviewId 
+ * @param {string} commentId 
+ * @param {string} newText 
+ */
+export async function updateChatComment(reviewId, commentId, newText) {
+    const chatDoc = await getChatCommentDoc(reviewId);
+    const commentRef = doc(db, `comments/${chatDoc.id}/actualComments`, commentId);
+
+    await updateDoc(commentRef, {
+        text: newText
+    });
 }

@@ -1,7 +1,7 @@
 <script>
 import CommentForm from './CommentForm.vue';
 import CommentList from './CommentList.vue';
-import { saveChatComment, subscribeToReviewComments } from '../../services/comment';
+import { saveChatComment, subscribeToReviewComments, updateChatComment } from '../../services/comment';
 
 export default {
     name: 'Comment',
@@ -9,11 +9,13 @@ export default {
     props: {
         reviewId: { type: String, required: true, }
     },
+    emits: ['updateComment'], //new
     data() {
         return {
             comments: [],
             unsubscribeFromComments: null,
         }
+
     },
     methods: {
         addComment(newComment) {
@@ -22,6 +24,10 @@ export default {
             saveChatComment(this.reviewId, newComment);
             // console.log('comments', this.comments);
 
+        },
+        updateComment(commentId, newText) {
+            updateChatComment(this.reviewId, commentId, newText);
+            this.$emit('updateComment', { commentId, newText }); //new
         }
     },
     async mounted() {
@@ -30,7 +36,13 @@ export default {
             this.unsubscribeFromComments = await subscribeToReviewComments(
                 this.reviewId,
                 (newComments) => {
-                    this.comments = newComments;
+                    // this.comments = newComments;
+                    this.comments = newComments.map(comment => ({
+                        ...comment,
+                        // created_at: comment.created_at?.toDate?.() || new Date()
+                        // created_at: comment.created_at instanceof Date ? comment.created_at : new Date(comment.created_at)
+                        created_at: comment.created_at?.toDate?.() || new Date(comment.created_at)
+                    })); //new
                 }
             );
             // console.log('Subscribed to comments for Review ID', this.reviewId);
@@ -45,7 +57,7 @@ export default {
         if (typeof this.unsubscribeFromComments === 'function') {
             this.unsubscribeFromComments();
         }
-        
+
     }
 }
 </script>
@@ -53,7 +65,7 @@ export default {
 <template>
     <div class="flex flex-col gap-4 w-[90%] m-auto">
         <section class="">
-            <CommentList :theComments="comments" />
+            <CommentList :theComments="comments" @update-comment="updateComment" />
         </section>
         <section class="">
             <CommentForm @new-comment="addComment" />

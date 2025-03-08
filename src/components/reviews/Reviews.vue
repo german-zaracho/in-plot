@@ -67,6 +67,10 @@ export default {
             }
 
         },
+
+        updateComment({ commentId, newText }) {
+            console.log('Comentario actualizado:', commentId, newText);
+        }
     },
     async mounted() {
 
@@ -91,7 +95,7 @@ export default {
 
         <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
 
-        <div v-if="loading" >
+        <div v-if="loading">
             <SkeletonReviews />
         </div>
 
@@ -168,7 +172,7 @@ export default {
 
                 </div>
 
-                <Comment v-if="activeComments[review.id]" :reviewId="review.id" />
+                <Comment v-if="activeComments[review.id]" :reviewId="review.id" @updateComment="updateComment" />
 
             </li>
         </ul>
