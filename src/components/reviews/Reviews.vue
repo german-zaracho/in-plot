@@ -70,7 +70,8 @@ export default {
 
         updateComment({ commentId, newText }) {
             console.log('Comentario actualizado:', commentId, newText);
-        }
+        },
+
     },
     async mounted() {
 
@@ -84,8 +85,8 @@ export default {
             this.loading = false;
             // console.log('reviews', this.reviews);
         }
+    },
 
-    }
 };
 </script>
 
@@ -93,7 +94,15 @@ export default {
 
     <section class="p-4">
 
-        <h1 class="text-2xl font-bold mb-4">All Reviews</h1>
+        <div class="flex flex-row justify-between items-center max-w-[1000px] m-auto">
+            <h1 class="text-2xl font-bold mb-4 text-white">All Reviews</h1>
+
+            <router-link
+                class="mb-4 text-[#f1c421] hover:text-[wheat]  rounded-lg bg-[#272120] hover:bg-[#3c2f2d] py-2 px-4"
+                to="/newReview">Create a new review</router-link>
+        </div>
+
+
 
         <div v-if="loading">
             <SkeletonReviews />
@@ -105,23 +114,33 @@ export default {
 
         <ul v-else class="">
             <li v-for="review in reviews" :key="review.id"
-                class="p-4 mb-[20px] flex flex-col items-start relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px]">
+                class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient">
 
-                <div class="flex flex-row">
+                <div class="flex flex-row bg-dark-gradient justify-center">
 
-                    <div class="flex-shrink-0 w-32 h-48 overflow-hidden rounded bg-gray-200 mr-[20px]">
-                        <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
-                            class="w-full h-full object-cover">
-                        <p v-else class="text-gray-500 text-center h-full flex items-center justify-center">
-                            No cover available
-                        </p>
+                    <div
+                        class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px]">
+                        <div class="h-48">
+                            <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
+                                class="w-full h-full object-cover">
+                            <p v-else class="text-gray-500 text-center h-full flex items-center justify-center">
+                                No cover available
+                            </p>
+                        </div>
+                        <div class="flex">
+                            <a v-if="review.trailer" :href="review.trailer"
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                target="_blank">
+                                Watch Trailer
+                            </a>
+                        </div>
                     </div>
 
                     <div
-                        class="absolute top-0 right-0 bg-yellow-500 text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
+                        class="absolute top-0 right-0 bg-[#f1c421] text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
                         <router-link @mouseenter="toggleUserName(review.id, true)"
                             @mouseleave="toggleUserName(review.id, false)"
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-[#f1c421] text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
                             aria-label="See the creator's profile"
                             :to="review.user_id === userId ? '/myProfile' : `/users/${review.user_id}`">
                             <span class="material-symbols-rounded m-2">person</span>
@@ -137,11 +156,13 @@ export default {
 
                     <div class="flex-1">
 
-                        <h2 class="text-xl font-semibold">{{ review.title }}</h2>
+                        <h2 class="text-xl font-semibold text-[#f1c421]">{{ review.title }}</h2>
 
-                        <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
-                        <p class="text-sm text-gray-600 mb-2">Type: {{ review.contentType }}</p>
-                        <!-- <p class="text-gray-800">{{ review.synopsis }}</p> -->
+                        <div class="flex flex-row justify-between">
+                            <p class="text-sm text-[#a8784e] mb-2">Year: {{ review.year }}</p>
+                            <p class="text-sm text-[#a8784e] mb-2">Type: {{ review.contentType }}</p>
+                        </div>
+
                         <p class="text-white">
                             <span :class="{ 'line-clamp-3': !expandedSynopsis[review.id] }">
                                 {{ review.synopsis }}
@@ -152,12 +173,8 @@ export default {
                             {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
                         </button>
 
+
                         <div class="flex flex-row justify-between">
-                            <a v-if="review.trailer" :href="review.trailer"
-                                class="text-[#f09224] hover:text-[wheat] mt-2 block bg-gray-800 hover:bg-gray-700 max-w-[150px] p-2 text-center rounded-md"
-                                target="_blank">
-                                Watch Trailer
-                            </a>
 
                             <button type="button"
                                 class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
@@ -165,7 +182,7 @@ export default {
                                 <span class="material-symbols-rounded">chat</span>
                             </button>
                         </div>
-                        <div class="text-end p-2"><span class="text-white">Published:</span> {{
+                        <div class="text-end p-2 text-[#a8784e]"><span class="text-[#a8784e]">Published:</span> {{
                             formatDate(review.created_at) }}</div>
 
                     </div>

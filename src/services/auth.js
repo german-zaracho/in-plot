@@ -20,6 +20,7 @@ let userData = {
     anAdditionalComment: null,
     photoURL: null,
     fullProfileLoaded: false,
+    role: null,
 }
 
 if (localStorage.getItem('user')) {
@@ -37,7 +38,7 @@ onAuthStateChanged(auth, async (user) => {
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL,
-            role: userProfile?.role || 'user',
+            role: userProfile.role,
         });
         getUserProfileById(userData.id).then(fullProfile => {
             updateUserData({
@@ -80,8 +81,21 @@ export async function register({ email, password, role = 'user' }) {
 export async function login({ email, password }) {
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        // console.log("Successfully authenticated.");
+
+        // await signInWithEmailAndPassword(auth, email, password);
+        const credentials = await signInWithEmailAndPassword(auth, email, password);
+
+        // Esperar a que el usuario esté correctamente autenticado
+        await new Promise((resolve) => {
+            const unsubscribe = onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    unsubscribe();
+                    resolve();
+                }
+            });
+        });
+        console.log("Successfully authenticated.");
+
     } catch (error) {
         console.error("[auth.js login] Authentication error: ", error);
         //example of how to do it
@@ -111,7 +125,7 @@ export async function editMyProfile({ displayName, favMovie, favSeries, anAdditi
         console.error("[auth.js editMyProfile] Error editing user profile: ", error);
         throw error;
     }
-    
+
 }
 
 /**
@@ -239,5 +253,5 @@ function updateUserData(newData) {
     }
     notifyAll();
     localStorage.setItem('user', JSON.stringify(userData));
-    
+
 }

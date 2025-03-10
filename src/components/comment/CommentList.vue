@@ -13,6 +13,7 @@ export default {
                 id: null,
                 email: null,
                 displayName: null,
+                role: null,
             },
             editingCommentId: null, //new
             editedText: "" //new
@@ -53,7 +54,9 @@ export default {
     },
     mounted() {
         this.unsubscribeFromAuth = subscribeToAuth((userData) => {
+            console.log('asdaaaa');
             this.loggedUser = userData;
+            console.log("logged", this.loggedUser);
         });
     },
     unmounted() {
@@ -74,9 +77,11 @@ export default {
         <p v-if="theComments.length === 0">No comments yet.</p>
 
         <ul v-else class="flex flex-col items-start gap-4 max-h-[300px] overflow-y-auto">
-            <li v-for="comment in theComments" :key="comment.id" :class="{'self-end bg-green-200': comment.user_id === loggedUser.id,
-        'bg-gray-200': comment.user_id !== loggedUser.id, 'w-[300px]': true,
-    'w-[80%] sm:w-[300px]': true}" class="mb-3 rounded-[20px] p-[10px]">
+            <li v-for="comment in theComments" :key="comment.id" :class="{
+                'self-end bg-green-200': comment.user_id === loggedUser.id,
+                'bg-gray-200': comment.user_id !== loggedUser.id, 'w-[300px]': true,
+                'w-[80%] sm:w-[300px]': true
+            }" class="mb-3 rounded-[20px] p-[10px]">
 
                 <div>
                     <router-link :to="`/users/${comment.user_id}`" class="text-blue-700 font-bold">{{
@@ -90,14 +95,21 @@ export default {
                 <div v-if="editingCommentId === comment.id">
                     <input v-model="editedText" class="border p-1 w-full rounded" />
                     <button @click="saveEdit(comment)" class="text-white bg-green-500 p-1 rounded ml-2">Guardar</button>
-                    <button @click="editingCommentId = null" class="text-white bg-gray-500 p-1 rounded ml-2">Cancelar</button>
+                    <button @click="editingCommentId = null"
+                        class="text-white bg-gray-500 p-1 rounded ml-2">Cancelar</button>
                 </div>
 
                 <div v-else>
                     <div>{{ comment.text }}</div>
                     <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
-                    <button v-if="comment.user_id === loggedUser.id" @click="startEditing(comment)"
+
+                    <!-- <button v-if="comment.user_id === loggedUser.id" @click="startEditing(comment)"
+                        class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button> -->
+                    <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
                         class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button>
+                    <!-- <button v-if="loggedUser.role == 'admin'" @click="startEditing(comment)"
+                        class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button> -->
+
                 </div>
 
             </li>

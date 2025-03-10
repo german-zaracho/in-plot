@@ -11,7 +11,7 @@ import NewReview from "../pages/NewReview.vue";
 import EditMyReview from "../pages/EditMyReview.vue";
 
 const routes = [
-    { path: '/', name:'home', meta: { requiresDynamicAuth: true } },
+    { path: '/', name:'home', meta: { requiresLoginVerification: true } },
     { path: '/feed', name:'feed', component:Feed, meta: { requiresAuth: true } },
     { path: '/login', name:'login', component:Login, },
     { path: '/register', name:'register', component:Register, },
@@ -39,22 +39,21 @@ let loggedUser = {
     anAdditionalComment: null,
 }
 
-subscribeToAuth(newUserData => loggedUser = newUserData)
-
+subscribeToAuth(newUserData => loggedUser = newUserData);
 
 router.beforeEach((to, from) => {
 
     // dynamic address for '/'
-    if (to.meta.requiresDynamicAuth) {
+    if (to.meta.requiresLoginVerification) {
         if (loggedUser.id) {
             return { path: '/feed' }; // authenticated user
         } else {
-            return { path: '/register' }; // unauthenticated user
+            return { path: '/login' }; // unauthenticated user
         }
     }
     
     // general redirection when you are not authenticated
-    if (to.meta.requiresAuth && loggedUser.id == null) {
+    if (to.meta.requiresAuth && !loggedUser.id == null) {
         return { path: '/login' };
     }
 

@@ -53,7 +53,7 @@ export default {
 </script>
 
 <template>
-    <nav class="bg-red-gradient h-20 rounded-bl-[20px] rounded-br-[20px]">
+    <nav class="bg-[#56141E] h-20 rounded-bl-[20px] rounded-br-[20px]">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
                 <!-- NavBar options -->
@@ -61,17 +61,17 @@ export default {
                     <div class="flex items-center mr-[20px]">
                         <img class="h-10 w-10 mr-[10px]" src="./../../inPlot.ico" alt="logo">
                         <router-link :to="{ name: 'home' }" class=" text-white text-xl logo">
-                            In<span class="text-[#f09224]">Plot</span>
+                            In<span class="text-[#f1c421]">Plot</span>
                         </router-link>
                     </div>
                     <div class="hidden md:block">
-                        <ul class="flex items-center space-x-4 font-medium text-[#f09224]">
+                        <ul class="flex items-center space-x-4 font-medium text-[#f1c421]">
                             <template v-if="loggedUser.id">
-                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/feed">Media Reviews</router-link></li>
+                                <li class="bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/feed">Media Reviews</router-link></li>
                             </template>
                             <template v-if="!loggedUser.id">
-                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/register">Register</router-link></li>
-                                <li class="bg-gray-800 hover:bg-gray-700 hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/login">Log in</router-link></li>
+                                <li class="bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/register">Register</router-link></li>
+                                <li class="bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/login">Log in</router-link></li>
                             </template>
                         </ul>
                     </div>
@@ -86,10 +86,10 @@ export default {
                                 alt="user">
                         </button>
                         <div v-if="isUserMenuOpen" ref="userMenu"
-                            class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
+                            class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-[#272120] shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
                             <ul>
-                                <li><router-link class="block px-4 py-2 text-sm text-[#f09224] hover:text-[wheat]" to="/myProfile">My Profile</router-link></li>
-                                <li class="block px-4 py-2 text-sm text-[#f09224] hover:text-[wheat]">
+                                <li><router-link class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]" to="/myProfile">My Profile</router-link></li>
+                                <li class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]">
                                     <form @submit.prevent="handleLogout">
                                         <button type="submit" class="py-2 px-4 ">Log out</button>
                                     </form>
@@ -103,7 +103,7 @@ export default {
                 <div class="-mr-2 flex md:hidden">
                     <!-- Mobile menu button -->
                     <button ref="mobileMenuButton" @click="toggleMobileMenu" type="button"
-                        class="relative inline-flex items-center justify-center rounded-md bg-[#f09224] p-2 text-gray-400 hover:bg-[wheat] hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        class="relative inline-flex items-center justify-center rounded-md bg-[#f1c421] p-2 text-gray-400 hover:bg-[wheat] hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         id="mobile-menu-button">
                         <span class="absolute -inset-0.5"></span>
 

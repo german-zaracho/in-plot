@@ -22,6 +22,7 @@ export async function getUserProfileById(id){
         favMovie: profileSnapshot.data().favMovie,
         favSeries: profileSnapshot.data().favSeries,
         anAdditionalComment: profileSnapshot.data().anAdditionalComment,
+        role: profileSnapshot.data().role,
     }
     
 }
