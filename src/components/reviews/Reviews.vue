@@ -116,7 +116,7 @@ export default {
             <li v-for="review in reviews" :key="review.id"
                 class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient">
 
-                <div class="flex flex-row bg-dark-gradient justify-center">
+                <div class="flex flex-row items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px]">
 
                     <div
                         class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px]">
@@ -163,25 +163,35 @@ export default {
                             <p class="text-sm text-[#a8784e] mb-2">Type: {{ review.contentType }}</p>
                         </div>
 
-                        <p class="text-white">
+                        <p class="text-white w-[300px] xxs:max-w-[250px] xs:max-w-[390px] sm:w-[392px] md:w-[520px] lg:w-[775px]">
                             <span :class="{ 'line-clamp-3': !expandedSynopsis[review.id] }">
                                 {{ review.synopsis }}
                             </span>
                         </p>
 
-                        <button type="button" class="text-blue-500 hover:underline" @click="toggleSynopsis(review.id)">
-                            {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
-                        </button>
-
-
                         <div class="flex flex-row justify-between">
 
                             <button type="button"
-                                class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
-                                @click="toggleComment(review.id)">
-                                <span class="material-symbols-rounded">chat</span>
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                @click="toggleSynopsis(review.id)">
+                                {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
                             </button>
+
+
+                            <div class="flex flex-row justify-between">
+
+                                <button type="button"
+                                    class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
+                                    @click="toggleComment(review.id)">
+                                    <span class="material-symbols-rounded">chat</span>
+                                </button>
+                            </div>
+
+
                         </div>
+
+
+
                         <div class="text-end p-2 text-[#a8784e]"><span class="text-[#a8784e]">Published:</span> {{
                             formatDate(review.created_at) }}</div>
 

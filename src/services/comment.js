@@ -1,4 +1,4 @@
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, getDocs, doc, getDoc, where, DocumentReference, limit, updateDoc } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, getDocs, doc, getDoc, where, DocumentReference, limit, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 /**
@@ -119,4 +119,25 @@ export async function updateChatComment(reviewId, commentId, newText) {
     await updateDoc(commentRef, {
         text: newText
     });
+}
+
+export async function deleteChatComment(reviewId, commentId) {
+    try {
+
+        if (!reviewId || !commentId) {
+            throw new Error("reviewId o commentId es inválido.");
+        }
+
+        const chatDoc = await getChatCommentDoc(reviewId);
+
+        if (!chatDoc || !chatDoc.id) {
+            throw new Error("No se encontró el documento del chat con reviewId: ${reviewId}");
+        }
+        
+        const commentRef = doc(db, `comments/${chatDoc.id}/actualComments`, commentId);
+        await deleteDoc(commentRef);
+        console.log(`Comentario ${commentId} eliminado correctamente.`);
+    } catch (error) {
+        console.error("Error eliminando el comentario:", error);
+    }
 }

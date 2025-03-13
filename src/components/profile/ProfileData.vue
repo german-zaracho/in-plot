@@ -26,7 +26,7 @@ export default {
             <div class="relative flex items-center justify-center ">
                 <div class="w-[200px] h-[200px] rounded-full overflow-hidden bg-gray-200 shadow-2xl ring-2 ring-black ring-opacity-10 m-auto">
                     <img :src="user.photoURL || './assets/imgs/no-image.jpg'" alt="Profile image"
-                        class="h-full w-full object-cover">
+                        class="h-full w-full object-cover ">
                 </div>
 
                 <div v-if="isMyProfile" class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]  ">

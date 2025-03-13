@@ -1,12 +1,14 @@
 <script>
 import { subscribeToAuth } from "../../services/auth";
+import { deleteChatComment } from "../../services/comment"; //new
 
 export default {
     name: 'CommentList',
     props: {
-        theComments: { type: Array, required: true, }
+        theComments: { type: Array, required: true, },
+        reviewId: { type: String, required: true }
     },
-    emits: ['updateComment'], //new
+    emits: ['updateComment', 'commentDeleted'], //new
     data() {
         return {
             loggedUser: {
@@ -47,6 +49,15 @@ export default {
             }
             this.$emit('update-comment', comment.id, this.editedText);
             this.editingCommentId = null;
+        },
+        async deleteComment(commentId) {
+            try {
+                
+                await deleteChatComment(this.reviewId, commentId);
+                this.$emit('commentDeleted', commentId);
+            } catch (error) {
+                console.error("Error deleting comment:", error);
+            }
         },
         updateComment(commentId, newText) {
             this.$emit('updateComment', commentId, newText); // new
@@ -89,9 +100,6 @@ export default {
                     wrote:
                 </div>
 
-                <!-- <div>{{ comment.text }}</div>
-                <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div> -->
-
                 <div v-if="editingCommentId === comment.id">
                     <input v-model="editedText" class="border p-1 w-full rounded" />
                     <button @click="saveEdit(comment)" class="text-white bg-green-500 p-1 rounded ml-2">Guardar</button>
@@ -103,12 +111,13 @@ export default {
                     <div>{{ comment.text }}</div>
                     <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
 
-                    <!-- <button v-if="comment.user_id === loggedUser.id" @click="startEditing(comment)"
-                        class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button> -->
                     <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
                         class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button>
-                    <!-- <button v-if="loggedUser.role == 'admin'" @click="startEditing(comment)"
-                        class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button> -->
+
+                    <button v-if="loggedUser.role === 'admin'" @click="deleteComment(comment.id)"
+                        class="text-white bg-red-500 p-1 rounded mt-1 ml-2">
+                        Eliminar
+                    </button>
 
                 </div>
 
