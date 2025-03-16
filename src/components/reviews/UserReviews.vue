@@ -76,27 +76,41 @@ export default {
 
 <template>
     <section class="p-4">
-        <h2 class="text-xl font-bold mb-4">My Reviews</h2>
+        <h2 class="text-xl text-white font-bold mb-4">My Reviews</h2>
 
         <!-- <div v-if="loading" class="m-auto flex flex-col items-center">
             <SkeletonReview class="w-full h-20 rounded-lg mb-4" v-for="n in 1" :key="n" />
         </div> -->
 
         <div v-if="reviews.length === 0">
-            <p>No reviews created yet.</p>
+            <p class="text-white">No reviews created yet.</p>
         </div>
 
         <ul v-else class="">
             <li v-for="review in reviews" :key="review.id"
-                class="p-4 flex flex-col items-start relative mb-[20px] rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px]">
+                class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
-                <div class="flex flex-row">
-                    <div class="flex-shrink-0 w-32 h-48 overflow-hidden rounded bg-gray-200 mr-[20px]">
-                        <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
-                            class="w-full h-full object-cover">
-                        <p v-else class="text-gray-500 text-center h-full flex items-center justify-center">
-                            No cover available
-                        </p>
+                <div
+                    class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
+
+                    <div class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px]">
+                        <div class="h-48">
+                            <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
+                                class="w-full h-full object-cover rounded-[4px]">
+                            <p v-else class="text-[black] text-center h-full flex items-center justify-center bg-gray-100 opacity-[0.9] rounded-[4px] ">
+                                No cover available
+                            </p>
+                        </div>
+
+                        <div class="flex">
+
+                            <a v-if="review.trailer" :href="review.trailer"
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                target="_blank">
+                                Watch Trailer
+                            </a>
+
+                        </div>
                     </div>
 
                     <div v-if="isMyProfile"
@@ -119,36 +133,44 @@ export default {
                     </div>
 
                     <div class="flex-1">
-                        <h2 class="text-xl font-semibold">{{ review.title }}</h2>
+                        <h2 class="text-xl font-semibold text-[#f1c421]">{{ review.title }}</h2>
 
-                        <p class="text-sm text-gray-600 mb-2">Year: {{ review.year }}</p>
-                        <p class="text-sm text-gray-600 mb-2">Type: {{ review.contentType }}</p>
-                        <!-- <p class="text-gray-800">{{ review.synopsis }}</p> -->
-                        <p class="text-white">
+                        <div class="flex flex-row justify-between">
+                            <p class="text-sm text-[#a8784e] mb-2">Year: {{ review.year }}</p>
+                            <p class="text-sm text-[#a8784e] mb-2">Type: {{ review.contentType }}</p>
+                        </div>
+
+                        <p
+                            class="text-white w-[300px] xxs:max-w-[250px] xs:max-w-[390px] sm:w-[392px] md:w-[520px] lg:w-[775px]">
                             <span :class="{ 'line-clamp-3': !expandedSynopsis[review.id] }">
                                 {{ review.synopsis }}
                             </span>
                         </p>
 
-                        <button type="button" class="text-blue-500 hover:underline" @click="toggleSynopsis(review.id)">
-                            {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
-                        </button>
-
                         <div class="flex flex-row justify-between">
-                            <a v-if="review.trailer" :href="review.trailer"
-                                class="text-[#f09224] hover:text-[wheat] mt-2 block bg-gray-800 hover:bg-gray-700 max-w-[150px] p-2 text-center rounded-md"
-                                target="_blank">
-                                Watch Trailer
-                            </a>
 
                             <button type="button"
-                                class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
-                                @click="toggleComment(review.id)">
-                                <span class="material-symbols-rounded">chat</span>
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                @click="toggleSynopsis(review.id)">
+                                {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
                             </button>
+
+                            <div class="flex flex-row justify-between">
+
+                                <button type="button"
+                                    class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
+                                    @click="toggleComment(review.id)">
+                                    <span class="material-symbols-rounded">chat</span>
+                                </button>
+
+                            </div>
+
                         </div>
 
+
+
                     </div>
+
                 </div>
 
                 <Comment v-if="activeComments[review.id]" :reviewId="review.id" />

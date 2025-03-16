@@ -31,12 +31,12 @@ export default {
 
                 <div v-if="isMyProfile" class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]  ">
                     <router-link @mouseenter="showTooltip = true" @mouseleave="showTooltip = false"
-                        class="relative flex items-center justify-center h-8 w-8 rounded-full bg-gray-800 hover:bg-gray-700 text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px]"
+                        class="relative flex items-center justify-center h-8 w-8 rounded-full bg-[#272120] hover:bg-[#3c2f2d] text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px]"
                         aria-label="Edit my photo" to="/myProfile/edit/photo">
 
-                        <span class="material-symbols-rounded text-[wheat]">edit</span>
+                        <span class="material-symbols-rounded text-[#f1c421]">edit</span>
 
-                        <span v-bind:class="{ 'opacity-0 max-w-0': !showTooltip, 'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out  whitespace-nowrap': showTooltip }" class="ml-2 overflow-hidden inline-block text-[wheat]">
+                        <span v-bind:class="{ 'opacity-0 max-w-0': !showTooltip, 'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out  whitespace-nowrap': showTooltip }" class="ml-2 overflow-hidden inline-block text-[#f1c421]">
                             Edit my photo
                         </span>
                     </router-link>
@@ -45,27 +45,27 @@ export default {
 
             </div>
 
-            <div class="flex-1  rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[300px]">
+            <div class="flex-1  rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[300px] bg-dark-gradient">
                 <dl class="p-5">
-                    <dt class="font-bold">Email</dt>
-                    <dd class="mb-3 text-[wheat]">{{ user.email }}</dd>
-                    <dt class="font-bold">User name</dt>
-                    <dd class="mb-3 text-[wheat]">
+                    <dt class="font-bold text-[#f1c421]">Email</dt>
+                    <dd class="mb-3 text-white">{{ user.email }}</dd>
+                    <dt class="font-bold text-[#f1c421]">User name</dt>
+                    <dd class="mb-3 text-white">
                         <span v-if="!loading">{{ user.displayName || 'Not specified' }}</span>
                         <SkeletonLoader class="w-60 h-6 rounded-lg" v-else />
                     </dd>
-                    <dt class="font-bold">Movie</dt>
-                    <dd class="mb-3 text-[wheat]">
+                    <dt class="font-bold text-[#f1c421]">Movie</dt>
+                    <dd class="mb-3 text-white">
                         <span v-if="!loading">{{ user.favMovie || 'Not specified' }}</span>
                         <SkeletonLoader class="w-60 h-6 rounded-lg" v-else />
                     </dd>
-                    <dt class="font-bold">Series</dt>
-                    <dd class="mb-3 text-[wheat]">
+                    <dt class="font-bold text-[#f1c421]">Series</dt>
+                    <dd class="mb-3 text-white">
                         <span v-if="!loading">{{ user.favSeries || 'Not specified' }}</span>
                         <SkeletonLoader class="w-60 h-6 rounded-lg" v-else />
                     </dd>
-                    <dt class="font-bold">Additional Comments</dt>
-                    <dd class="mb-3 text-[wheat]">
+                    <dt class="font-bold text-[#f1c421]">Additional Comments</dt>
+                    <dd class="mb-3 text-white">
                         <span v-if="!loading">{{ user.anAdditionalComment || 'Not specified' }}</span>
                         <SkeletonLoader class="w-60 h-5 rounded-lg" v-else />
                     </dd>

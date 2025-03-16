@@ -102,9 +102,9 @@ export default {
 
                 <div v-if="editingCommentId === comment.id">
                     <input v-model="editedText" class="border p-1 w-full rounded" />
-                    <button @click="saveEdit(comment)" class="text-white bg-green-500 p-1 rounded ml-2">Guardar</button>
+                    <button @click="saveEdit(comment)" class="text-white bg-green-500 p-1 rounded ml-2">Save</button>
                     <button @click="editingCommentId = null"
-                        class="text-white bg-gray-500 p-1 rounded ml-2">Cancelar</button>
+                        class="text-white bg-gray-500 p-1 rounded ml-2">Cancel</button>
                 </div>
 
                 <div v-else>
@@ -112,11 +112,11 @@ export default {
                     <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
 
                     <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
-                        class="text-white bg-blue-500 p-1 rounded mt-1">Editar</button>
+                        class="text-white bg-blue-500 p-1 rounded mt-1 w-[70px]">Edit</button>
 
                     <button v-if="loggedUser.role === 'admin'" @click="deleteComment(comment.id)"
-                        class="text-white bg-red-500 p-1 rounded mt-1 ml-2">
-                        Eliminar
+                        class="text-white bg-red-500 p-1 rounded mt-1 ml-2 w-[70px]">
+                        Delete
                     </button>
 
                 </div>

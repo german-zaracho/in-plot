@@ -103,7 +103,8 @@ export default {
         </div>
 
 
-
+        <SkeletonReviews />
+        
         <div v-if="loading">
             <SkeletonReviews />
         </div>
@@ -114,16 +115,16 @@ export default {
 
         <ul v-else class="">
             <li v-for="review in reviews" :key="review.id"
-                class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient">
+                class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
-                <div class="flex flex-row items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px]">
+                <div class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
 
                     <div
-                        class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px]">
+                        class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px] ">
                         <div class="h-48">
                             <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
                                 class="w-full h-full object-cover">
-                            <p v-else class="text-gray-500 text-center h-full flex items-center justify-center">
+                            <p v-else class="text-[black] text-center h-full flex items-center justify-center bg-gray-100 opacity-[0.9] rounded-[4px] ">
                                 No cover available
                             </p>
                         </div>

@@ -50,19 +50,19 @@ export default {
         {{ feedback.message }}
     </div>
 
-    <h1 class="mb-[20px] font-bold text-center">Log in to your account</h1>
+    <h1 class="mb-[20px] font-bold text-center text-white">Log in to your account</h1>
 
     <form action="#" @submit.prevent="handleSubmit"
-        class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] m-auto max-w-[600px] rounded-[20px]">
+        class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] m-auto max-w-[600px] rounded-[20px] bg-dark-gradient">
 
         <div class="mb-4">
-            <label class="block mb-2" for="email">Email</label>
+            <label class="block mb-2 text-white" for="email">Email</label>
             <input type="email" id="email" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading"
                 v-model="user.email">
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="password">Password</label>
+            <label class="block mb-2 text-white" for="password">Password</label>
             <input type="password" id="password" class="w-full p-2 border rounded read-only:bg-gray-200"
                 :readonly="loading" v-model="user.password">
         </div>
