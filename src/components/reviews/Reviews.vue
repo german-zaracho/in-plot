@@ -4,14 +4,16 @@ import SkeletonReview from '../SkeletonReview.vue';
 import Comment from '../comment/Comment.vue';
 import VueSkeletonLoader from 'vue3-skeleton-loader';
 import SkeletonReviews from '../SkeletonReviews.vue';
+import MobileSkeletonReviews from '../MobileSkeletonReviews.vue';
 import 'vue3-skeleton-loader/dist/style.css';
 
 export default {
     name: 'Reviews',
     props: {
         userId: { type: String, required: true },
+        userRole: { type: String, required: true },
     },
-    components: { SkeletonReview, Comment, VueSkeletonLoader, SkeletonReviews },
+    components: { SkeletonReview, Comment, VueSkeletonLoader, SkeletonReviews, MobileSkeletonReviews },
     data() {
         return {
             reviews: [],
@@ -73,6 +75,12 @@ export default {
         },
 
     },
+
+    computed: {
+        isMobile() {
+            return window.innerWidth < 431;
+        }
+    },
     async mounted() {
 
         // console.log('User ID', this.userId);
@@ -102,11 +110,9 @@ export default {
                 to="/newReview">Create a new review</router-link>
         </div>
 
-
-        <SkeletonReviews />
-        
         <div v-if="loading">
-            <SkeletonReviews />
+            <SkeletonReviews v-if="!isMobile" />
+            <MobileSkeletonReviews v-else />
         </div>
 
         <div v-else-if="reviews.length === 0">
@@ -117,14 +123,16 @@ export default {
             <li v-for="review in reviews" :key="review.id"
                 class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
-                <div class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
+                <div
+                    class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
 
                     <div
                         class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px] ">
                         <div class="h-48">
                             <img v-if="review.coverURL" :src="review.coverURL" :alt="`Cover of ${review.title}`"
                                 class="w-full h-full object-cover">
-                            <p v-else class="text-[black] text-center h-full flex items-center justify-center bg-gray-100 opacity-[0.9] rounded-[4px] ">
+                            <p v-else
+                                class="text-[black] text-center h-full flex items-center justify-center bg-gray-100 opacity-[0.9] rounded-[4px] ">
                                 No cover available
                             </p>
                         </div>
@@ -135,6 +143,19 @@ export default {
                                 Watch Trailer
                             </a>
                         </div>
+                    </div>
+
+                    <div v-if="userRole === 'admin'"
+                        class="absolute top-0 left-0 bg-dark-gradient-invert text-black font-bold text-xs uppercase filter rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]">
+                        <router-link
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-dark-gradient-invert text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]"
+                            aria-label="Edit Review" :to="`/users/${review.id}/editMyReview`">
+                            <span class="material-symbols-rounded m-2">edit</span>
+                            <span
+                                class="mr-2 overflow-hidden inline-block text-white transition-all duration-[1000ms] ease-in-out whitespace-nowrap">
+                                Edit Review
+                            </span>
+                        </router-link>
                     </div>
 
                     <div
@@ -155,6 +176,8 @@ export default {
                         </router-link>
                     </div>
 
+
+
                     <div class="flex-1">
 
                         <h2 class="text-xl font-semibold text-[#f1c421]">{{ review.title }}</h2>
@@ -164,7 +187,8 @@ export default {
                             <p class="text-sm text-[#a8784e] mb-2">Type: {{ review.contentType }}</p>
                         </div>
 
-                        <p class="text-white w-[300px] xxs:max-w-[250px] xs:max-w-[390px] sm:w-[392px] md:w-[520px] lg:w-[775px]">
+                        <p
+                            class="text-white w-[300px] xxs:max-w-[250px] xs:max-w-[390px] sm:w-[392px] md:w-[520px] lg:w-[775px]">
                             <span :class="{ 'line-clamp-3': !expandedSynopsis[review.id] }">
                                 {{ review.synopsis }}
                             </span>
@@ -178,7 +202,6 @@ export default {
                                 {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
                             </button>
 
-
                             <div class="flex flex-row justify-between">
 
                                 <button type="button"
@@ -188,10 +211,7 @@ export default {
                                 </button>
                             </div>
 
-
                         </div>
-
-
 
                         <div class="text-end p-2 text-[#a8784e]"><span class="text-[#a8784e]">Published:</span> {{
                             formatDate(review.created_at) }}</div>

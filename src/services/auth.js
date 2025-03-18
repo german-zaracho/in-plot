@@ -156,47 +156,48 @@ export async function editMyProfilePhoto(photo) {
 
 }
 
-/**
- * Creates a new review for the authenticated user.
- * @param {File}
- * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
- */
-export async function createReviewForAuthenticatedUser(coverImage, data) {
+// /**
+//  * Creates a new review for the authenticated user.
+//  * @param {File}
+//  * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
+//  */
+// export async function createReviewForAuthenticatedUser(coverImage, data) {
 
-    try {
-        // console.log('cover', cover, 'data', data);
-        const user = auth.currentUser;
+//     try {
+//         // console.log('cover', cover, 'data', data);
+//         const user = auth.currentUser;
 
-        if (!user) {
-            console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
-            throw error;
-        }
+//         if (!user) {
+//             console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
+//             throw error;
+//         }
 
-        let coverImageURL = '';
+//         let coverImageURL = '';
 
-        if (coverImage) {
+//         if (coverImage) {
 
-            const folderPath = `reviews/${user.uid}/`;
-            const filePath = `${folderPath}${Date.now()}_cover.jpg`;
-            await uploadFile(filePath, coverImage);
-            coverImageURL = await getFileURL(filePath);
+//             const folderPath = `reviews/${user.uid}/`;
+//             const filePath = `${folderPath}${Date.now()}_cover.jpg`;
+//             await uploadFile(filePath, coverImage);
+//             coverImageURL = await getFileURL(filePath);
 
-        }
+//         }
 
-        const fullReviewData = {
-            ...data,
-            coverURL: coverImageURL || '',
-        };
+//         const fullReviewData = {
+//             ...data,
+//             coverURL: coverImageURL || '',
+//         };
 
-        await createNewReview(userData.id, fullReviewData);
+//         await createNewReview(userData.id, fullReviewData);
 
-        console.log('Review created successfully!');
-    } catch (error) {
-        console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
-        throw error;
-    }
+//         console.log('Review created successfully!');
+//     } catch (error) {
+//         console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
+//         throw error;
+//     }
 
-}
+// }
+
 
 export async function logout() {
     return signOut(auth);

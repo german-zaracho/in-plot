@@ -8,12 +8,14 @@ export default {
     data() {
         return {
             userId: null,
+            userRole: null,
         };
     },
     mounted() {
 
         this.unsubscribeAuth = subscribeToAuth(userData => {
             this.userId = userData.id;
+            this.userRole = userData.role;
         });
         // console.log('userid', this.userId);
 
@@ -29,5 +31,5 @@ export default {
 </script>
 
 <template>
-    <Reviews v-if="userId" :userId="userId" />
+    <Reviews v-if="userId" :userId="userId" :userRole="userRole" />
 </template>

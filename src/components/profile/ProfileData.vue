@@ -9,11 +9,15 @@ export default {
         loading: { type: Boolean, default: false, },
         user: { type: Object, required: true, },
         isMyProfile: { type: Boolean, required: true },
+        loggedUser: { type: Object, required: false, },
     },
     data() {
         return {
             showTooltip: false,
         };
+    },
+    created() {
+        console.log('[UserReviews.vue] loggedUser:', this.loggedUser);
     },
 }
 </script>
@@ -75,7 +79,7 @@ export default {
         </div>
 
         <div>
-            <UserReviews v-if="user.id" :userId="user.id" :isMyProfile="isMyProfile" />
+            <UserReviews v-if="user.id" :userId="user.id" :isMyProfile="isMyProfile" :userRole="loggedUser.role" />
         </div>
     </div>
 

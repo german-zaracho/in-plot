@@ -1,6 +1,8 @@
-import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs } from "firebase/firestore";
-import { storage, db } from "./firebase";
+import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs, query, orderBy } from "firebase/firestore";
+import { storage, db} from "./firebase";
+import { auth } from "./firebase";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { getFileURL, uploadFile } from "./file-storage";
 
 /**
  * 
@@ -25,6 +27,42 @@ export async function createNewReview(id, { title, synopsis, trailer, year, cove
 }
 
 /**
+ * Creates a new review for the authenticated user.
+ * @param {File} coverImage 
+ * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
+ */
+export async function createReviewForAuthenticatedUser(coverImage, data) {
+    try {
+        const user = auth.currentUser;
+
+        if (!user) {
+            throw new Error("User not authenticated.");
+        }
+
+        let coverImageURL = '';
+
+        if (coverImage) {
+            const folderPath = `reviews/${user.uid}/`;
+            const filePath = `${folderPath}${Date.now()}_cover.jpg`;
+            await uploadFile(filePath, coverImage);
+            coverImageURL = await getFileURL(filePath);
+        }
+
+        const fullReviewData = {
+            ...data,
+            coverURL: coverImageURL || '',
+        };
+
+        await createNewReview(user.uid, fullReviewData);
+
+        console.log('Review created successfully!');
+    } catch (error) {
+        console.error('[media-reviews.js createReviewForAuthenticatedUser] Error creating review:', error);
+        throw error;
+    }
+}
+
+/**
  * 
  * @returns {Promise<Array<{ id: string, user_id: string, title: string, synopsis: string, trailer: string, year: string, coverURL: string, contentType: string, displayName: string | null, email: string }>>}
  */
@@ -32,7 +70,9 @@ export async function createNewReview(id, { title, synopsis, trailer, year, cove
 export async function getAllReviews() {
 
     const reviewsCollection = collection(db, "media-reviews");
-    const reviewsSnapshot = await getDocs(reviewsCollection);
+    const reviewsQuery = query(reviewsCollection, orderBy("created_at", "desc"));
+
+    const reviewsSnapshot = await getDocs(reviewsQuery);
 
     const reviews = await Promise.all(
         reviewsSnapshot.docs.map(async (reviewDoc) => {
@@ -70,7 +110,7 @@ export async function getReviewsByUser(userId) {
 
     const allReviews = await getAllReviews();
     return allReviews.filter(review => review.user_id === userId);
-    
+
 }
 
 // Compares the params and returns the review information
@@ -121,7 +161,7 @@ export async function uploadCoverImage(file, userId, existingCoverURL = '') {
         // console.log("file", file, "userId", userId, "existingCoverURL", existingCoverURL);
 
         if (existingCoverURL) {
-            const oldCoverRef = ref(storage, existingCoverURL); 
+            const oldCoverRef = ref(storage, existingCoverURL);
             await deleteObject(oldCoverRef);
         }
 

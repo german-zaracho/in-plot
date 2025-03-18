@@ -112,18 +112,18 @@ export default {
 </script>
 
 <template>
-    <h1 class="mb-[20px] font-bold text-center">Edit your review</h1>
+    <h1 class="mb-[20px] font-bold text-center text-white">Edit a review</h1>
 
     <form action="#" @submit.prevent="handleSubmit" class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px]">
 
         <div class="mb-4">
-            <label class="block mb-2" for="title">Title</label>
+            <label class="block mb-2 text-white" for="title">Title</label>
             <input type="text" id="title" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="isUploading"
                 v-model="reviewData.title">
         </div>
 
         <div class="mb-4">
-            <label for="cover" class="block mb-2">Cover</label>
+            <label for="cover" class="block mb-2 text-white">Cover</label>
             <input type="file" id="cover" @change="handleFileSelection" class="w-full p-2 border rounded">
             <div v-if="previewImage" class="mt-2">
                 <h2>Preview</h2>
@@ -132,13 +132,13 @@ export default {
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="synopsis">Synopsis</label>
+            <label class="block mb-2 text-white" for="synopsis">Synopsis</label>
             <textarea id="synopsis" class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200" :readonly="isUploading"
                 v-model="reviewData.synopsis"></textarea>
         </div>
 
         <div class="mb-4 max-w-[200px]">
-            <label class="block mb-2" for="year">Year</label>
+            <label class="block mb-2 text-white" for="year">Year</label>
             <div class="relative" ref="dropdownContainer">
                 <button type="button" class="w-full p-2 border rounded text-left flex items-center justify-between bg-[white]" @click="toggleDropdown">
                     <span>{{ reviewData.year || 'Select a year' }}</span>
@@ -158,7 +158,7 @@ export default {
         </div>
 
         <div class="mb-4 max-w-[200px]">
-            <label class="block mb-2" for="contentType">Type (Movie or Series)</label>
+            <label class="block mb-2 text-white" for="contentType">Type (Movie or Series)</label>
             <select id="contentType" class="w-full p-2 border rounded bg-white" v-model="reviewData.contentType">
                 <option value="Movie">Movie</option>
                 <option value="Series">Series</option>
@@ -166,14 +166,14 @@ export default {
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="trailer">Trailer (YouTube URL)</label>
+            <label class="block mb-2 text-white" for="trailer">Trailer (YouTube URL)</label>
             <input id="trailer" type="url" class="w-full p-2 border rounded read-only:bg-gray-200"
                 placeholder="Enter a YouTube URL" :readonly="isUploading" v-model="reviewData.trailer"
                 pattern="https?://(www\.)?youtube\.com/.*" />
         </div>
 
         <button type="submit"
-            class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 hover:text-[wheat] text-[#f09224]">
+            class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] text-[#f1c421] hover:text-[#f1c421]">
             <span v-if="!isUploading">Save changes</span>
             <div v-else class="flex flex-row items-center">Saving changes 
                 <Loader />

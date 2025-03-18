@@ -19,6 +19,7 @@ export default {
                 anAdditionalComment: null,
                 photoURL: null,
                 fullProfileLoaded: false,
+                role:null,
             }
         }
     },
@@ -37,6 +38,6 @@ export default {
         <router-link class="mb-4 border-[2px] border-[#BC2B41] rounded-lg p-[5px] bg-[#272120] hover:bg-[#3c2f2d] text-[#f1c421] hover:text-[#f1c421]" to="/myProfile/edit">Edit my profile</router-link>
     </div>
 
-    <ProfileData :loading="!loggedUser.fullProfileLoaded" :user="loggedUser" :isMyProfile="true" />
+    <ProfileData :loading="!loggedUser.fullProfileLoaded" :user="loggedUser" :isMyProfile="true" :loggedUser="loggedUser"/>
 
 </template>
