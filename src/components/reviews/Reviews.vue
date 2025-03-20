@@ -1,5 +1,5 @@
 <script>
-import { getAllReviews } from '../../services/media-reviews';
+import { getAllReviews, deleteReview } from '../../services/media-reviews';
 import SkeletonReview from '../SkeletonReview.vue';
 import Comment from '../comment/Comment.vue';
 import VueSkeletonLoader from 'vue3-skeleton-loader';
@@ -21,6 +21,8 @@ export default {
             activeComments: {},
             expandedSynopsis: {},
             showUserName: {},
+            showModal: false,
+            reviewToDeleteId: null,
         };
     },
     methods: {
@@ -73,6 +75,28 @@ export default {
         updateComment({ commentId, newText }) {
             console.log('Comentario actualizado:', commentId, newText);
         },
+
+        async confirmDelete() {
+            try {
+
+                if (!this.reviewToDeleteId) return;
+                console.log("id de la review", this.reviewToDeleteId);
+
+                await deleteReview(this.reviewToDeleteId);
+
+                this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
+
+                this.showModal = false;
+                this.reviewToDeleteId = null;
+
+            } catch (error) {
+                console.error("Error deleting review:", error);
+            }
+        },
+        openDeleteModal(reviewId) {
+            this.reviewToDeleteId = reviewId; // Guarda el ID de la review
+            this.showModal = true; // Muestra el modal
+        }
 
     },
 
@@ -146,9 +170,9 @@ export default {
                     </div>
 
                     <div v-if="userRole === 'admin'"
-                        class="absolute top-0 left-0 bg-dark-gradient-invert text-black font-bold text-xs uppercase filter rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]">
+                        class="absolute top-0 left-0 bg-red-gradient text-black font-bold text-xs uppercase filter rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]">
                         <router-link
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-dark-gradient-invert text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-red-gradient text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]"
                             aria-label="Edit Review" :to="`/users/${review.id}/editMyReview`">
                             <span class="material-symbols-rounded m-2">edit</span>
                             <span
@@ -156,6 +180,29 @@ export default {
                                 Edit Review
                             </span>
                         </router-link>
+                    </div>
+
+                    <div v-if="userRole === 'admin'"
+                        class="absolute top-0 left-[47%] bg-red-gradient text-black font-bold text-xs uppercase filter rounded-br-[50%_75%] rounded-bl-[20px] hover:rounded-br-[20%_100%]">
+                        <button @click="openDeleteModal(review.id)"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-red-gradient text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-bl-[20px] hover:rounded-br-[20%_100%]">
+                            <span class="material-symbols-rounded m-2 ml-[14px] ">delete</span>
+                            <span
+                                class="mr-2 overflow-hidden inline-block text-white transition-all duration-[1000ms] ease-in-out whitespace-nowrap">Delete
+                                Review</span>
+                        </button>
+                    </div>
+
+                    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <p class="mb-4">Seguro que quieres eliminar la siguiente review?</p>
+                            <div class="flex justify-end space-x-2">
+                                <button @click="confirmDelete"
+                                    class="bg-red-500 text-white px-4 py-2 rounded">Eliminar</button>
+                                <button @click="showModal = false"
+                                    class="bg-gray-300 px-4 py-2 rounded">Cancelar</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div

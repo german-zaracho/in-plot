@@ -1,5 +1,5 @@
-import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs, query, orderBy } from "firebase/firestore";
-import { storage, db} from "./firebase";
+import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs, query, orderBy, deleteDoc } from "firebase/firestore";
+import { storage, db } from "./firebase";
 import { auth } from "./firebase";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { getFileURL, uploadFile } from "./file-storage";
@@ -175,5 +175,56 @@ export async function uploadCoverImage(file, userId, existingCoverURL = '') {
         throw new Error('Error uploading image');
     }
 
+}
+
+// /**
+//  * Deletes a review from Firestore
+//  * @param {string} reviewId - The ID of the review to delete
+//  */
+// export async function deleteReview(reviewId) {
+//     try {
+//         const reviewRef = doc(db, "media-reviews", reviewId);
+//         await deleteDoc(reviewRef);
+//         console.log("Review deleted successfully");
+//     } catch (error) {
+//         console.error("Error deleting review:", error);
+//         throw error;
+//     }
+// }
+
+/**
+ * Deletes a review from Firestore and its associated image from Firebase Storage
+ * @param {string} reviewId - The ID of the review to delete
+ */
+export async function deleteReview(reviewId) {
+    try {
+        const reviewRef = doc(db, "media-reviews", reviewId);
+        const reviewSnapshot = await getDoc(reviewRef);
+
+        if (!reviewSnapshot.exists()) {
+            throw new Error("Review not found");
+        }
+
+        const reviewData = reviewSnapshot.data();
+        const coverURL = reviewData.coverURL;
+
+        // Delete the image from Firebase Storage if it exists
+        if (coverURL) {
+            try {
+                const coverRef = ref(storage, coverURL);
+                await deleteObject(coverRef);
+                console.log("Cover image deleted successfully");
+            } catch (storageError) {
+                console.error("Error deleting cover image:", storageError);
+            }
+        }
+
+        // Delete the review from Firestore
+        await deleteDoc(reviewRef);
+        console.log("Review deleted successfully");
+    } catch (error) {
+        console.error("Error deleting review:", error);
+        throw error;
+    }
 }
 
