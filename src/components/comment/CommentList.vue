@@ -85,7 +85,7 @@ export default {
 
     <div class="shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-4 mt-[20px]">
 
-        <p v-if="theComments.length === 0">No comments yet.</p>
+        <p v-if="theComments.length === 0" class="text-white">No comments yet.</p>
 
         <ul v-else class="flex flex-col items-start gap-4 max-h-[300px] overflow-y-auto">
             <li v-for="comment in theComments" :key="comment.id" :class="{

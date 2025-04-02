@@ -1,5 +1,6 @@
 <script>
 import { getAllReviews, deleteReview } from '../../services/media-reviews';
+import { deleteAllComments } from '../../services/comment';
 import SkeletonReview from '../SkeletonReview.vue';
 import Comment from '../comment/Comment.vue';
 import VueSkeletonLoader from 'vue3-skeleton-loader';
@@ -77,47 +78,51 @@ export default {
         },
 
         async confirmDelete() {
+
+            if (!this.reviewToDeleteId) return;
+            console.log("ID de la review a eliminar:", this.reviewToDeleteId);
+
             try {
-
-                if (!this.reviewToDeleteId) return;
-                console.log("id de la review", this.reviewToDeleteId);
-
-                await deleteReview(this.reviewToDeleteId);
-
-                this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
-
-                this.showModal = false;
-                this.reviewToDeleteId = null;
+                    if(deleteAllComments(this.reviewToDeleteId)){
+                        await deleteReview(this.reviewToDeleteId);
+                    }
+                    console.log("Review eliminada correctamente.");
+                    this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
+                    this.reviewToDeleteId = null;
 
             } catch (error) {
-                console.error("Error deleting review:", error);
+                console.error("Error al eliminar comentarios. La review no será eliminada:", error);
+                return; // Sale de la función si hay un error, evitando la ejecución de deleteReview
             }
-        },
-        openDeleteModal(reviewId) {
-            this.reviewToDeleteId = reviewId; // Guarda el ID de la review
-            this.showModal = true; // Muestra el modal
-        }
+
+            this.showModal = false;
 
     },
+    openDeleteModal(reviewId) {
+        this.reviewToDeleteId = reviewId; // Guarda el ID de la review
+        this.showModal = true; // Muestra el modal
+    }
 
-    computed: {
-        isMobile() {
-            return window.innerWidth < 431;
-        }
-    },
+},
+
+computed: {
+    isMobile() {
+        return window.innerWidth < 431;
+    }
+},
     async mounted() {
 
-        // console.log('User ID', this.userId);
+    // console.log('User ID', this.userId);
 
-        try {
-            this.reviews = await getAllReviews();
-        } catch (error) {
-            console.error('[Reviews.vue] Error fetching reviews: ', error);
-        } finally {
-            this.loading = false;
-            // console.log('reviews', this.reviews);
-        }
-    },
+    try {
+        this.reviews = await getAllReviews();
+    } catch (error) {
+        console.error('[Reviews.vue] Error fetching reviews: ', error);
+    } finally {
+        this.loading = false;
+        // console.log('reviews', this.reviews);
+    }
+},
 
 };
 </script>
@@ -195,12 +200,11 @@ export default {
 
                     <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10">
                         <div class="bg-white p-6 rounded-lg shadow-lg">
-                            <p class="mb-4">Seguro que quieres eliminar la siguiente review?</p>
+                            <p class="mb-4">Are you sure you want to delete the following review?</p>
                             <div class="flex justify-end space-x-2">
                                 <button @click="confirmDelete"
-                                    class="bg-red-500 text-white px-4 py-2 rounded">Eliminar</button>
-                                <button @click="showModal = false"
-                                    class="bg-gray-300 px-4 py-2 rounded">Cancelar</button>
+                                    class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+                                <button @click="showModal = false" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
                             </div>
                         </div>
                     </div>

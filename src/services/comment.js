@@ -133,7 +133,7 @@ export async function deleteChatComment(reviewId, commentId) {
         if (!chatDoc || !chatDoc.id) {
             throw new Error("No se encontró el documento del chat con reviewId: ${reviewId}");
         }
-        
+
         const commentRef = doc(db, `comments/${chatDoc.id}/actualComments`, commentId);
         await deleteDoc(commentRef);
         console.log(`Comentario ${commentId} eliminado correctamente.`);
@@ -141,3 +141,32 @@ export async function deleteChatComment(reviewId, commentId) {
         console.error("Error eliminando el comentario:", error);
     }
 }
+
+export async function deleteAllComments(reviewId) {
+    try {
+        const chatDoc = await getChatCommentDoc(reviewId);
+        if (!chatDoc || !chatDoc.id) {
+            throw new Error(`No se encontró el documento de comentarios para reviewId: ${reviewId}`);
+        }
+
+        // Obtener todos los comentarios dentro de actualComments
+        const commentsRef = collection(db, `comments/${chatDoc.id}/actualComments`);
+        const commentsSnapshot = await getDocs(commentsRef);
+
+        // Eliminar todos los documentos dentro de actualComments
+        const deletePromises = commentsSnapshot.docs.map((commentDoc) =>
+            deleteDoc(doc(db, `comments/${chatDoc.id}/actualComments/${commentDoc.id}`))
+        );
+        await Promise.all(deletePromises);
+
+        // Finalmente, eliminar el documento de comentarios
+        await deleteDoc(doc(db, `comments/${chatDoc.id}`));
+
+        console.log(`Todos los comentarios y el documento de comentarios de reviewId: ${reviewId} han sido eliminados.`);
+        return true;
+    } catch (error) {
+        console.error("Error eliminando todos los comentarios:", error);
+        return false;
+    }
+}
+

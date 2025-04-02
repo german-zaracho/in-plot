@@ -177,21 +177,6 @@ export async function uploadCoverImage(file, userId, existingCoverURL = '') {
 
 }
 
-// /**
-//  * Deletes a review from Firestore
-//  * @param {string} reviewId - The ID of the review to delete
-//  */
-// export async function deleteReview(reviewId) {
-//     try {
-//         const reviewRef = doc(db, "media-reviews", reviewId);
-//         await deleteDoc(reviewRef);
-//         console.log("Review deleted successfully");
-//     } catch (error) {
-//         console.error("Error deleting review:", error);
-//         throw error;
-//     }
-// }
-
 /**
  * Deletes a review from Firestore and its associated image from Firebase Storage
  * @param {string} reviewId - The ID of the review to delete
