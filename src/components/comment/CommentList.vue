@@ -30,11 +30,25 @@ export default {
         formatDate(date) {
             if (!date) return null;
 
+            // Si es un Timestamp de Firestore
+            if (date.seconds && typeof date.toDate === 'function') {
+                date = date.toDate(); // Método más seguro para Timestamps de Firestore
+            } else if (!(date instanceof Date)) {
+                // Si es string u otro formato, intentar parsearlo
+                date = new Date(date);
+            }
+
+            // Evitar formatear fechas inválidas
+            if (isNaN(date)) return null;
+
             //const parsedDate = date instanceof Date ? date : new Date(date); 
             //new para mantener el fecha y hora de comentario luego de editarlo
             const formatter = new Intl.DateTimeFormat('es-AR', {
-                day: '2-digit', month: '2-digit', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
             return formatter.format(date).replace(',', '');
         },
@@ -52,7 +66,7 @@ export default {
         },
         async deleteComment(commentId) {
             try {
-                
+
                 await deleteChatComment(this.reviewId, commentId);
                 this.$emit('commentDeleted', commentId);
             } catch (error) {

@@ -12,16 +12,15 @@ async function getChatCommentDoc(reviewId) {
 
     const chatRef = collection(db, 'comments');
 
-    const q = query(chatRef, where('reviewId', '==', { [reviewId]: true, }), limit(1));
+    const q = query(chatRef, where('reviewId', '==', reviewId), limit(1));
 
     const chatSnapshot = await getDocs(q);
+
     let chatDoc;
 
     if (chatSnapshot.empty) {
         chatDoc = await addDoc(chatRef, {
-            reviewId: {
-                [reviewId]: true,
-            }
+            reviewId: reviewId,
         });
     } else {
         chatDoc = chatSnapshot.docs[0];
