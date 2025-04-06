@@ -8,7 +8,7 @@ export default {
         theComments: { type: Array, required: true, },
         reviewId: { type: String, required: true }
     },
-    emits: ['updateComment', 'commentDeleted'], //new
+    emits: ['updateComment', 'commentDeleted'],
     data() {
         return {
             loggedUser: {
@@ -17,8 +17,8 @@ export default {
                 displayName: null,
                 role: null,
             },
-            editingCommentId: null, //new
-            editedText: "" //new
+            editingCommentId: null,
+            editedText: ""
         };
     },
     methods: {
@@ -32,7 +32,7 @@ export default {
 
             // Si es un Timestamp de Firestore
             if (date.seconds && typeof date.toDate === 'function') {
-                date = date.toDate(); // Método más seguro para Timestamps de Firestore
+                date = date.toDate();
             } else if (!(date instanceof Date)) {
                 // Si es string u otro formato, intentar parsearlo
                 date = new Date(date);
@@ -41,8 +41,7 @@ export default {
             // Evitar formatear fechas inválidas
             if (isNaN(date)) return null;
 
-            //const parsedDate = date instanceof Date ? date : new Date(date); 
-            //new para mantener el fecha y hora de comentario luego de editarlo
+            //para mantener la fecha y hora del comentario luego de editarlo
             const formatter = new Intl.DateTimeFormat('es-AR', {
                 day: '2-digit',
                 month: '2-digit',
