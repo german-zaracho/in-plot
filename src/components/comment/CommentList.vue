@@ -1,9 +1,11 @@
 <script>
 import { subscribeToAuth } from "../../services/auth";
 import { deleteChatComment } from "../../services/comment"; //new
+import Loader from '../Loader.vue';
 
 export default {
     name: 'CommentList',
+    components: { Loader },
     props: {
         theComments: { type: Array, required: true, },
         reviewId: { type: String, required: true }
@@ -18,7 +20,8 @@ export default {
                 role: null,
             },
             editingCommentId: null,
-            editedText: ""
+            editedText: "",
+            showLoader: true,
         };
     },
     methods: {
@@ -77,11 +80,17 @@ export default {
         }
     },
     mounted() {
+        // Ocultar el loader después de 2 segundos
+        setTimeout(() => {
+            this.showLoader = false;
+        }, 2000);
+
         this.unsubscribeFromAuth = subscribeToAuth((userData) => {
             console.log('asdaaaa');
             this.loggedUser = userData;
             console.log("logged", this.loggedUser);
         });
+        
     },
     unmounted() {
         if (this.unsubscribeFromAuth) {
@@ -98,8 +107,11 @@ export default {
 
     <div class="shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-4 mt-[20px]">
 
-        <p v-if="theComments.length === 0" class="text-white">No comments yet.</p>
-
+        <div v-if="theComments.length === 0" class="flex flex-row items-center mb-4">
+            <Loader v-if="showLoader" class="w-[30px] h-[30px] text-white mr-[10px]" />
+            <p class="text-white">No comments yet.</p>
+        </div>
+        
         <ul v-else class="flex flex-col items-start gap-4 max-h-[300px] overflow-y-auto">
             <li v-for="comment in theComments" :key="comment.id" :class="{
                 'self-end bg-green-200': comment.user_id === loggedUser.id,
