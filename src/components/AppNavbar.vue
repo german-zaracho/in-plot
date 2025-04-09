@@ -82,7 +82,7 @@ export default {
                     <!-- My Profile / Log Out -->
                     <div v-show="!isMobileMenuOpen" class="relative hidden md:block items-center">
                         <button ref="userMenuButton" @click="toggleUserMenu" class="relative flex items-center">
-                            <img class="h-10 w-10 rounded-full" src="./../../assets/imgs/profile-image.png"
+                            <img class="h-10 w-10 rounded-full" :src="loggedUser.photoURL || './../../assets/imgs/profile-image.png'"
                                 alt="user">
                         </button>
                         <div v-if="isUserMenuOpen" ref="userMenu"
@@ -152,7 +152,7 @@ export default {
                 <div v-if="loggedUser.id !== null" v-show="isMobileMenuOpen" class="border-t border-[white] pb-3 pt-4 flex flex-col items-center">
                     <div class="flex items-center px-5">
                         <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" src="./../../assets/imgs/profile-image.png"
+                            <img class="h-10 w-10 rounded-full" :src="loggedUser.photoURL || './../../assets/imgs/profile-image.png'"
                                 alt="user-image">
                         </div>
                         <div class="ml-3">

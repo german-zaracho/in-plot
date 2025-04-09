@@ -124,7 +124,7 @@ export default {
 
         <div class="mb-4">
             <label for="cover" class="block mb-2 text-white">Cover</label>
-            <input type="file" id="cover" @change="handleFileSelection" class="w-full p-2 border rounded">
+            <input type="file" id="cover" @change="handleFileSelection" class="w-full p-2 border rounded text-white">
             <div v-if="previewImage" class="mt-2">
                 <h2>Preview</h2>
                 <img :src="previewImage" alt="Cover preview" class="max-w-xs">
