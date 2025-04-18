@@ -1,7 +1,5 @@
 <script>
-// import Home from './pages/Home.vue';
 import AppNavbar from './components/AppNavbar.vue';
-// import AppFooter from './components/AppFooter.vue';
 import { logout, subscribeToAuth } from './services/auth';
 
 export default {

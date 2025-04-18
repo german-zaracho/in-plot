@@ -74,33 +74,33 @@ export default {
         },
 
         updateComment({ commentId, newText }) {
-            console.log('Comentario actualizado:', commentId, newText);
+            console.log('Updated comment:', commentId, newText);
         },
 
         async confirmDelete() {
 
             if (!this.reviewToDeleteId) return;
-            console.log("ID de la review a eliminar:", this.reviewToDeleteId);
+            console.log("ID of the review to delete:", this.reviewToDeleteId);
 
             try {
                     if(deleteAllComments(this.reviewToDeleteId)){
                         await deleteReview(this.reviewToDeleteId);
                     }
-                    console.log("Review eliminada correctamente.");
+                    console.log("Review successfully deleted.");
                     this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
                     this.reviewToDeleteId = null;
 
             } catch (error) {
-                console.error("Error al eliminar comentarios. La review no será eliminada:", error);
-                return; // Sale de la función si hay un error, evitando la ejecución de deleteReview
+                console.error("Error deleting comments. The review will not be deleted.:", error);
+                return; // Exits the function if there is an error, preventing the execution of deleteReview
             }
 
             this.showModal = false;
 
     },
     openDeleteModal(reviewId) {
-        this.reviewToDeleteId = reviewId; // Guarda el ID de la review
-        this.showModal = true; // Muestra el modal
+        this.reviewToDeleteId = reviewId; // Save the review ID
+        this.showModal = true; // Show the modal
     }
 
 },

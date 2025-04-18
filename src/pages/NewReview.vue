@@ -36,7 +36,7 @@ export default {
             this.adding = true;
 
             try {
-                // console.log('Datos enviados:', this.coverImage, this.reviewData);
+                // console.log('Data sent:', this.coverImage, this.reviewData);
                 await createReviewForAuthenticatedUser(this.coverImage, this.reviewData);
                 this.$router.push('/feed');
             } catch (error) {

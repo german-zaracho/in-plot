@@ -86,26 +86,12 @@ export default {
             }
         },
     },
-    // async mounted() {
-    //     try {
-    //         console.log('userId', this.userId);
-    //         this.reviews = await getReviewsByUser(this.userId);
-    //     } catch (error) {
-    //         console.error(`[UserReviews.vue] Error fetching reviews for user ${this.userId}: `, error);
-    //     } finally {
-    //         this.loading = false;
-    //     }
-    // },
 };
 </script>
 
 <template>
     <section class="p-4">
         <h2 class="text-xl text-white font-bold mb-4">My Reviews</h2>
-
-        <!-- <div v-if="loading" class="m-auto flex flex-col items-center">
-            <SkeletonReview class="w-full h-20 rounded-lg mb-4" v-for="n in 1" :key="n" />
-        </div> -->
 
         <div v-if="reviews.length === 0" class="m-auto flex flex-row">
             <div v-if="loading" class="mr-[5px]">

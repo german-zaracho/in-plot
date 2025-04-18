@@ -33,18 +33,18 @@ export default {
         formatDate(date) {
             if (!date) return null;
 
-            // Si es un Timestamp de Firestore
+            // If it is a Firestore Timestamp
             if (date.seconds && typeof date.toDate === 'function') {
                 date = date.toDate();
             } else if (!(date instanceof Date)) {
-                // Si es string u otro formato, intentar parsearlo
+                // If it is a string or other format, try to parse it.
                 date = new Date(date);
             }
 
-            // Evitar formatear fechas inválidas
+            // Avoid formatting invalid dates
             if (isNaN(date)) return null;
 
-            //para mantener la fecha y hora del comentario luego de editarlo
+            // To keep the date and time of the comment after editing it
             const formatter = new Intl.DateTimeFormat('es-AR', {
                 day: '2-digit',
                 month: '2-digit',
@@ -76,19 +76,18 @@ export default {
             }
         },
         updateComment(commentId, newText) {
-            this.$emit('updateComment', commentId, newText); // new
+            this.$emit('updateComment', commentId, newText);
         }
     },
     mounted() {
-        // Ocultar el loader después de 2 segundos
+        // Hide loader after 2 seconds
         setTimeout(() => {
             this.showLoader = false;
         }, 2000);
 
         this.unsubscribeFromAuth = subscribeToAuth((userData) => {
-            console.log('asdaaaa');
             this.loggedUser = userData;
-            console.log("logged", this.loggedUser);
+            // console.log("logged", this.loggedUser);
         });
         
     },

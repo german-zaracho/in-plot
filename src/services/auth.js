@@ -1,7 +1,6 @@
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, getFileURL, uploadFile } from "./firebase";
 import { editUserProfile, getUserProfileById, createUserProfile } from "./user-profile";
-import { getFileURL, uploadFile } from "./file-storage";
 import { createNewReview } from './media-reviews';
 
 //Check the different errors in the documentation to add messages

@@ -30,7 +30,7 @@ export default {
                 await login({ ...this.user, });
 
                 this.$router.push('/myProfile');
-                console.log("redirecciono correctamente");
+                console.log("redirect correctly");
             } catch (error) {
                 this.feedback.message = error;
                 console.error("[Login handleSubmit] Error authenticating user: ", error);

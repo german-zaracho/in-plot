@@ -1,8 +1,6 @@
 import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, getDocs, query, orderBy, deleteDoc } from "firebase/firestore";
-import { storage, db } from "./firebase";
-import { auth } from "./firebase";
+import { storage, db, auth, getFileURL, uploadFile } from "./firebase";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { getFileURL, uploadFile } from "./file-storage";
 
 /**
  * 

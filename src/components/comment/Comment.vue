@@ -9,7 +9,7 @@ export default {
     props: {
         reviewId: { type: String, required: true, }
     },
-    emits: ['updateComment'], //new
+    emits: ['updateComment'],
     data() {
         return {
             comments: [],
@@ -27,7 +27,7 @@ export default {
         },
         updateComment(commentId, newText) {
             updateChatComment(this.reviewId, commentId, newText);
-            this.$emit('updateComment', { commentId, newText }); //new
+            this.$emit('updateComment', { commentId, newText });
         }
     },
     async mounted() {
@@ -36,13 +36,10 @@ export default {
             this.unsubscribeFromComments = await subscribeToReviewComments(
                 this.reviewId,
                 (newComments) => {
-                    // this.comments = newComments;
                     this.comments = newComments.map(comment => ({
                         ...comment,
-                        // created_at: comment.created_at?.toDate?.() || new Date()
-                        // created_at: comment.created_at instanceof Date ? comment.created_at : new Date(comment.created_at)
                         created_at: comment.created_at?.toDate?.() || new Date(comment.created_at)
-                    })); //new
+                    }));
                 }
             );
             // console.log('Subscribed to comments for Review ID', this.reviewId);
