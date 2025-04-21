@@ -1,5 +1,6 @@
 <script>
-import { editMyProfile, subscribeToAuth } from '../services/auth';
+import { subscribeToAuth } from '../services/auth';
+import { editMyProfile } from '../services/user-profile';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
 

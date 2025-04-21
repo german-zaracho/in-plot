@@ -16,9 +16,9 @@ export default {
             showTooltip: false,
         };
     },
-    created() {
-        console.log('[UserReviews.vue] loggedUser:', this.loggedUser);
-    },
+    // created() {
+    //     console.log('[UserReviews.vue] loggedUser:', this.loggedUser);
+    // },
 }
 </script>
 <template>

@@ -1,7 +1,6 @@
 <script>
 import Loader from '../components/Loader.vue';
-import { editMyProfilePhoto } from '../services/auth';
-
+import { editMyProfilePhoto } from '../services/user-profile';
 export default {
     name: 'MyProfileEditPhoto',
     components: { Loader },

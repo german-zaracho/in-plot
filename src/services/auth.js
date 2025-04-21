@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, getFileURL, uploadFile } from "./firebase";
-import { editUserProfile, getUserProfileById, createUserProfile } from "./user-profile";
+import { auth} from "./firebase";
+import { getUserProfileById, createUserProfile } from "./user-profile";
 import { createNewReview } from './media-reviews';
 
 //Check the different errors in the documentation to add messages
@@ -101,58 +101,6 @@ export async function login({ email, password }) {
 
 }
 
-/**
- * Modifies the values ​​of the authenticated user
- * @param {{ displayName: string, favMovie: string, favSeries: string, anAdditionalComment: string }} data
- */
-export async function editMyProfile({ displayName, favMovie, favSeries, anAdditionalComment }) {
-
-    try {
-        const promiseAuth = updateProfile(auth.currentUser, { displayName });
-        const promiseStore = editUserProfile(userData.id, { displayName, favMovie, favSeries, anAdditionalComment });
-        await Promise.all([promiseAuth, promiseStore]);
-        updateUserData({
-            ...userData,
-            displayName,
-            favMovie,
-            favSeries,
-            anAdditionalComment,
-        });
-    } catch (error) {
-        console.error("[auth.js editMyProfile] Error editing user profile: ", error);
-        throw error;
-    }
-
-}
-
-/**
- * 
- * @param {File} photo 
- */
-export async function editMyProfilePhoto(photo) {
-
-    try {
-        // console.log('photo', photo);
-
-        const filepath = `users/${userData.id}/avatar.jpg`;
-
-        await uploadFile(filepath, photo);
-
-        const photoURL = await getFileURL(filepath);
-        const promiseAuth = updateProfile(auth.currentUser, { photoURL });
-        const promiseFirestore = editUserProfile(userData.id, { photoURL });
-
-        await Promise.all([promiseAuth, promiseFirestore]);
-
-        updateUserData({ photoURL });
-
-    } catch (error) {
-        console.error('[auth.js editMyProfilePhoto] Error editing profile photo: ', error);
-        throw error;
-    }
-
-}
-
 export async function logout() {
     return signOut(auth);
 }
@@ -200,7 +148,7 @@ function notifyAll() {
 /**
  * @param {{}} newData 
  */
-function updateUserData(newData) {
+export async function updateUserData(newData) {
 
     userData = {
         ...userData,
