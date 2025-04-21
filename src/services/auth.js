@@ -5,7 +5,7 @@ import { createNewReview } from './media-reviews';
 
 //Check the different errors in the documentation to add messages
 const AUTH_ERROR_MESSAGES = {
-    'auth/invalid-credential': 'The credentials entered do not match our records.',
+    'auth/invalid-credential': 'The credentials are invalid.',
     'auth/missing-password': 'The password cannot be empty.',
     'auth/invalid-email': 'The email does not have a valid email format.',
 }
@@ -81,10 +81,9 @@ export async function login({ email, password }) {
 
     try {
 
-        // await signInWithEmailAndPassword(auth, email, password);
         const credentials = await signInWithEmailAndPassword(auth, email, password);
 
-        // Esperar a que el usuario esté correctamente autenticado
+        // Wait for the user to be successfully authenticated
         await new Promise((resolve) => {
             const unsubscribe = onAuthStateChanged(auth, (user) => {
                 if (user) {
@@ -97,7 +96,6 @@ export async function login({ email, password }) {
 
     } catch (error) {
         console.error("[auth.js login] Authentication error: ", error);
-        //example of how to do it
         throw AUTH_ERROR_MESSAGES[error.code] ?? error;
     }
 
@@ -154,49 +152,6 @@ export async function editMyProfilePhoto(photo) {
     }
 
 }
-
-// /**
-//  * Creates a new review for the authenticated user.
-//  * @param {File}
-//  * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
-//  */
-// export async function createReviewForAuthenticatedUser(coverImage, data) {
-
-//     try {
-//         // console.log('cover', cover, 'data', data);
-//         const user = auth.currentUser;
-
-//         if (!user) {
-//             console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
-//             throw error;
-//         }
-
-//         let coverImageURL = '';
-
-//         if (coverImage) {
-
-//             const folderPath = `reviews/${user.uid}/`;
-//             const filePath = `${folderPath}${Date.now()}_cover.jpg`;
-//             await uploadFile(filePath, coverImage);
-//             coverImageURL = await getFileURL(filePath);
-
-//         }
-
-//         const fullReviewData = {
-//             ...data,
-//             coverURL: coverImageURL || '',
-//         };
-
-//         await createNewReview(userData.id, fullReviewData);
-
-//         console.log('Review created successfully!');
-//     } catch (error) {
-//         console.error('[auth.js createReviewForAuthenticatedUser] Error creating review:', error);
-//         throw error;
-//     }
-
-// }
-
 
 export async function logout() {
     return signOut(auth);

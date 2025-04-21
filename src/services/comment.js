@@ -66,7 +66,7 @@ export async function subscribeToReviewComments(reviewId, callback) {
     const commentsQuery = query(commentsRef, orderBy('created_at'));
 
     return onSnapshot(commentsQuery, async (snapshot) => {
-        // changes "Promise.all" no coherence
+        // In theory, the Snapshot mapping is an array of promises
         const comments = await Promise.all(
             snapshot.docs.map(async (doc) => {
 
@@ -104,7 +104,7 @@ export async function subscribeToReviewComments(reviewId, callback) {
 
 }
 
-//new para actualizar los comentarios al editarlos
+// To update comments when editing them
 /**
  * 
  * @param {string} reviewId 
@@ -124,20 +124,20 @@ export async function deleteChatComment(reviewId, commentId) {
     try {
 
         if (!reviewId || !commentId) {
-            throw new Error("reviewId o commentId es inválido.");
+            throw new Error("reviewId or commentId is invalid.");
         }
 
         const chatDoc = await getChatCommentDoc(reviewId);
 
         if (!chatDoc || !chatDoc.id) {
-            throw new Error("No se encontró el documento del chat con reviewId: ${reviewId}");
+            throw new Error(`Chat document with reviewId: ${reviewId} not found`);
         }
 
         const commentRef = doc(db, `comments/${chatDoc.id}/actualComments`, commentId);
         await deleteDoc(commentRef);
-        console.log(`Comentario ${commentId} eliminado correctamente.`);
+        console.log(`Comment ${commentId} successfully deleted.`);
     } catch (error) {
-        console.error("Error eliminando el comentario:", error);
+        console.error("Error deleting comment:", error);
     }
 }
 
@@ -145,26 +145,26 @@ export async function deleteAllComments(reviewId) {
     try {
         const chatDoc = await getChatCommentDoc(reviewId);
         if (!chatDoc || !chatDoc.id) {
-            throw new Error(`No se encontró el documento de comentarios para reviewId: ${reviewId}`);
+            throw new Error(`Comment document not found for reviewId: ${reviewId}`);
         }
 
-        // Obtener todos los comentarios dentro de actualComments
+        // Get all comments within actualComments
         const commentsRef = collection(db, `comments/${chatDoc.id}/actualComments`);
         const commentsSnapshot = await getDocs(commentsRef);
 
-        // Eliminar todos los documentos dentro de actualComments
+        // Delete all documents within currentComments
         const deletePromises = commentsSnapshot.docs.map((commentDoc) =>
             deleteDoc(doc(db, `comments/${chatDoc.id}/actualComments/${commentDoc.id}`))
         );
         await Promise.all(deletePromises);
 
-        // Finalmente, eliminar el documento de comentarios
+        // Finally, delete the comments document
         await deleteDoc(doc(db, `comments/${chatDoc.id}`));
 
-        console.log(`Todos los comentarios y el documento de comentarios de reviewId: ${reviewId} han sido eliminados.`);
+        console.log(`All comments and the comments document for reviewId: ${reviewId} have been deleted.`);
         return true;
     } catch (error) {
-        console.error("Error eliminando todos los comentarios:", error);
+        console.error("Error deleting all comments:", error);
         return false;
     }
 }
