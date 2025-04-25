@@ -1,7 +1,6 @@
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth} from "./firebase";
 import { getUserProfileById, createUserProfile } from "./user-profile";
-import { createNewReview } from './media-reviews';
 
 //Check the different errors in the documentation to add messages
 const AUTH_ERROR_MESSAGES = {

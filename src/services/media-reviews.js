@@ -114,29 +114,14 @@ export async function getReviewsByUser(userId) {
 // Compares the params and returns the review information
 export async function getReviewById(id) {
 
-    const reviewRef = doc(db, "media-reviews", id);
-    const reviewSnapshot = await getDoc(reviewRef);
+    const allReviews = await getAllReviews();
+    const review = allReviews.find(review => review.id === id);
 
-    if (reviewSnapshot.exists()) {
-        const reviewData = reviewSnapshot.data();
-        let displayName = null;
-
-        const userProfileRef = doc(db, "user-profiles", reviewData.user_id);
-        const userProfileDoc = await getDoc(userProfileRef);
-
-        if (userProfileDoc.exists()) {
-            const userProfile = userProfileDoc.data();
-            displayName = userProfile.displayName || userProfile.email;
-        }
-
-        return {
-            id: reviewSnapshot.id,
-            ...reviewData,
-            displayName,
-        };
-    } else {
+    if (!review) {
         throw new Error("Review not found");
     }
+
+    return review;
 
 }
 
