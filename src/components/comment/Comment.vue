@@ -65,7 +65,7 @@ export default {
             <CommentList :theComments="comments" :reviewId="reviewId" @update-comment="updateComment" />
         </section>
         <section class="">
-            <CommentForm @new-comment="addComment" />
+            <CommentForm @new-comment="addComment" :reviewId="reviewId" />
         </section>
     </div>
 </template>
