@@ -1,5 +1,5 @@
 <script>
-import { createReviewForAuthenticatedUser } from '../services/media-reviews';
+import { createNewReview } from '../services/media-reviews';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
 
@@ -37,7 +37,7 @@ export default {
 
             try {
                 // console.log('Data sent:', this.coverImage, this.reviewData);
-                await createReviewForAuthenticatedUser(this.coverImage, this.reviewData);
+                await createNewReview(this.coverImage, this.reviewData);
                 this.$router.push('/feed');
             } catch (error) {
                 console.error('[NewReview handleSubmit] Error trying to create a new review:: ', error);

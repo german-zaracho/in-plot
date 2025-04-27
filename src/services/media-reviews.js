@@ -3,33 +3,11 @@ import { storage, db, auth, getFileURL, uploadFile } from "./firebase";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 /**
- * 
- * @param { string } id 
- * @param {{ title: string, synopsis: string, trailer: string, year: string, coverURL: string, contentType: string, }} data 
- */
-export async function createNewReview(id, { title, synopsis, trailer, year, coverURL, contentType }) {
-
-    const reviewRef = collection(db, `media-reviews`);
-
-    await addDoc(reviewRef, {
-        user_id: id,
-        title,
-        synopsis,
-        trailer,
-        year,
-        contentType,
-        coverURL,
-        created_at: serverTimestamp(),
-    });
-
-}
-
-/**
  * Creates a new review for the authenticated user.
- * @param {File} coverImage 
- * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string, }} data
+ * @param {File|null} coverImage - Optional cover image file
+ * @param {{ title: string, synopsis: string, trailer: string, year: string, contentType: string }} data
  */
-export async function createReviewForAuthenticatedUser(coverImage, data) {
+export async function createNewReview(coverImage, data) {
     try {
         const user = auth.currentUser;
 
@@ -46,19 +24,26 @@ export async function createReviewForAuthenticatedUser(coverImage, data) {
             coverImageURL = await getFileURL(filePath);
         }
 
-        const fullReviewData = {
-            ...data,
-            coverURL: coverImageURL || '',
-        };
+        const reviewRef = collection(db, "media-reviews");
 
-        await createNewReview(user.uid, fullReviewData);
+        await addDoc(reviewRef, {
+            user_id: user.uid,
+            title: data.title,
+            synopsis: data.synopsis,
+            trailer: data.trailer,
+            year: data.year,
+            contentType: data.contentType,
+            coverURL: coverImageURL || '',
+            created_at: serverTimestamp(),
+        });
 
         console.log('Review created successfully!');
     } catch (error) {
-        console.error('[media-reviews.js createReviewForAuthenticatedUser] Error creating review:', error);
+        console.error('[media-reviews.js createNewReview] Error creating review:', error);
         throw error;
     }
 }
+
 
 /**
  * 
