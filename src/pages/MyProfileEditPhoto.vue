@@ -53,11 +53,11 @@ export default {
         <form class="w-1/2" action="#" @submit.prevent="handleSubmit">
             <div class="mb-4">
                 <label class="block mb-2 text-white" for="photo">New Photo</label>
-                <input type="file" id="photo" class="w-full p-2 border rounded text-white" @change="handleFileSelection">
+                <input type="file" id="photo" class="w-full p-2 border rounded text-white focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]" @change="handleFileSelection">
             </div>
 
             <button type="submit"
-                class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421]">
+                class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
                 <span v-if="!editing">Update my profile</span>
                 <div v-else class="flex flex-row items-center ">Updating my profile
                     <Loader />

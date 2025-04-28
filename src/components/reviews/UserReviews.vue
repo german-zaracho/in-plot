@@ -102,7 +102,7 @@ export default {
 
         <ul v-else class="">
             <li v-for="review in reviews" :key="review.id"
-                class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
+                class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px] focus:bg-[#3c2f2d]">
 
                 <div
                     class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
@@ -118,10 +118,10 @@ export default {
                             </p>
                         </div>
 
-                        <div class="flex">
+                        <div class="flex m-[2px]">
 
                             <a v-if="review.trailer" :href="review.trailer"
-                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[#f1c421] "
                                 target="_blank">
                                 Watch Trailer
                             </a>
@@ -133,7 +133,7 @@ export default {
                         class="absolute top-0 right-0 bg-yellow-500 text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
                         <router-link @mouseenter="toggleUserName(review.id, true)"
                             @mouseleave="toggleUserName(review.id, false)"
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-yellow-500 text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%] focus:outline-none focus:ring-2 focus:ring-yellow-300"
                             aria-label="See the creator's profile" :to="`/users/${review.id}/editMyReview`">
 
                             <span class="material-symbols-rounded m-2">edit</span>
@@ -166,7 +166,7 @@ export default {
                         <div class="flex flex-row justify-between">
 
                             <button type="button"
-                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]"
                                 @click="toggleSynopsis(review.id)">
                                 {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
                             </button>
@@ -174,7 +174,7 @@ export default {
                             <div class="flex flex-row justify-between">
 
                                 <button type="button"
-                                    class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
+                                    class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10 focus:outline-none focus:ring-2 focus:ring-red-400"
                                     @click="toggleComment(review.id)">
                                     <span class="material-symbols-rounded">chat</span>
                                 </button>

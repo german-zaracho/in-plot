@@ -44,15 +44,15 @@ export default {
 
         <div class="mb-4">
             <label class="block mb-2 text-white" for="email">Email</label>
-            <input type="email" id="email" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading" v-model="user.email">
+            <input type="email" id="email" class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]" :readonly="loading" v-model="user.email">
         </div>
 
         <div class="mb-4">
             <label class="block mb-2 text-white" for="password">Password</label>
-            <input type="password" id="password" class="w-full p-2 border rounded read-only:bg-gray-200" :readonly="loading" v-model="user.password">
+            <input type="password" id="password" class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]" :readonly="loading" v-model="user.password">
         </div>
 
-        <button type="submit" class="flex flex-row items-center transition py-2 px-4 rounded-lg  bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421]">
+        <button type="submit" class="flex flex-row items-center transition py-2 px-4 rounded-lg  bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
             <span v-if="!loading">Register</span>
             <div v-else class="flex flex-row items-center">Registering
                 <Loader />

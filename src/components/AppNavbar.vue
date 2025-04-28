@@ -60,18 +60,18 @@ export default {
                 <div class="flex items-center">
                     <div class="flex items-center mr-[20px]">
                         <img class="h-10 w-10 mr-[10px]" src="./../../inPlot.ico" alt="logo">
-                        <router-link :to="{ name: 'home' }" class=" text-white text-xl logo">
+                        <router-link :to="{ name: 'home' }" class=" text-white text-xl logo focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:rounded-lg">
                             In<span class="text-[#f1c421]">Plot</span>
                         </router-link>
                     </div>
                     <div class="hidden md:block">
                         <ul class="flex items-center space-x-4 font-medium text-[#f1c421]">
                             <template v-if="loggedUser.id">
-                                <li class="bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/feed">Media Reviews</router-link></li>
+                                <li><router-link class="py-2 px-4  rounded-lg items-center transition bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]" to="/feed">Media Reviews</router-link></li>
                             </template>
                             <template v-if="!loggedUser.id">
-                                <li class="bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/register">Register</router-link></li>
-                                <li class="bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] rounded-lg p-[5px] m-2"><router-link class="py-2 px-4" to="/login">Log in</router-link></li>
+                                <li><router-link class="py-2 px-4  rounded-lg items-center transition bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]" to="/register">Register</router-link></li>
+                                <li><router-link class="items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]" to="/login">Log in</router-link></li>
                             </template>
                         </ul>
                     </div>
@@ -91,7 +91,7 @@ export default {
                                 <li><router-link class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]" to="/myProfile">My Profile</router-link></li>
                                 <li class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]">
                                     <form @submit.prevent="handleLogout">
-                                        <button type="submit" class="py-2 px-4 ">Log out</button>
+                                        <button type="submit" class="py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">Log out</button>
                                     </form>
                                 </li>
                             </ul>
@@ -133,18 +133,18 @@ export default {
                 <ul class="text-white flex flex-col items-center">
                     
                     <template v-if="loggedUser.id !== null">
-                        <li><router-link class="block py-2 px-4" to="/feed">Media Reviews</router-link></li>
-                        <li><router-link class="block py-2 px-4" to="/myProfile">My Profile</router-link></li>
+                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/feed">Media Reviews</router-link></li>
+                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/myProfile">My Profile</router-link></li>
                         <li>
                             <form action="#" @submit.prevent="handleLogout">
-                                <button type="submit" class="block py-2 px-4">{{ loggedUser.email }} (Log out)</button>
+                                <button type="submit" class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">{{ loggedUser.email }} (Log out)</button>
                             </form>
                         </li>
                     </template>
 
                     <template v-else>
-                        <li><router-link class="block py-2 px-4" to="/register">Register</router-link></li>
-                        <li><router-link class="block py-2 px-4" to="/login">Log in</router-link></li>
+                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/register">Register</router-link></li>
+                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/login">Log in</router-link></li>
                     </template>
                 </ul>
 

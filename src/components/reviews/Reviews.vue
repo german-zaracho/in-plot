@@ -135,7 +135,7 @@ computed: {
             <h1 class="text-2xl font-bold mb-4 text-white">All Reviews</h1>
 
             <router-link
-                class="mb-4 text-[#f1c421] hover:text-[wheat]  rounded-lg bg-[#272120] hover:bg-[#3c2f2d] py-2 px-4"
+                class="mb-4 text-[#f1c421] hover:text-[wheat]  rounded-lg bg-[#272120] hover:bg-[#3c2f2d] py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]"
                 to="/newReview">Create a new review</router-link>
         </div>
 
@@ -165,9 +165,9 @@ computed: {
                                 No cover available
                             </p>
                         </div>
-                        <div class="flex">
+                        <div class="flex m-[2px]">
                             <a v-if="review.trailer" :href="review.trailer"
-                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]"
                                 target="_blank">
                                 Watch Trailer
                             </a>
@@ -177,7 +177,7 @@ computed: {
                     <div v-if="userRole === 'admin'"
                         class="absolute top-0 left-0 bg-red-gradient text-black font-bold text-xs uppercase filter rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]">
                         <router-link
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-red-gradient text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%]"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-red-gradient text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-tl-[20px] hover:rounded-br-[20%_100%] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]"
                             aria-label="Edit Review" :to="`/users/${review.id}/editMyReview`">
                             <span class="material-symbols-rounded m-2">edit</span>
                             <span
@@ -190,7 +190,7 @@ computed: {
                     <div v-if="userRole === 'admin'"
                         class="absolute top-0 left-[47%] bg-red-gradient text-black font-bold text-xs uppercase filter rounded-br-[50%_75%] rounded-bl-[20px] hover:rounded-br-[20%_100%]">
                         <button @click="openDeleteModal(review.id)"
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-red-gradient text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-bl-[20px] hover:rounded-br-[20%_100%]">
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-red-gradient text-white overflow-hidden transition-[padding-right,width, padding-left] duration-300 ease-in-out hover:w-[180px] pr-[8px] pl-[8px] rounded-br-[50%_75%] rounded-bl-[20px] hover:rounded-br-[20%_100%] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]">
                             <span class="material-symbols-rounded m-2 ml-[14px] ">delete</span>
                             <span
                                 class="mr-2 overflow-hidden inline-block text-white transition-all duration-[1000ms] ease-in-out whitespace-nowrap">Delete
@@ -203,8 +203,8 @@ computed: {
                             <p class="mb-4">Are you sure you want to delete the following review?</p>
                             <div class="flex justify-end space-x-2">
                                 <button @click="confirmDelete"
-                                    class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-                                <button @click="showModal = false" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                                    class="bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400">Delete</button>
+                                <button @click="showModal = false" class="bg-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -213,7 +213,7 @@ computed: {
                         class="absolute top-0 right-0 bg-[#f1c421] text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
                         <router-link @mouseenter="toggleUserName(review.id, true)"
                             @mouseleave="toggleUserName(review.id, false)"
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-[#f1c421] text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-[#f1c421] text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:underline"
                             aria-label="See the creator's profile"
                             :to="review.user_id === userId ? '/myProfile' : `/users/${review.user_id}`">
                             <span class="material-symbols-rounded m-2">person</span>
@@ -248,7 +248,7 @@ computed: {
                         <div class="flex flex-row justify-between">
 
                             <button type="button"
-                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md"
+                                class="text-[#f1c421] hover:text-[#f1c421] mt-2 block bg-[#272120] hover:bg-[#3c2f2d] max-w-[150px] p-2 text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
                                 @click="toggleSynopsis(review.id)">
                                 {{ expandedSynopsis[review.id] ? 'Read less' : 'Read more' }}
                             </button>
@@ -256,7 +256,7 @@ computed: {
                             <div class="flex flex-row justify-between">
 
                                 <button type="button"
-                                    class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10"
+                                    class="flex items-center justify-center w-10 h-10 mt-[7px] bg-red-gradient text-white rounded-full hover:bg-[#BC2B41] shadow-2xl ring-2 ring-black ring-opacity-10 focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
                                     @click="toggleComment(review.id)">
                                     <span class="material-symbols-rounded">chat</span>
                                 </button>

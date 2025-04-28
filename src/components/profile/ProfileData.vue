@@ -35,7 +35,7 @@ export default {
 
                 <div v-if="isMyProfile" class="absolute bottom-0 right-0 flex items-center justify-center border-[2px] border-[#BC2B41] rounded-[20px]  ">
                     <router-link @mouseenter="showTooltip = true" @mouseleave="showTooltip = false"
-                        class="relative flex items-center justify-center h-8 w-8 rounded-full bg-[#272120] hover:bg-[#3c2f2d] text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px]"
+                        class="relative flex items-center justify-center h-8 w-8 rounded-full bg-[#272120] hover:bg-[#3c2f2d] text-white overflow-hidden transition-[padding-left,width] duration-300 ease-in-out hover:w-[160px] pl-[5.5px] hover:pl-[0px] focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
                         aria-label="Edit my photo" to="/myProfile/edit/photo">
 
                         <span class="material-symbols-rounded text-[#f1c421]">edit</span>
