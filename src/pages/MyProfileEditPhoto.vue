@@ -21,7 +21,7 @@ export default {
             try {
                 //console.log('photo', this.editData.photo);
                 await editMyProfilePhoto(this.editData.photo);
-                this.$router.push('/myProfile');
+                this.$router.push({ path: '/myProfile', query: { profileEdited: 'profilePhotoEdited' } });
             } catch (error) {
                 console.error('[MyProfileEditPhoto handleSubmit] Error editing profile photo: ', error);
             }
@@ -49,7 +49,7 @@ export default {
 <template>
     <h1 class="mb-[20px] font-bold text-center text-white">Edit my Profile Photo</h1>
 
-    <div class="flex gap-4 shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px]">
+    <div class="flex gap-4 shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] rounded-[20px] ">
         <form class="w-1/2" action="#" @submit.prevent="handleSubmit">
             <div class="mb-4">
                 <label class="block mb-2 text-white" for="photo">New Photo</label>

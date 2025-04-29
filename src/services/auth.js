@@ -6,7 +6,9 @@ import { getUserProfileById, createUserProfile } from "./user-profile";
 const AUTH_ERROR_MESSAGES = {
     'auth/invalid-credential': 'The credentials are invalid.',
     'auth/missing-password': 'The password cannot be empty.',
-    'auth/invalid-email': 'The email does not have a valid email format.',
+    'auth/missing-email': 'The email cannot be empty.',
+    'auth/invalid-email': 'The email is empty or does not have a valid format.',
+    'auth/email-already-in-use': 'The email is already in use.',
 }
 
 let userData = {
@@ -71,7 +73,7 @@ export async function register({ email, password, role = 'user' }) {
         // console.log('id', credentials.user.uid);
     } catch (error) {
         console.error("[auth.js register] Error trying to register user: ", error);
-        throw error;
+        throw AUTH_ERROR_MESSAGES[error.code] ?? error;
     }
 
 }
@@ -81,7 +83,6 @@ export async function login({ email, password }) {
     try {
 
         const credentials = await signInWithEmailAndPassword(auth, email, password);
-
         // Wait for the user to be successfully authenticated
         await new Promise((resolve) => {
             const unsubscribe = onAuthStateChanged(auth, (user) => {

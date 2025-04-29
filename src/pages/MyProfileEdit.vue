@@ -29,7 +29,7 @@ export default {
 
             try {
                 await editMyProfile({ ...this.editData });
-                this.$router.push('/myProfile');
+                this.$router.push({ path: '/myProfile', query: { profileEdited: 'profileEdited' } });
             } catch (error) {
                 console.error('[MyProfileEdit handleSubmit] Error editing profile: ', error);
             }

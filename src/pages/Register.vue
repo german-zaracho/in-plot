@@ -12,6 +12,9 @@ export default {
                 password: '',
             },
             loading: false,
+            feedback: {
+                message: null,
+            }
         };
     },
     methods: {
@@ -19,6 +22,7 @@ export default {
 
             if (this.loading) return;
 
+            this.feedback.message = null;
             this.loading = true;
 
             try {
@@ -27,6 +31,7 @@ export default {
                 });
                 this.$router.push('/myProfile');
             } catch (error) {
+                this.feedback.message = error;
                 console.error("[Login handleSubmit] Authentication error: ", error);
             }
 
@@ -38,6 +43,11 @@ export default {
 </script>
 
 <template>
+
+    <div v-if="feedback.message !== null" class="p-4 mb-4 bg-red-200 rounded">
+        {{ feedback.message }}
+    </div>
+
     <h1 class="mb-[20px] font-bold text-center text-white">Create your account</h1>
 
     <form action="#" @submit.prevent="handleSubmit" class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] m-auto max-w-[600px] rounded-[20px] bg-dark-gradient">
