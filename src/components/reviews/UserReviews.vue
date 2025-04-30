@@ -32,9 +32,9 @@ export default {
             },
         },
     },
-    created() {
-        console.log('[UserReviews.vue] userRole:', this.userRole);
-    },
+    // created() {
+    //     console.log('[UserReviews.vue] userRole:', this.userRole);
+    // },
     methods: {
         /**
          * 

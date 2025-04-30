@@ -20,7 +20,10 @@ export default {
 
             try {
                 //console.log('photo', this.editData.photo);
-                await editMyProfilePhoto(this.editData.photo);
+                // await editMyProfilePhoto(this.editData.photo);
+                if (this.editData.photo) {
+                    await editMyProfilePhoto(this.editData.photo);
+                }
                 this.$router.push({ path: '/myProfile', query: { profileEdited: 'profilePhotoEdited' } });
             } catch (error) {
                 console.error('[MyProfileEditPhoto handleSubmit] Error editing profile photo: ', error);
@@ -53,7 +56,9 @@ export default {
         <form class="w-1/2" action="#" @submit.prevent="handleSubmit">
             <div class="mb-4">
                 <label class="block mb-2 text-white" for="photo">New Photo</label>
-                <input type="file" id="photo" class="w-full p-2 border rounded text-white focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]" @change="handleFileSelection">
+                <input type="file" id="photo"
+                    class="w-full p-2 border rounded text-white focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
+                    @change="handleFileSelection">
             </div>
 
             <button type="submit"
