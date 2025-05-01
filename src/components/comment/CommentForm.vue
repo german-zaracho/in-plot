@@ -1,11 +1,13 @@
 <script>
 import { subscribeToAuth } from '../../services/auth';
+import Loader from '../Loader.vue';
 
-let unsubscribeFromAuth = () => {};
+let unsubscribeFromAuth = () => { };
 
 export default {
     name: 'CommentForm',
-    emits: ['new-comment'],
+    components: { Loader },
+    emits: ['newComment'],
     props: {
         reviewId: {
             type: String,
@@ -23,7 +25,7 @@ export default {
                 favSeries: null,
                 anAdditionalComment: null,
             },
-
+            commenting: false,
             newComment: {
                 text: '',
             },
@@ -31,10 +33,14 @@ export default {
     },
     methods: {
         handleSubmit() {
+            this.commenting = true;
             // We check if the text field is empty, if so we return.
-            if (!this.newComment.text.trim()) return;
+            if (!this.newComment.text.trim()) {
+                this.commenting = false;
+                return;
+            };
             // We emit the "new-comment" event, sending the form data.
-            this.$emit('new-comment', {
+            this.$emit('newComment', {
                 user_id: this.loggedUser.id,
                 email: this.loggedUser.email,
                 text: this.newComment.text,
@@ -42,6 +48,11 @@ export default {
 
             // reset the text field
             this.newComment.text = '';
+
+            setTimeout(() => {
+                this.commenting = false;
+            }, 1000);
+
         },
     },
     mounted() {
@@ -54,15 +65,20 @@ export default {
 </script>
 
 <template>
-    <form action="#" @submit.prevent="handleSubmit" class="flex flex-col sm:flex-row w-full items-center justify-center shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-[20px]">
+    <form action="#" @submit.prevent="handleSubmit"
+        class="flex flex-col sm:flex-row w-full items-center justify-center shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-[20px]">
         <div class="mb-4 w-full flex flex-col justify-center">
             <label class="block mb-2 text-white" :for="`text-${reviewId}`">Comment</label>
-            <textarea :id="`text-${reviewId}`" class="w-10/12 min-h-20 p-2 border rounded m-auto focus:outline-none focus:ring-2 focus:ring-[#f1c421]" v-model="newComment.text"></textarea>
+            <textarea :id="`text-${reviewId}`"
+                class="w-10/12 min-h-20 p-2 border rounded m-auto focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
+                v-model="newComment.text"></textarea>
         </div>
-        <button type="submit"
-            :disabled="!newComment.text.trim()"
+        <button type="submit" :disabled="!newComment.text.trim()"
             class="min-w-[150px] max-h-[40px] transition py-2 px-4 rounded-lg text-[#272120] hover:text-[#3c2f2d] bg-[#f1c421] hover:bg-[#fadc5a] font-medium disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[white]">
-            Send
+            <span v-if="!commenting">Send</span>
+            <div v-else class="flex flex-row items-center ">Sending
+                <Loader />
+            </div>
         </button>
     </form>
 </template>

@@ -62,10 +62,10 @@ export default {
 <template>
     <div class="flex flex-col gap-4 w-[90%] m-auto">
         <section class="">
-            <CommentList :theComments="comments" :reviewId="reviewId" @update-comment="updateComment" />
+            <CommentList :theComments="comments" :reviewId="reviewId" @updateComment="updateComment" />
         </section>
         <section class="">
-            <CommentForm @new-comment="addComment" :reviewId="reviewId" />
+            <CommentForm @newComment="addComment" :reviewId="reviewId" />
         </section>
     </div>
 </template>

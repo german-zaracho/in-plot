@@ -22,6 +22,8 @@ export default {
             editingCommentId: null,
             editedText: "",
             showLoader: true,
+            deletedCommentIds: [],
+            savingCommentId: null,
         };
     },
     methods: {
@@ -60,17 +62,38 @@ export default {
         },
         saveEdit(comment) {
             if (this.editedText.trim() === "" || this.editedText === comment.text) {
-                this.editingCommentId = null;
+
+                this.savingCommentId = comment.id;
+
+                setTimeout(() => {
+                    this.editingCommentId = null;
+                    this.savingCommentId = null;
+                }, 1000);
+
                 return;
             }
-            this.$emit('update-comment', comment.id, this.editedText);
-            this.editingCommentId = null;
+
+            this.savingCommentId = comment.id;
+            this.$emit('updateComment', comment.id, this.editedText);
+
+            setTimeout(() => {
+                this.editingCommentId = null;
+                this.savingCommentId = null;
+            }, 1000);
+
         },
         async deleteComment(commentId) {
             try {
 
+                // Mark as deleted only on the frontend
+                this.deletedCommentIds.push(commentId);
+                // It generates a 3 second delay and then the deleted message disappears.
+                await new Promise(resolve => setTimeout(resolve, 3000));
+
                 await deleteChatComment(this.reviewId, commentId);
+
                 this.$emit('commentDeleted', commentId);
+
             } catch (error) {
                 console.error("Error deleting comment:", error);
             }
@@ -89,7 +112,7 @@ export default {
             this.loggedUser = userData;
             // console.log("logged", this.loggedUser);
         });
-        
+
     },
     unmounted() {
         if (this.unsubscribeFromAuth) {
@@ -110,7 +133,7 @@ export default {
             <Loader v-if="showLoader" class="w-[30px] h-[30px] text-white mr-[10px]" />
             <p class="text-white">No comments yet.</p>
         </div>
-        
+
         <ul v-else class="flex flex-col items-start gap-4 max-h-[300px] overflow-y-auto">
             <li v-for="comment in theComments" :key="comment.id" :class="{
                 'self-end bg-green-200': comment.user_id === loggedUser.id,
@@ -119,29 +142,45 @@ export default {
             }" class="mb-3 rounded-[20px] p-[10px]">
 
                 <div>
-                    <router-link :to="`/users/${comment.user_id}`" class="text-blue-700 font-bold focus:outline-none focus:ring-2 focus:ring-blue-400 focus:rounded-lg">{{
-                        comment.displayName || comment.email }}</router-link>
+                    <router-link :to="`/users/${comment.user_id}`"
+                        class="text-blue-700 font-bold focus:outline-none focus:ring-2 focus:ring-blue-400 focus:rounded-lg">{{
+                            comment.displayName || comment.email }}</router-link>
                     wrote:
                 </div>
 
                 <div v-if="editingCommentId === comment.id">
-                    <input v-model="editedText" class="border p-1 w-full rounded focus:outline-none focus:ring-2 focus:ring-green-400" />
-                    <button @click="saveEdit(comment)" class="text-white bg-green-500 p-1 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-black">Save</button>
+                    <input v-model="editedText"
+                        class="border p-1 w-full rounded focus:outline-none focus:ring-2 focus:ring-green-400" />
+                    <button @click="saveEdit(comment)"
+                        class="text-white bg-green-500 p-1 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-black">
+                        <span v-if="savingCommentId !== comment.id">Save</span>
+                        <div v-else class="flex flex-row items-center ">Saving
+                            <Loader />
+                        </div>
+                    </button>
                     <button @click="editingCommentId = null"
                         class="text-white bg-gray-500 p-1 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-black">Cancel</button>
                 </div>
 
                 <div v-else>
-                    <div>{{ comment.text }}</div>
-                    <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
 
-                    <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
-                        class="text-white bg-blue-500 p-1 rounded mt-1 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">Edit</button>
+                    <div v-if="deletedCommentIds.includes(comment.id)" class="italic text-gray-600">This message has
+                        been
+                        deleted</div>
 
-                    <button v-if="loggedUser.role === 'admin'" @click="deleteComment(comment.id)"
-                        class="text-white bg-red-500 p-1 rounded mt-1 ml-2 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">
-                        Delete
-                    </button>
+                    <div v-else>
+                        <div>{{ comment.text }}</div>
+
+                        <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
+
+                        <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
+                            class="text-white bg-blue-500 p-1 rounded mt-1 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">Edit</button>
+
+                        <button v-if="loggedUser.role === 'admin'" @click="deleteComment(comment.id)"
+                            class="text-white bg-red-500 p-1 rounded mt-1 ml-2 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">
+                            Delete
+                        </button>
+                    </div>
 
                 </div>
 

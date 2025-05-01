@@ -35,6 +35,8 @@ export default {
             // console.log('Profile edited successfully!', this.feedback.message);
         } else if (this.$route?.query?.profileEdited === 'profilePhotoEdited') {
             this.feedback.message = '¡Profile Photo edited successfully!';
+        } else if (this.$route?.query?.profileEdited === 'myReviewEdited') {
+            this.feedback.message = '¡Review edited successfully!';
         }
     },
     unmounted() {

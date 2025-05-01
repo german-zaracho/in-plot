@@ -38,7 +38,7 @@ export default {
             try {
                 // console.log('Data sent:', this.coverImage, this.reviewData);
                 await createNewReview(this.coverImage, this.reviewData);
-                this.$router.push('/feed');
+                this.$router.push({ path: '/feed', query: { reviewState: 'reviewCreated' } });
             } catch (error) {
                 console.error('[NewReview handleSubmit] Error trying to create a new review:: ', error);
             }

@@ -20,7 +20,6 @@ export default {
 
             try {
                 //console.log('photo', this.editData.photo);
-                // await editMyProfilePhoto(this.editData.photo);
                 if (this.editData.photo) {
                     await editMyProfilePhoto(this.editData.photo);
                 }

@@ -65,7 +65,7 @@ export default {
                 };
                 // update the review in firestore
                 await updateReview(this.reviewId, updatedReview);
-                this.$router.push('/myProfile');
+                this.$router.push({ path: '/myProfile', query: { profileEdited: 'myReviewEdited' } });
             } catch (error) {
                 console.error('Error updating review:', error);
             }

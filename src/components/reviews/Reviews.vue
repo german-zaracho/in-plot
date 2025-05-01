@@ -89,6 +89,9 @@ export default {
                     console.log("Review successfully deleted.");
                     this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
                     this.reviewToDeleteId = null;
+                    this.$router.push({ path: '/temp' }).then(() => {
+    this.$router.replace({ path: '/feed', query: { reviewState: 'reviewDeleted' } });
+});
 
             } catch (error) {
                 console.error("Error deleting comments. The review will not be deleted.:", error);
