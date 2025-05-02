@@ -18,6 +18,7 @@ export default {
             this.isMobileMenuOpen = !this.isMobileMenuOpen;
         },
         handleLogout() {
+            this.isUserMenuOpen = false;
             this.$emit('logout');
         },
         closeUserMenuOnClickOutside(event) {
@@ -88,7 +89,7 @@ export default {
                         <div v-if="isUserMenuOpen" ref="userMenu"
                             class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-[#272120] shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
                             <ul>
-                                <li><router-link class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]" to="/myProfile">My Profile</router-link></li>
+                                <li><router-link class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]" to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
                                 <li class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]">
                                     <form @submit.prevent="handleLogout">
                                         <button type="submit" class="py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">Log out</button>
@@ -134,7 +135,7 @@ export default {
                     
                     <template v-if="loggedUser.id !== null">
                         <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/feed">Media Reviews</router-link></li>
-                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/myProfile">My Profile</router-link></li>
+                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
                         <li>
                             <form action="#" @submit.prevent="handleLogout">
                                 <button type="submit" class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">{{ loggedUser.email }} (Log out)</button>

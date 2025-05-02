@@ -29,7 +29,7 @@ export default {
             try {
                 await login({ ...this.user, });
 
-                this.$router.push('/myProfile');
+                this.$router.push({ path: '/myProfile', query: { userState: 'logged' } });
                 console.log("redirect correctly");
             } catch (error) {
                 this.feedback.message = error;

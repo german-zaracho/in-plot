@@ -60,17 +60,27 @@ export default {
                     @change="handleFileSelection">
             </div>
 
-            <button type="submit"
-                class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
-                <span v-if="!editing">Update my profile</span>
-                <div v-else class="flex flex-row items-center ">Updating my profile
-                    <Loader />
-                </div>
-            </button>
+            <div class="flex flex-row gap-4 justify-between">
+
+                <button type="submit"
+                    class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
+                    <span v-if="!editing">Update my profile</span>
+                    <div v-else class="flex flex-row items-center ">Updating my profile
+                        <Loader />
+                    </div>
+                </button>
+
+                <button type="button" @click="$router.push('/myProfile')"
+                    class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
+                    Cancel
+                </button>
+
+            </div>
+
         </form>
         <div class="w-1/2">
             <h2 class="mb-2 text-white">Preview</h2>
-            <img v-if="editData.photoPreview" :src="editData.photoPreview" alt="photo preview">
+            <img v-if="editData.photoPreview" :src="editData.photoPreview" alt="photo preview" width="300px">
         </div>
     </div>
 </template>

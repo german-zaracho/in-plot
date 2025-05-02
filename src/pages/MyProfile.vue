@@ -37,7 +37,11 @@ export default {
             this.feedback.message = '¡Profile Photo edited successfully!';
         } else if (this.$route?.query?.profileEdited === 'myReviewEdited') {
             this.feedback.message = '¡Review edited successfully!';
-        }
+        } else if (this.$route?.query?.userState === 'registered') {
+            this.feedback.message = '¡Welcome to inPlot! Your account has been created successfully.!';
+        } else if (this.$route?.query?.userState === 'logged') {
+            this.feedback.message = "Hello again! It's great to have you here.";
+        } 
     },
     unmounted() {
         unsubscribeFromAuth();

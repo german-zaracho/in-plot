@@ -29,7 +29,7 @@ export default {
                 await register({
                     ...this.user,
                 });
-                this.$router.push('/myProfile');
+                this.$router.push({ path: '/myProfile', query: { userState: 'registered' } });
             } catch (error) {
                 this.feedback.message = error;
                 console.error("[Login handleSubmit] Authentication error: ", error);

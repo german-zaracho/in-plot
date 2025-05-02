@@ -47,7 +47,7 @@ export default {
 </script>
 
 <template>
-    <h1 class="mb-[20px] font-bold text-center text-white" >Profile of {{ user.email }}</h1>
+    <h1 class="mb-[20px] font-bold text-center text-white" >Profile of {{ user.displayName ? user.displayName : user.email }}</h1>
 
     <ProfileData :loading="loading" :user="user" :isMyProfile="false" :loggedUser="loggedUser" />
     

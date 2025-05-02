@@ -46,7 +46,7 @@ export default {
             favSeries: userData.favSeries || '',
             anAdditionalComment: userData.anAdditionalComment || '',
         });
-        
+
     },
     unmounted() {
         unsubscribeFromAuth();
@@ -60,31 +60,42 @@ export default {
     <form action="#" @submit.prevent="handleSubmit">
         <div class="mb-4">
             <label class="block mb-2 text-white" for="displayName">User name</label>
-            <input type="text" id="displayName" class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
+            <input type="text" id="displayName"
+                class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.displayName">
         </div>
         <div class="mb-4">
             <label class="block mb-2 text-white" for="favMovie">Favorite movie</label>
-            <input type="text" id="favMovie" class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]" :readonly="editing"
-                v-model="editData.favMovie">
+            <input type="text" id="favMovie"
+                class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
+                :readonly="editing" v-model="editData.favMovie">
         </div>
         <div class="mb-4">
             <label class="block mb-2 text-white" for="favSeries">Favorite series</label>
-            <input type="text" id="favSeries" class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
+            <input type="text" id="favSeries"
+                class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.favSeries">
         </div>
         <div class="mb-4">
             <label class="block mb-2 text-white" for="anAdditionalComment">Additional comments</label>
-            <textarea id="anAdditionalComment" class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
+            <textarea id="anAdditionalComment"
+                class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.anAdditionalComment"></textarea>
         </div>
-        <button type="submit"
-            class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
-            <span v-if="!editing">Update my profile</span>
-            <div v-else class="flex flex-row items-center">Updating 
-                <Loader />
-            </div>
-        </button>
+        <div class="flex flex-row justify-between">
+            <button type="submit"
+                class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
+                <span v-if="!editing">Update my profile</span>
+                <div v-else class="flex flex-row items-center">Updating
+                    <Loader />
+                </div>
+            </button>
+            <button type="button" @click="$router.push('/myProfile')"
+                class="flex flex-row items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
+                Cancel
+            </button>
+        </div>
+
     </form>
-    
+
 </template>
