@@ -3,6 +3,7 @@ import { subscribeToAuth } from '../services/auth';
 import { editMyProfile } from '../services/user-profile';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
+import { validatePostFields } from '../services/validation';
 
 let unsubscribeFromAuth = () => { };
 
@@ -18,12 +19,19 @@ export default {
                 anAdditionalComment: '',
             },
             editing: false,
+            fieldErrors: {},
         }
     },
     methods: {
         async handleSubmit() {
 
             if (this.editing) return;
+
+            // Validar campos
+            const errors = validatePostFields(this.editData, ['displayName', 'favMovie', 'favSeries', 'anAdditionalComment']);
+            this.fieldErrors = errors;
+            // Si hay errores, no continuar
+            if (Object.keys(errors).length > 0) return;
 
             this.editing = true;
 
@@ -63,24 +71,28 @@ export default {
             <input type="text" id="displayName"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.displayName">
+            <p v-if="fieldErrors.displayName" class="text-red-500 text-sm mt-1">{{ fieldErrors.displayName }}</p>
         </div>
         <div class="mb-4">
             <label class="block mb-2 text-white" for="favMovie">Favorite movie</label>
             <input type="text" id="favMovie"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.favMovie">
+            <p v-if="fieldErrors.favMovie" class="text-red-500 text-sm mt-1">{{ fieldErrors.favMovie }}</p>
         </div>
         <div class="mb-4">
             <label class="block mb-2 text-white" for="favSeries">Favorite series</label>
             <input type="text" id="favSeries"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.favSeries">
+            <p v-if="fieldErrors.favSeries" class="text-red-500 text-sm mt-1">{{ fieldErrors.favSeries }}</p>
         </div>
         <div class="mb-4">
             <label class="block mb-2 text-white" for="anAdditionalComment">Additional comments</label>
             <textarea id="anAdditionalComment"
                 class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="editing" v-model="editData.anAdditionalComment"></textarea>
+            <p v-if="fieldErrors.anAdditionalComment" class="text-red-500 text-sm mt-1">{{ fieldErrors.anAdditionalComment }}</p>
         </div>
         <div class="flex flex-row justify-between">
             <button type="submit"
