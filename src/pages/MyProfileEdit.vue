@@ -27,10 +27,10 @@ export default {
 
             if (this.editing) return;
 
-            // Validar campos
+            // Validate fields
             const errors = validatePostFields(this.editData, ['displayName', 'favMovie', 'favSeries', 'anAdditionalComment']);
             this.fieldErrors = errors;
-            // Si hay errores, no continuar
+            // If there are errors, do not continue.
             if (Object.keys(errors).length > 0) return;
 
             this.editing = true;

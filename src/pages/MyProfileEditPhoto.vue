@@ -1,6 +1,7 @@
 <script>
 import Loader from '../components/Loader.vue';
 import { editMyProfilePhoto } from '../services/user-profile';
+import { validatePostFields } from '../services/validation';
 export default {
     name: 'MyProfileEditPhoto',
     components: { Loader },
@@ -11,10 +12,18 @@ export default {
                 photo: null,
                 photoPreview: null,
             },
+            fieldErrors: {},
         }
     },
     methods: {
         async handleSubmit() {
+
+            if (this.editing) return;
+
+            const errors = validatePostFields(this.editData, ['photo']);
+            this.fieldErrors = errors;
+            // If there are errors, dont continue.
+            if (Object.keys(errors).length > 0) return;
 
             this.editing = true;
 
@@ -58,6 +67,7 @@ export default {
                 <input type="file" id="photo"
                     class="w-full p-2 border rounded text-white focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                     @change="handleFileSelection">
+                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.photo }}</p>
             </div>
 
             <div class="flex flex-row gap-4 justify-between">
