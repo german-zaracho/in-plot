@@ -5,6 +5,10 @@ const VALIDATION_ERRORS = {
     anAdditionalComment: 'The comment can have between 2 and 500 characters or be empty.',
     title: 'The title is required.',
     reviewType: 'You must select whether it is a movie or a series.',
+    contentType: 'You must select whether it is a movie or a series.',
+    synopsis: 'The synopsis can have up to 500 characters or be empty.',
+    trailer: 'If provided, the trailer must start with "www.youtube.com/".',
+    year: 'The year must be a number between 1900 and 2026.',
     photo: 'Only JPEG, PNG, or WEBP files under 2MB are allowed',
 };
 
@@ -15,6 +19,10 @@ const validationSchema = {
     favSeries: { minLength: 2, maxLength: 100 },
     anAdditionalComment: { minLength: 2, maxLength: 500 },
     title: { required: true },
+    year: { type: 'number', min: 1900, max: 2026 },
+    synopsis: { maxLength: 500 },
+    trailer: { pattern: /^www\.youtube\.com\// },
+    contentType: { required: true, allowed: ['movie', 'series'] },
     reviewType: { required: true, allowed: ['movie', 'series'] },
     photo: {
         required: true,
@@ -60,6 +68,12 @@ export function validatePostFields(data, fieldsToValidate) {
             return;
         }
 
+        // Pattern validation (e.g., trailer URL)
+        if (rules.pattern && !rules.pattern.test(trimmedValue)) {
+            errors[field] = VALIDATION_ERRORS[field];
+            return;
+        }
+
         // Minimum validation
         if (rules.minLength && trimmedValue.length < rules.minLength) {
             errors[field] = VALIDATION_ERRORS[field];
@@ -75,6 +89,15 @@ export function validatePostFields(data, fieldsToValidate) {
         // Validation of allowed values
         if (rules.allowed && !rules.allowed.includes(value)) {
             errors[field] = VALIDATION_ERRORS[field];
+        }
+
+        // Type 'number' validation (year min/max)
+        if (rules.type === 'number') {
+            const numericValue = Number(value);
+            if (isNaN(numericValue) || (rules.min && numericValue < rules.min) || (rules.max && numericValue > rules.max)) {
+                errors[field] = VALIDATION_ERRORS[field];
+                return;
+            }
         }
     });
 

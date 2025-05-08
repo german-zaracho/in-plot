@@ -20,6 +20,7 @@ export default {
             years: Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i),
             adding: false,
             dropdownVisible: false,
+            fieldErrors: {},
         };
     },
     mounted() {
@@ -31,8 +32,14 @@ export default {
     methods: {
         async handleSubmit() {
 
-            if (this.adding) return;
+            if (this.editing) return;
 
+            // Validate fields
+            const errors1 = validatePostFields(this.reviewData, ['title', 'synopsis', 'trailer', 'year', 'contentType']);
+            const errors2 = validatePostFields(this.coverImage, ['photo']);
+            this.fieldErrors = { ...errors1, ...errors2 };
+            // If there are errors, do not continue.
+            if (Object.keys(this.fieldErrors).length > 0) return;
             this.adding = true;
 
             try {
@@ -93,12 +100,14 @@ export default {
             <input type="text" id="title"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="adding" v-model="reviewData.title">
+                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.title }}</p>
         </div>
 
         <div class="mb-4">
             <label for="cover" class="block mb-2 text-white">Cover</label>
             <input type="file" id="cover" @change="handleFileSelection"
                 class="w-full p-2 border rounded text-white focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]">
+            <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.photo }}</p>
             <div v-if="coverPreview" class="mt-2">
                 <h2 class="text-white">Preview</h2>
                 <img :src="coverPreview" alt="Cover preview" class="max-w-xs">
@@ -110,6 +119,7 @@ export default {
             <textarea id="synopsis"
                 class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="adding" v-model="reviewData.synopsis"></textarea>
+                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.synopsis }}</p>
         </div>
 
         <div class="mb-4 max-w-[200px]">
@@ -134,6 +144,7 @@ export default {
                         </li>
                     </ul>
                 </div>
+                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.year }}</p>
             </div>
         </div>
 
@@ -145,6 +156,7 @@ export default {
                 <option value="Movie">Movie</option>
                 <option value="Series">Series</option>
             </select>
+            <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.contentType }}</p>
         </div>
 
         <div class="mb-4">
@@ -153,6 +165,7 @@ export default {
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 placeholder="Enter a YouTube URL" :readonly="adding" v-model="reviewData.trailer"
                 pattern="https?://(www\.)?youtube\.com/.*" />
+                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.trailer }}</p>
         </div>
 
         <div class="flex flex-row justify-between">
