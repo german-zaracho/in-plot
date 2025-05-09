@@ -1,5 +1,6 @@
 <script>
 import { createNewReview } from '../services/media-reviews';
+import { validatePostFields } from '../services/validation';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
 
@@ -36,7 +37,7 @@ export default {
 
             // Validate fields
             const errors1 = validatePostFields(this.reviewData, ['title', 'synopsis', 'trailer', 'year', 'contentType']);
-            const errors2 = validatePostFields(this.coverImage, ['photo']);
+            const errors2 = validatePostFields({ photo: this.coverImage }, ['photo']);
             this.fieldErrors = { ...errors1, ...errors2 };
             // If there are errors, do not continue.
             if (Object.keys(this.fieldErrors).length > 0) return;
@@ -100,7 +101,7 @@ export default {
             <input type="text" id="title"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="adding" v-model="reviewData.title">
-                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.title }}</p>
+                <p v-if="fieldErrors.title" class="text-red-500 text-sm mt-1">{{ fieldErrors.title }}</p>
         </div>
 
         <div class="mb-4">
@@ -119,7 +120,7 @@ export default {
             <textarea id="synopsis"
                 class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="adding" v-model="reviewData.synopsis"></textarea>
-                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.synopsis }}</p>
+                <p v-if="fieldErrors.synopsis" class="text-red-500 text-sm mt-1">{{ fieldErrors.synopsis }}</p>
         </div>
 
         <div class="mb-4 max-w-[200px]">
@@ -144,7 +145,7 @@ export default {
                         </li>
                     </ul>
                 </div>
-                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.year }}</p>
+                <p v-if="fieldErrors.year" class="text-red-500 text-sm mt-1">{{ fieldErrors.year }}</p>
             </div>
         </div>
 
@@ -156,16 +157,16 @@ export default {
                 <option value="Movie">Movie</option>
                 <option value="Series">Series</option>
             </select>
-            <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.contentType }}</p>
+            <p v-if="fieldErrors.contentType" class="text-red-500 text-sm mt-1">{{ fieldErrors.contentType }}</p>
         </div>
 
         <div class="mb-4">
             <label class="block mb-2 text-white" for="trailer">Trailer (YouTube URL)</label>
             <input id="trailer" type="url"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
-                placeholder="Enter a YouTube URL" :readonly="adding" v-model="reviewData.trailer"
+                placeholder="Ej. https://www.youtube.com/" :readonly="adding" v-model="reviewData.trailer"
                 pattern="https?://(www\.)?youtube\.com/.*" />
-                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.trailer }}</p>
+                <p v-if="fieldErrors.trailer" class="text-red-500 text-sm mt-1">{{ fieldErrors.trailer }}</p>
         </div>
 
         <div class="flex flex-row justify-between">

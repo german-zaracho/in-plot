@@ -21,11 +21,10 @@ const validationSchema = {
     title: { required: true },
     year: { type: 'number', min: 1900, max: 2026 },
     synopsis: { maxLength: 500 },
-    trailer: { pattern: /^www\.youtube\.com\// },
-    contentType: { required: true, allowed: ['movie', 'series'] },
-    reviewType: { required: true, allowed: ['movie', 'series'] },
+    trailer: { pattern: /^https:\/\/www\.youtube\.com\// },
+    contentType: { required: true, allowed: ['Movie', 'Series'] },
+    reviewType: { required: true, allowed: ['Movie', 'Series'] },
     photo: {
-        required: true,
         allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
         maxSize: 2 * 1024 * 1024 // 2MB in bytes
     },
@@ -68,7 +67,7 @@ export function validatePostFields(data, fieldsToValidate) {
             return;
         }
 
-        // Pattern validation (e.g., trailer URL)
+        // Pattern validation ( trailer URL)
         if (rules.pattern && !rules.pattern.test(trimmedValue)) {
             errors[field] = VALIDATION_ERRORS[field];
             return;

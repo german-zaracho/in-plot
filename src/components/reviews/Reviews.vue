@@ -6,6 +6,7 @@ import Comment from '../comment/Comment.vue';
 import VueSkeletonLoader from 'vue3-skeleton-loader';
 import SkeletonReviews from '../SkeletonReviews.vue';
 import MobileSkeletonReviews from '../MobileSkeletonReviews.vue';
+import Loader from '../Loader.vue';
 import 'vue3-skeleton-loader/dist/style.css';
 
 export default {
@@ -14,7 +15,7 @@ export default {
         userId: { type: String, required: true },
         userRole: { type: String, required: true },
     },
-    components: { SkeletonReview, Comment, VueSkeletonLoader, SkeletonReviews, MobileSkeletonReviews },
+    components: { SkeletonReview, Comment, VueSkeletonLoader, SkeletonReviews, MobileSkeletonReviews, Loader },
     data() {
         return {
             reviews: [],
@@ -24,6 +25,7 @@ export default {
             showUserName: {},
             showModal: false,
             reviewToDeleteId: null,
+            deleting: false,
         };
     },
     methods: {
@@ -78,54 +80,55 @@ export default {
         },
 
         async confirmDelete() {
+            this.deleting = true;
 
             if (!this.reviewToDeleteId) return;
             console.log("ID of the review to delete:", this.reviewToDeleteId);
 
             try {
-                    if(deleteAllComments(this.reviewToDeleteId)){
-                        await deleteReview(this.reviewToDeleteId);
-                    }
-                    console.log("Review successfully deleted.");
-                    this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
-                    this.reviewToDeleteId = null;
-                    this.$router.push({ path: '/temp' }).then(() => {
-    this.$router.replace({ path: '/feed', query: { reviewState: 'reviewDeleted' } });
-});
+                if (deleteAllComments(this.reviewToDeleteId)) {
+                    await deleteReview(this.reviewToDeleteId);
+                }
+                console.log("Review successfully deleted.");
+                this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
+                this.reviewToDeleteId = null;
+                this.$router.push({ path: '/temp' }).then(() => {
+                    this.$router.replace({ path: '/feed', query: { reviewState: 'reviewDeleted' } });
+                });
 
             } catch (error) {
                 console.error("Error deleting comments. The review will not be deleted.:", error);
                 return; // Exits the function if there is an error, preventing the execution of deleteReview
             }
-
+            this.deleting = false;
             this.showModal = false;
 
+        },
+        openDeleteModal(reviewId) {
+            this.reviewToDeleteId = reviewId; // Save the review ID
+            this.showModal = true; // Show the modal
+        }
+
     },
-    openDeleteModal(reviewId) {
-        this.reviewToDeleteId = reviewId; // Save the review ID
-        this.showModal = true; // Show the modal
-    }
 
-},
-
-computed: {
-    isMobile() {
-        return window.innerWidth < 431;
-    }
-},
+    computed: {
+        isMobile() {
+            return window.innerWidth < 431;
+        }
+    },
     async mounted() {
 
-    // console.log('User ID', this.userId);
+        // console.log('User ID', this.userId);
 
-    try {
-        this.reviews = await getAllReviews();
-    } catch (error) {
-        console.error('[Reviews.vue] Error fetching reviews: ', error);
-    } finally {
-        this.loading = false;
-        // console.log('reviews', this.reviews);
-    }
-},
+        try {
+            this.reviews = await getAllReviews();
+        } catch (error) {
+            console.error('[Reviews.vue] Error fetching reviews: ', error);
+        } finally {
+            this.loading = false;
+            // console.log('reviews', this.reviews);
+        }
+    },
 
 };
 </script>
@@ -205,9 +208,14 @@ computed: {
                         <div class="bg-white p-6 rounded-lg shadow-lg">
                             <p class="mb-4">Are you sure you want to delete the following review?</p>
                             <div class="flex justify-end space-x-2">
-                                <button @click="confirmDelete"
+                                <button v-if="!deleting" @click="confirmDelete"
                                     class="bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400">Delete</button>
-                                <button @click="showModal = false" class="bg-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</button>
+                                <div v-else class="flex flex-row items-center bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400">Deleting
+                                    <Loader />
+                                </div>
+                                <button @click="showModal = false"
+                                    class="bg-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</button>
+
                             </div>
                         </div>
                     </div>
