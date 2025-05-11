@@ -8,6 +8,7 @@ export default {
         return {
             isUserMenuOpen: false,
             isMobileMenuOpen: false,
+            notificationsCount: 3, // Cambiar esto, solo testeo
         };
     },
     methods: {
@@ -61,18 +62,25 @@ export default {
                 <div class="flex items-center">
                     <div class="flex items-center mr-[20px]">
                         <img class="h-10 w-10 mr-[10px]" src="./../../inPlot.ico" alt="logo">
-                        <router-link :to="{ name: 'home' }" class=" text-white text-xl logo focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:rounded-lg">
+                        <router-link :to="{ name: 'home' }"
+                            class=" text-white text-xl logo focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:rounded-lg">
                             In<span class="text-[#f1c421]">Plot</span>
                         </router-link>
                     </div>
                     <div class="hidden md:block">
                         <ul class="flex items-center space-x-4 font-medium text-[#f1c421]">
                             <template v-if="loggedUser.id">
-                                <li><router-link class="py-2 px-4  rounded-lg items-center transition bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]" to="/feed">Media Reviews</router-link></li>
+                                <li><router-link
+                                        class="py-2 px-4  rounded-lg items-center transition bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
+                                        to="/feed">Media Reviews</router-link></li>
                             </template>
                             <template v-if="!loggedUser.id">
-                                <li><router-link class="py-2 px-4  rounded-lg items-center transition bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]" to="/register">Register</router-link></li>
-                                <li><router-link class="items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]" to="/login">Log in</router-link></li>
+                                <li><router-link
+                                        class="py-2 px-4  rounded-lg items-center transition bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
+                                        to="/register">Register</router-link></li>
+                                <li><router-link
+                                        class="items-center transition py-2 px-4 rounded-lg bg-[#272120] hover:bg-[#3c2f2d] hover:text-[wheat] text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]"
+                                        to="/login">Log in</router-link></li>
                             </template>
                         </ul>
                     </div>
@@ -80,24 +88,42 @@ export default {
 
 
                 <template v-if="loggedUser.id">
-                    <!-- My Profile / Log Out -->
-                    <div v-show="!isMobileMenuOpen" class="relative hidden md:block items-center">
-                        <button ref="userMenuButton" @click="toggleUserMenu" class="relative flex items-center">
-                            <img class="h-10 w-10 rounded-full" :src="loggedUser.photoURL || './../../assets/imgs/profile-image.png'"
-                                alt="user">
-                        </button>
-                        <div v-if="isUserMenuOpen" ref="userMenu"
-                            class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-[#272120] shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
-                            <ul>
-                                <li><router-link class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]" to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
-                                <li class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]">
-                                    <form @submit.prevent="handleLogout">
-                                        <button type="submit" class="py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">Log out</button>
-                                    </form>
-                                </li>
-                            </ul>
+                    <div class="flex flex-row items-center space-x-4">
+                        <!-- Notification Icon -->
+                        <div class="relative cursor-pointer">
+                            <span class="material-symbols-outlined text-[#f1c421] text-3xl">
+                                notifications
+                            </span>
+                            <!-- Red Badge -->
+                            <span v-if="notificationsCount > 0"
+                                class="absolute -top-1 -right-1 bg-red-gradient text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                {{ notificationsCount }}
+                            </span>
+                        </div>
+
+                        <!-- My Profile / Log Out -->
+                        <div v-show="!isMobileMenuOpen" class="relative hidden md:block items-center">
+                            <button ref="userMenuButton" @click="toggleUserMenu" class="relative flex items-center">
+                                <img class="h-10 w-10 rounded-full"
+                                    :src="loggedUser.photoURL || './../../assets/imgs/profile-image.png'" alt="user">
+                            </button>
+                            <div v-if="isUserMenuOpen" ref="userMenu"
+                                class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-[#272120] shadow-lg ring-1 ring-black ring-opacity-5 flex justify-center">
+                                <ul>
+                                    <li><router-link class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]"
+                                            to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
+                                    <li class="block px-4 py-2 text-sm text-[#f1c421] hover:text-[wheat]">
+                                        <form @submit.prevent="handleLogout">
+                                            <button type="submit"
+                                                class="py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">Log
+                                                out</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
                 </template>
 
                 <!-- Hamburger menu -->
@@ -132,29 +158,40 @@ export default {
             <div v-show="isMobileMenuOpen" ref="mobileMenu"
                 class="space-y-1 px-2 pb-3 pt-2 sm:px-3 bg-[#56141E] rounded-bl-[20px] rounded-br-[20px] relative border-b border-[#BC2B41] z-[100]">
                 <ul class="text-white flex flex-col items-center">
-                    
+
                     <template v-if="loggedUser.id !== null">
-                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/feed">Media Reviews</router-link></li>
-                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
+                        <li><router-link
+                                class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
+                                to="/feed">Media Reviews</router-link></li>
+                        <li><router-link
+                                class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
+                                to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
                         <li>
                             <form action="#" @submit.prevent="handleLogout">
-                                <button type="submit" class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">{{ loggedUser.email }} (Log out)</button>
+                                <button type="submit"
+                                    class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2">{{
+                                        loggedUser.email }} (Log out)</button>
                             </form>
                         </li>
                     </template>
 
                     <template v-else>
-                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/register">Register</router-link></li>
-                        <li><router-link class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2" to="/login">Log in</router-link></li>
+                        <li><router-link
+                                class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
+                                to="/register">Register</router-link></li>
+                        <li><router-link
+                                class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
+                                to="/login">Log in</router-link></li>
                     </template>
                 </ul>
 
                 <!-- My Profile -->
-                <div v-if="loggedUser.id !== null" v-show="isMobileMenuOpen" class="border-t border-[white] pb-3 pt-4 flex flex-col items-center">
+                <div v-if="loggedUser.id !== null" v-show="isMobileMenuOpen"
+                    class="border-t border-[white] pb-3 pt-4 flex flex-col items-center">
                     <div class="flex items-center px-5">
                         <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" :src="loggedUser.photoURL || './../../assets/imgs/profile-image.png'"
-                                alt="user-image">
+                            <img class="h-10 w-10 rounded-full"
+                                :src="loggedUser.photoURL || './../../assets/imgs/profile-image.png'" alt="user-image">
                         </div>
                         <div class="ml-3">
                             <div class="text-base font-medium leading-none text-white">{{ loggedUser.email }}</div>
