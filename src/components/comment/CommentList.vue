@@ -1,6 +1,7 @@
 <script>
 import { subscribeToAuth } from "../../services/auth";
 import { deleteChatComment } from "../../services/comment"; //new
+import { createNotification } from '../../services/notifications';
 import Loader from '../Loader.vue';
 
 export default {
@@ -60,7 +61,7 @@ export default {
             this.editingCommentId = comment.id;
             this.editedText = comment.text;
         },
-        saveEdit(comment) {
+        async saveEdit(comment) {
             if (this.editedText.trim() === "" || this.editedText === comment.text) {
 
                 this.savingCommentId = comment.id;
@@ -75,6 +76,18 @@ export default {
 
             this.savingCommentId = comment.id;
             this.$emit('updateComment', comment.id, this.editedText);
+
+            // Call the notification service
+            try {
+                await createNotification({
+                    userId: comment.user_id, // The owner of the original comment (who will receive the notification)
+                    type: "editComment",
+                    senderId: this.loggedUser.id,
+                    senderName: this.loggedUser.displayName,
+                });
+            } catch (err) {
+                console.error("Error creating notification:", err);
+            }
 
             setTimeout(() => {
                 this.editingCommentId = null;
