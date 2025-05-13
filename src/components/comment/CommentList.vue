@@ -19,6 +19,7 @@ export default {
                 email: null,
                 displayName: null,
                 role: null,
+                photoURL: null,
             },
             editingCommentId: null,
             editedText: "",
@@ -82,8 +83,10 @@ export default {
                 await createNotification({
                     userId: comment.user_id, // The owner of the original comment (who will receive the notification)
                     type: "editComment",
+                    relatedDocId: this.reviewId,
                     senderId: this.loggedUser.id,
                     senderName: this.loggedUser.displayName,
+                    senderPhotoURL: this.loggedUser.photoURL,
                 });
             } catch (err) {
                 console.error("Error creating notification:", err);
@@ -95,17 +98,31 @@ export default {
             }, 1000);
 
         },
-        async deleteComment(commentId) {
+        async deleteComment(comment) {
             try {
 
                 // Mark as deleted only on the frontend
-                this.deletedCommentIds.push(commentId);
+                this.deletedCommentIds.push(comment.id);
                 // It generates a 3 second delay and then the deleted message disappears.
                 await new Promise(resolve => setTimeout(resolve, 3000));
 
-                await deleteChatComment(this.reviewId, commentId);
+                await deleteChatComment(this.reviewId, comment.id);
 
-                this.$emit('commentDeleted', commentId);
+                this.$emit('commentDeleted', comment.id);
+
+                // Call the notification service
+                try {
+                    await createNotification({
+                        userId: comment.user_id, // The owner of the original comment (who will receive the notification)
+                        type: "deleteComment",
+                        relatedDocId: this.reviewId,
+                        senderId: this.loggedUser.id,
+                        senderName: this.loggedUser.displayName,
+                        senderPhotoURL: this.loggedUser.photoURL,
+                    });
+                } catch (err) {
+                    console.error("Error creating notification:", err);
+                }
 
             } catch (error) {
                 console.error("Error deleting comment:", error);
@@ -189,7 +206,7 @@ export default {
                         <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
                             class="text-white bg-blue-500 p-1 rounded mt-1 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">Edit</button>
 
-                        <button v-if="loggedUser.role === 'admin'" @click="deleteComment(comment.id)"
+                        <button v-if="loggedUser.role === 'admin'" @click="deleteComment(comment)"
                             class="text-white bg-red-500 p-1 rounded mt-1 ml-2 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">
                             Delete
                         </button>

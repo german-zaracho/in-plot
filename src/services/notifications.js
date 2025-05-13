@@ -5,6 +5,7 @@ const NOTIFICATION_MESSAGES = {
     review: "Has posted a new review.",
     comment: "Has commented on your review.",
     editComment: "has edited your comment.",
+    deleteComment: "has deleted your comment.",
     like: "Liked your review",
     custom: "",
 };
@@ -12,6 +13,8 @@ const NOTIFICATION_MESSAGES = {
 const NOTIFICATION_TITLES = {
     review: "New review",
     comment: "New comment",
+    editComment: "Comment edited",
+    deleteComment: "Comment deleted",
     like: "New like",
     custom: "",
 }; 
@@ -32,13 +35,13 @@ const NOTIFICATION_TITLES = {
  */
 export async function createNotification(data) {
     try {
-        // data.message = data.senderName + NOTIFICATION_MESSAGES[data.type];
-        data.message = `${data.senderName} ${NOTIFICATION_MESSAGES[data.type]}`;
 
+        data.message = `${data.senderName} ${NOTIFICATION_MESSAGES[data.type]}`;
 
         const notificationData = {
             ...data,
             read: false,
+            title: NOTIFICATION_TITLES[data.type],
             createdAt: serverTimestamp(),
         };
         console.log("Notification data:", notificationData);

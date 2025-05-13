@@ -224,7 +224,7 @@ export default {
                         class="absolute top-0 right-0 bg-[#f1c421] text-black font-bold text-xs uppercase  filter rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%]">
                         <router-link @mouseenter="toggleUserName(review.id, true)"
                             @mouseleave="toggleUserName(review.id, false)"
-                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-[#f1c421] text-white overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:underline"
+                            class="relative flex items-center justify-center h-6 w-6 min-w-[60px] min-h-[30px] bg-[#f1c421] text-[#272120] overflow-hidden transition-[padding-left,width, padding-right] duration-300 ease-in-out hover:w-[180px] pl-[8px] pr-[8px] rounded-bl-[50%_75%] rounded-tr-[20px] hover:rounded-bl-[20%_100%] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:underline"
                             aria-label="See the creator's profile"
                             :to="review.user_id === userId ? '/myProfile' : `/users/${review.user_id}`">
                             <span class="material-symbols-rounded m-2">person</span>
@@ -232,7 +232,7 @@ export default {
                             <span :class="{
                                 'opacity-0 max-w-0': !showUserName[review.id],
                                 'opacity-100 max-w-full transition-all duration-[1000ms] ease-in-out whitespace-nowrap': showUserName[review.id]
-                            }" class="ml-2 overflow-hidden inline-block text-white">
+                            }" class="ml-2 overflow-hidden inline-block text-[#272120]">
                                 {{ review.displayName }}
                             </span>
                         </router-link>
