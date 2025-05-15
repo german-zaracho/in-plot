@@ -6,6 +6,8 @@ const NOTIFICATION_MESSAGES = {
     comment: "Has commented on your review.",
     editComment: "has edited your comment.",
     deleteComment: "has deleted your comment.",
+    editReview: "has edited your review.",
+    deleteReview: "has deleted your review.",
     like: "Liked your review",
     custom: "",
 };
@@ -15,6 +17,8 @@ const NOTIFICATION_TITLES = {
     comment: "New comment",
     editComment: "Comment edited",
     deleteComment: "Comment deleted",
+    editReview: "Review edited",
+    deleteReview: "Review deleted",
     like: "New like",
     custom: "",
 }; 

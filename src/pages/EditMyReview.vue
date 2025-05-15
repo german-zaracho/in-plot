@@ -1,8 +1,12 @@
 <script>
 import { getReviewById, updateReview, uploadCoverImage } from '../services/media-reviews';
 import { validatePostFields } from '../services/validation';
+import { createNotification } from '../services/notifications';
+import { subscribeToAuth } from '../services/auth';
 import { readonly } from 'vue';
 import Loader from '../components/Loader.vue';
+
+let unsubscribeFromAuth = () => { };
 
 export default {
     name: 'EditMyReview',
@@ -27,14 +31,17 @@ export default {
             dropdownVisible: false,
             isUploading: false,
             fieldErrors: {},
+            user:null,
         };
     },
     mounted() {
         document.addEventListener('click', this.handleOutsideClick);
         this.fetchReviewData();
+        unsubscribeFromAuth = subscribeToAuth(newUserData => this.user = newUserData);
     },
     beforeDestroy() {
         document.removeEventListener('click', this.handleOutsideClick);
+        unsubscribeFromAuth();
     },
     methods: {
         async fetchReviewData() {
@@ -77,6 +84,15 @@ export default {
                 };
                 // update the review in firestore
                 await updateReview(this.reviewId, updatedReview);
+                // call for notification
+                await createNotification({
+                    userId: this.reviewData.user_id,
+                    type: 'editReview',
+                    relatedDocId: this.reviewId,
+                    senderId: this.user.id,
+                    senderName: this.user.displayName,
+                    senderPhotoURL: this.user.photoURL,
+                });
                 this.$router.push({ path: '/myProfile', query: { profileEdited: 'myReviewEdited' } });
             } catch (error) {
                 console.error('Error updating review:', error);
@@ -133,14 +149,14 @@ export default {
             <input type="text" id="title"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="isUploading" v-model="reviewData.title">
-                <p v-if="fieldErrors.title" class="text-red-500 text-sm mt-1">{{ fieldErrors.title }}</p>
+            <p v-if="fieldErrors.title" class="text-red-500 text-sm mt-1">{{ fieldErrors.title }}</p>
         </div>
 
         <div class="mb-4">
             <label for="cover" class="block mb-2 text-white">Cover</label>
             <input type="file" id="cover" @change="handleFileSelection"
                 class="w-full p-2 border rounded text-white focus:outline-none focus:ring-2 focus:ring-[#f1c421]">
-                <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.photo }}</p>
+            <p v-if="fieldErrors.photo" class="text-red-500 text-sm mt-1">{{ fieldErrors.photo }}</p>
             <div v-if="previewImage" class="mt-2">
                 <h2>Preview</h2>
                 <img :src="previewImage" alt="Cover preview" class="max-w-xs">
@@ -152,7 +168,7 @@ export default {
             <textarea id="synopsis"
                 class="w-full min-h-20 p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 :readonly="isUploading" v-model="reviewData.synopsis"></textarea>
-                <p v-if="fieldErrors.synopsis" class="text-red-500 text-sm mt-1">{{ fieldErrors.synopsis }}</p>
+            <p v-if="fieldErrors.synopsis" class="text-red-500 text-sm mt-1">{{ fieldErrors.synopsis }}</p>
         </div>
 
         <div class="mb-4 max-w-[200px]">
@@ -198,7 +214,7 @@ export default {
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
                 placeholder="Ej. https://www.youtube.com/" :readonly="isUploading" v-model="reviewData.trailer"
                 pattern="https?://(www\.)?youtube\.com/.*" />
-                <p v-if="fieldErrors.trailer" class="text-red-500 text-sm mt-1">{{ fieldErrors.trailer }}</p>
+            <p v-if="fieldErrors.trailer" class="text-red-500 text-sm mt-1">{{ fieldErrors.trailer }}</p>
         </div>
 
         <div class="flex flex-row justify-between">

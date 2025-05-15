@@ -1,6 +1,8 @@
 <script>
 import { getAllReviews, deleteReview } from '../../services/media-reviews';
 import { deleteAllComments } from '../../services/comment';
+import { createNotification } from '../../services/notifications';
+import { subscribeToAuth } from '../../services/auth';
 import SkeletonReview from '../SkeletonReview.vue';
 import Comment from '../comment/Comment.vue';
 import VueSkeletonLoader from 'vue3-skeleton-loader';
@@ -8,6 +10,8 @@ import SkeletonReviews from '../SkeletonReviews.vue';
 import MobileSkeletonReviews from '../MobileSkeletonReviews.vue';
 import Loader from '../Loader.vue';
 import 'vue3-skeleton-loader/dist/style.css';
+
+let unsubscribeFromAuth = () => { };
 
 export default {
     name: 'Reviews',
@@ -26,6 +30,7 @@ export default {
             showModal: false,
             reviewToDeleteId: null,
             deleting: false,
+            user: null,
         };
     },
     methods: {
@@ -79,7 +84,7 @@ export default {
             console.log('Updated comment:', commentId, newText);
         },
 
-        async confirmDelete() {
+        async confirmDelete(review) {
             this.deleting = true;
 
             if (!this.reviewToDeleteId) return;
@@ -88,6 +93,15 @@ export default {
             try {
                 if (deleteAllComments(this.reviewToDeleteId)) {
                     await deleteReview(this.reviewToDeleteId);
+                    // call for notification
+                    await createNotification({
+                        userId: review.user_id,
+                        type: 'deleteReview',
+                        relatedDocId: null,
+                        senderId: this.user.id,
+                        senderName: this.user.displayName,
+                        senderPhotoURL: this.user.photoURL,
+                    });
                 }
                 console.log("Review successfully deleted.");
                 this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
@@ -119,15 +133,20 @@ export default {
     async mounted() {
 
         // console.log('User ID', this.userId);
+        unsubscribeFromAuth = subscribeToAuth(newUserData => this.user = newUserData);
 
         try {
             this.reviews = await getAllReviews();
+            // console.log('probando', this.userId, this.user);
         } catch (error) {
             console.error('[Reviews.vue] Error fetching reviews: ', error);
         } finally {
             this.loading = false;
             // console.log('reviews', this.reviews);
         }
+    },
+    unmounted() {
+        unsubscribeFromAuth();
     },
 
 };
@@ -208,9 +227,11 @@ export default {
                         <div class="bg-white p-6 rounded-lg shadow-lg">
                             <p class="mb-4">Are you sure you want to delete the following review?</p>
                             <div class="flex justify-end space-x-2">
-                                <button v-if="!deleting" @click="confirmDelete"
+                                <button v-if="!deleting" @click="confirmDelete(review)"
                                     class="bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400">Delete</button>
-                                <div v-else class="flex flex-row items-center bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400">Deleting
+                                <div v-else
+                                    class="flex flex-row items-center bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                                    Deleting
                                     <Loader />
                                 </div>
                                 <button @click="showModal = false"
