@@ -303,7 +303,7 @@ export default {
 
                 </div>
 
-                <Comment v-if="activeComments[review.id]" :reviewId="review.id" @updateComment="updateComment" />
+                <Comment v-if="activeComments[review.id]" :reviewId="review.id" :reviewUserId="review.user_id" @updateComment="updateComment" />
 
             </li>
         </ul>

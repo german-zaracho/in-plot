@@ -91,9 +91,11 @@ export default {
                     <div class="flex flex-row items-center space-x-4">
                         <!-- Notification Icon -->
                         <div class="relative cursor-pointer">
-                            <span class="material-symbols-outlined text-[#f1c421] text-3xl">
-                                notifications
-                            </span>
+                            <router-link to="/notifications">
+                                <span class="material-symbols-outlined text-[#f1c421] text-3xl">
+                                    notifications
+                                </span>
+                            </router-link>
                             <!-- Red Badge -->
                             <span v-if="notificationsCount > 0"
                                 class="absolute -top-1 -right-1 bg-red-gradient text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">

@@ -9,6 +9,7 @@ import MyProfileEditPhoto from '../pages/MyProfileEditPhoto.vue';
 import UserProfile from '../pages/UserProfile.vue';
 import NewReview from "../pages/NewReview.vue";
 import EditMyReview from "../pages/EditMyReview.vue";
+import Notifications from "../pages/Notifications.vue";
 
 const routes = [
     { path: '/', name:'home', meta: { requiresLoginVerification: true } },
@@ -21,6 +22,7 @@ const routes = [
     { path: '/users/:id', name: 'userProfile', component: UserProfile, meta: { requiresAuth: true }, },
     { path: '/newReview', name: 'newReview', component: NewReview, meta: { requiresAuth: true }, },
     { path: '/users/:id/editMyReview', name: 'editMyReview', component: EditMyReview, meta: { requiresAuth: true }, },
+    { path: '/notifications', name: 'notifications', component: Notifications, meta: { requiresAuth: true }, },
 ]
 
 const router = createRouter({

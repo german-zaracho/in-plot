@@ -7,7 +7,8 @@ export default {
     name: 'Comment',
     components: { CommentForm, CommentList },
     props: {
-        reviewId: { type: String, required: true, }
+        reviewId: { type: String, required: true, },
+        reviewUserId: { type: String, required: true, }
     },
     emits: ['updateComment'],
     data() {
@@ -65,7 +66,7 @@ export default {
             <CommentList :theComments="comments" :reviewId="reviewId" @updateComment="updateComment" />
         </section>
         <section class="">
-            <CommentForm @newComment="addComment" :reviewId="reviewId" />
+            <CommentForm @newComment="addComment" :reviewId="reviewId" :reviewUserId="reviewUserId"/>
         </section>
     </div>
 </template>
