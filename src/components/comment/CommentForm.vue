@@ -1,5 +1,6 @@
 <script>
 import { subscribeToAuth } from '../../services/auth';
+import { createNotification } from '../../services/notifications';
 import Loader from '../Loader.vue';
 
 let unsubscribeFromAuth = () => { };
@@ -32,7 +33,7 @@ export default {
         }
     },
     methods: {
-        handleSubmit() {
+        async handleSubmit() {
             this.commenting = true;
             // We check if the text field is empty, if so we return.
             if (!this.newComment.text.trim()) {
@@ -45,6 +46,21 @@ export default {
                 email: this.loggedUser.email,
                 text: this.newComment.text,
             });
+console.log("hasta aca 1");
+            // Call the notification service
+            try {
+                await createNotification({
+                    userId: null, // The owner of the original comment (who will receive the notification)
+                    type: "newComment",
+                    relatedDocId: this.reviewId,
+                    senderId: this.loggedUser.id,
+                    senderName: this.loggedUser.displayName,
+                    senderPhotoURL: this.loggedUser.photoURL,
+                });
+                console.log("hasta aca 2", this.reviewId);
+            } catch (err) {
+                console.error("Error creating notification:", err);
+            }
 
             // reset the text field
             this.newComment.text = '';

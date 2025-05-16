@@ -3,7 +3,7 @@ import { db } from "./firebase";
 
 const NOTIFICATION_MESSAGES = {
     review: "Has posted a new review.",
-    comment: "Has commented on your review.",
+    newComment: "has commented on your review.",
     editComment: "has edited your comment.",
     deleteComment: "has deleted your comment.",
     editReview: "has edited your review.",
@@ -14,7 +14,7 @@ const NOTIFICATION_MESSAGES = {
 
 const NOTIFICATION_TITLES = {
     review: "New review",
-    comment: "New comment",
+    newComment: "New comment",
     editComment: "Comment edited",
     deleteComment: "Comment deleted",
     editReview: "Review edited",
