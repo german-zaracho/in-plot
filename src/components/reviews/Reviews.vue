@@ -18,6 +18,7 @@ export default {
     props: {
         userId: { type: String, required: true },
         userRole: { type: String, required: true },
+        reviewId: { type: String, required: false } //new
     },
     components: { SkeletonReview, Comment, VueSkeletonLoader, SkeletonReviews, MobileSkeletonReviews, Loader },
     data() {
@@ -31,6 +32,8 @@ export default {
             reviewToDeleteId: null,
             deleting: false,
             user: null,
+            allReviews: [],
+
         };
     },
     methods: {
@@ -121,14 +124,18 @@ export default {
         openDeleteModal(reviewId) {
             this.reviewToDeleteId = reviewId; // Save the review ID
             this.showModal = true; // Show the modal
-        }
+        },
+        showAllReviews() {
+            this.reviews = this.allReviews;
+            this.$router.push({ path: '/feed' }); // opcional si querés limpiar la query
+        },
 
     },
 
     computed: {
         isMobile() {
             return window.innerWidth < 431;
-        }
+        },
     },
     async mounted() {
 
@@ -136,8 +143,16 @@ export default {
         unsubscribeFromAuth = subscribeToAuth(newUserData => this.user = newUserData);
 
         try {
-            this.reviews = await getAllReviews();
-            // console.log('probando', this.userId, this.user);
+            const allReviews = await getAllReviews();
+            this.allReviews = allReviews;
+
+            if (this.reviewId || this.$route.query.reviewId) {
+                const id = this.reviewId || this.$route.query.reviewId;
+                this.reviews = allReviews.filter(review => review.id === id);
+            } else {
+                this.reviews = allReviews;
+                // console.log('probando', this.userId, this.user);
+            }
         } catch (error) {
             console.error('[Reviews.vue] Error fetching reviews: ', error);
         } finally {
@@ -157,7 +172,14 @@ export default {
     <section class="p-4">
 
         <div class="flex flex-row justify-between items-center max-w-[1000px] m-auto">
-            <h1 class="text-2xl font-bold mb-4 text-white">All Reviews</h1>
+            <h1 class="text-2xl font-bold mb-4 text-white">Reviews</h1>
+
+            <div v-if="reviewId || $route.query.reviewId" class="text-right mb-4 max-w-[1000px] m-auto">
+                <button @click="showAllReviews"
+                    class="text-[#f1c421] hover:text-[wheat] rounded-lg bg-[#272120] hover:bg-[#3c2f2d] py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]">
+                    Mostrar todas las reviews
+                </button>
+            </div>
 
             <router-link
                 class="mb-4 text-[#f1c421] hover:text-[wheat]  rounded-lg bg-[#272120] hover:bg-[#3c2f2d] py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]"
@@ -303,7 +325,8 @@ export default {
 
                 </div>
 
-                <Comment v-if="activeComments[review.id]" :reviewId="review.id" :reviewUserId="review.user_id" @updateComment="updateComment" />
+                <Comment v-if="activeComments[review.id]" :reviewId="review.id" :reviewUserId="review.user_id"
+                    @updateComment="updateComment" />
 
             </li>
         </ul>
