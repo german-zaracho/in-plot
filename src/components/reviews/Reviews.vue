@@ -33,7 +33,9 @@ export default {
             deleting: false,
             user: null,
             allReviews: [],
-
+            selectedType: 'all',
+            currentPage: 1,
+            reviewsPerPage: 5,
         };
     },
     methods: {
@@ -58,12 +60,9 @@ export default {
 
         },
         toggleUserName(reviewId, state) {
-
             this.showUserName[reviewId] = state;
-
         },
         toggleComment(reviewId) {
-
             if (this.activeComments.hasOwnProperty(reviewId)) {
                 // Toggle state
                 this.activeComments[reviewId] = !this.activeComments[reviewId];
@@ -71,16 +70,13 @@ export default {
                 // Add a new state
                 this.activeComments[reviewId] = true;
             }
-
         },
         toggleSynopsis(reviewId) {
-
             if (this.expandedSynopsis.hasOwnProperty(reviewId)) {
                 this.expandedSynopsis[reviewId] = !this.expandedSynopsis[reviewId];
             } else {
                 this.expandedSynopsis[reviewId] = true;
             }
-
         },
 
         updateComment({ commentId, newText }) {
@@ -115,7 +111,7 @@ export default {
 
             } catch (error) {
                 console.error("Error deleting comments. The review will not be deleted.:", error);
-                return; // Exits the function if there is an error, preventing the execution of deleteReview
+                return;
             }
             this.deleting = false;
             this.showModal = false;
@@ -127,7 +123,7 @@ export default {
         },
         showAllReviews() {
             this.reviews = this.allReviews;
-            this.$router.push({ path: '/feed' }); // opcional si querés limpiar la query
+            this.$router.push({ path: '/feed' });
         },
 
     },
@@ -136,6 +132,22 @@ export default {
         isMobile() {
             return window.innerWidth < 431;
         },
+        filteredReviews() {
+            if (this.selectedType === 'all') {
+                return this.reviews
+            }
+            return this.reviews.filter(
+                review => review.contentType === this.selectedType
+            )
+        },
+        paginatedReviews() {
+            const start = (this.currentPage - 1) * this.reviewsPerPage;
+            const end = start + this.reviewsPerPage;
+            return this.filteredReviews.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredReviews.length / this.reviewsPerPage);
+        }
     },
     async mounted() {
 
@@ -163,6 +175,11 @@ export default {
     unmounted() {
         unsubscribeFromAuth();
     },
+    watch: {
+        selectedType() {
+            this.currentPage = 1;
+        }
+    },
 
 };
 </script>
@@ -173,6 +190,16 @@ export default {
 
         <div class="flex flex-row justify-between items-center max-w-[1000px] m-auto">
             <h1 class="text-2xl font-bold mb-4 text-white">Reviews</h1>
+
+            <!-- Filtro por tipo -->
+            <div class="mb-4">
+                <label class="mr-2 font-semibold text-white">Filter: </label>
+                <select v-model="selectedType" class="border rounded p-2">
+                    <option value="all">All</option>
+                    <option value="Movie">Movies</option>
+                    <option value="Series">Series</option>
+                </select>
+            </div>
 
             <div v-if="reviewId || $route.query.reviewId" class="text-right mb-4 max-w-[1000px] m-auto">
                 <button @click="showAllReviews"
@@ -196,7 +223,7 @@ export default {
         </div>
 
         <ul v-else class="">
-            <li v-for="review in reviews" :key="review.id"
+            <li v-for="review in paginatedReviews" :key="review.id"
                 class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
                 <div
@@ -330,6 +357,23 @@ export default {
 
             </li>
         </ul>
+
+        <div class="flex justify-center mt-4 space-x-2" v-if="totalPages > 1">
+            <button @click="currentPage--" :disabled="currentPage === 1" class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+                < 
+            </button>
+            <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{
+                        'bg-blue-600 text-white': currentPage === page,
+                        'bg-gray-200 text-gray-800': currentPage !== page
+                    }" class="px-3 py-1 rounded hover:bg-blue-500 hover:text-white transition">
+                        {{ page }}
+            </button>
+
+            <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+                >
+            </button>
+        </div>
+
 
     </section>
 </template>
