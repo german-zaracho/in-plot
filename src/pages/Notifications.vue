@@ -12,6 +12,9 @@ export default {
             loading: true,
             userId: null,
             selectedNotifications: [],
+            feedback: {
+                message: null,
+            }
         };
     },
     async mounted() {
@@ -53,6 +56,7 @@ export default {
                     n => !this.selectedNotifications.includes(n.id)
                 );
                 this.selectedNotifications = [];
+                this.feedback.message = '¡Notifications deleted successfully!';
             } catch (error) {
                 console.error("Error deleting selected notifications:", error);
             }
@@ -62,6 +66,10 @@ export default {
 </script>
 
 <template>
+
+    <div v-if="feedback.message" class="p-4 mb-4 bg-red-200 rounded">
+        {{ feedback.message }}
+    </div>
 
     <h1 class="mb-[20px] font-bold text-center text-white">Notifications</h1>
 
