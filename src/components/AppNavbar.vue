@@ -1,4 +1,6 @@
 <script>
+import { getUserNotifications } from './../services/notifications';
+
 export default {
     name: 'AppNavbar',
     props: {
@@ -8,7 +10,7 @@ export default {
         return {
             isUserMenuOpen: false,
             isMobileMenuOpen: false,
-            notificationsCount: 3, // Cambiar esto, solo testeo
+            notificationsCount: 0, // Cambiar esto, solo testeo
         };
     },
     methods: {
@@ -41,7 +43,17 @@ export default {
                 this.isMobileMenuOpen = false;
             }
 
-        }
+        },
+        async fetchNotificationsCount() {
+            console.log('asd', this.loggedUser);
+            if (!this.loggedUser?.id) return;
+            try {
+                const notifications = await getUserNotifications(this.loggedUser.id);
+                this.notificationsCount = notifications.filter(n => !n.read).length;
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
+        },
     },
     mounted() {
         document.addEventListener('click', this.closeUserMenuOnClickOutside);
@@ -50,6 +62,16 @@ export default {
     beforeUnmount() {
         document.removeEventListener('click', this.closeUserMenuOnClickOutside);
         document.removeEventListener('click', this.closeMobileMenuOnClickOutside);
+    },
+    watch: {
+        loggedUser: {
+            handler(newUser) {
+                if (newUser?.id) {
+                    this.fetchNotificationsCount();
+                }
+            },
+            immediate: true,
+        },
     },
 };
 </script>
