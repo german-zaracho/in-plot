@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, doc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 const NOTIFICATION_MESSAGES = {
@@ -85,3 +85,28 @@ export async function getUserNotifications(userId) {
         throw error;
     }
 }
+
+
+export async function deleteMultipleNotifications(ids) {
+    try {
+        const deletePromises = ids.map(id => deleteDoc(doc(db, "notifications", id)));
+        await Promise.all(deletePromises);
+        console.log("Selected notifications deleted");
+    } catch (error) {
+        console.error("[notifications.js] Error deleting multiple notifications:", error);
+        throw error;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
