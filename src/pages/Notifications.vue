@@ -14,7 +14,8 @@ export default {
             selectedNotifications: [],
             feedback: {
                 message: null,
-            }
+            },
+            expandedNotifications: [],
         };
     },
     async mounted() {
@@ -60,7 +61,15 @@ export default {
             } catch (error) {
                 console.error("Error deleting selected notifications:", error);
             }
-        }
+        },
+        toggleDetails(notificationId) {
+            const index = this.expandedNotifications.indexOf(notificationId);
+            if (index === -1) {
+                this.expandedNotifications.push(notificationId);
+            } else {
+                this.expandedNotifications.splice(index, 1);
+            }
+        },
     }
 };
 </script>
@@ -89,27 +98,48 @@ export default {
         </div>
 
         <div v-for="notification in notifications" :key="notification.id"
-            class="bg-white p-4 rounded shadow-md max-w-[500px] m-auto w-full">
+            class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] w-[500px] m-auto bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
-            <input type="checkbox" class="" :value="notification.id"
-                @change="toggleSelection(notification.id)" :checked="selectedNotifications.includes(notification.id)">
 
-            <h2 class="font-semibold">{{ notification.title }}</h2>
-            <div class="flex flex-row items-center gap-2">
-                <img v-if="notification.senderPhotoURL" :src="notification.senderPhotoURL"
-                    :alt="`Photo of ${notification.senderName}`" class="w-10 h-10 rounded-full object-cover" />
-                <p class="text-gray-700">{{ notification.message }}</p>
+            <div class="flex flex-row items-center justify-between w-full">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" class="" :value="notification.id" @change="toggleSelection(notification.id)"
+                        :checked="selectedNotifications.includes(notification.id)">
+                    <h2 class="font-semibold text-white">{{ notification.title }}</h2>
+                </div>
+
+                <button @click="toggleDetails(notification.id)"
+                    class="text-[#272120] hover:text-[#3c2f2d] mt-2 block bg-[#f1c421] hover:bg-[wheat] max-w-[150px] p-2 text-center rounded-md focus:text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d] font-semibold">
+                    {{ expandedNotifications.includes(notification.id) ? 'Show less' : 'Show more' }}
+                </button>
             </div>
 
-            <p class="text-sm text-gray-400">{{ notification.createdAt?.toDate?.().toLocaleString?.('default', {
-                dateStyle: 'short', timeStyle: 'short'
-            }) }}</p>
+            <!-- <h2 class="font-semibold">{{ notification.title }}</h2> -->
 
-            <router-link v-if="notification.relatedDocId"
-                :to="{ path: '/feed', query: { reviewId: notification.relatedDocId } }"
-                class="inline-block mt-2 bg-[#f1c421] hover:bg-[#fadc5a] text-[#272120] font-medium py-1 px-3 rounded transition">
-                See review
-            </router-link>
+            <div v-if="expandedNotifications.includes(notification.id)"
+                class="flex flex-col gap-2 content-notification my-[10px] w-full">
+
+                <div class="flex flex-col gap-2 ">
+                    <div class="flex flex-row items-center gap-2">
+                        <img v-if="notification.senderPhotoURL" :src="notification.senderPhotoURL"
+                            :alt="`Photo of ${notification.senderName}`" class="w-10 h-10 rounded-full object-cover" />
+                        <p class="text-white">{{ notification.message }}</p>
+                    </div>
+
+                    <p class="text-sm text-white self-end">{{
+                        notification.createdAt?.toDate?.().toLocaleString?.('default', {
+                            dateStyle: 'short', timeStyle: 'short'
+                        }) }}</p>
+                </div>
+
+
+                <router-link v-if="notification.relatedDocId"
+                    :to="{ path: '/feed', query: { reviewId: notification.relatedDocId } }"
+                    class="font-semibold text-[#272120] hover:text-[#3c2f2d] mt-2 block bg-[#f1c421] hover:bg-[wheat] max-w-[150px] p-2 text-center rounded-md focus:text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d] self-center">
+                    See review
+                </router-link>
+            </div>
+
         </div>
 
     </div>

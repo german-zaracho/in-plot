@@ -194,7 +194,7 @@ export default {
             <!-- Filtro por tipo -->
             <div class="mb-4">
                 <label class="mr-2 font-semibold text-white">Filter: </label>
-                <select v-model="selectedType" class="border rounded p-2">
+                <select v-model="selectedType" class="border rounded p-2 py-1 px-2 text-sm">
                     <option value="all">All</option>
                     <option value="Movie">Movies</option>
                     <option value="Series">Series</option>
@@ -359,19 +359,21 @@ export default {
         </ul>
 
         <div class="flex justify-center mt-4 space-x-2" v-if="totalPages > 1">
-            <button @click="currentPage--" :disabled="currentPage === 1" class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
-                < 
-            </button>
-            <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{
-                        'bg-blue-600 text-white': currentPage === page,
-                        'bg-gray-200 text-gray-800': currentPage !== page
-                    }" class="px-3 py-1 rounded hover:bg-blue-500 hover:text-white transition">
-                        {{ page }}
-            </button>
+            <button @click="currentPage--" :disabled="currentPage === 1"
+                class="px-3 py-1 text-[#f1c421] rounded-[50px] hover:bg-[#BC2B41] disabled:opacity-50">
+                < </button>
 
-            <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
-                >
-            </button>
+                    <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{
+                        'text-[#f1c421] shadow-2xl bg-red-gradient': currentPage === page,
+                        'text-[#f1c421] shadow-2xl': currentPage !== page
+                    }" class="px-3 py-1 rounded-[50px] hover:bg-[#BC2B41]">
+                        {{ page }}
+                    </button>
+
+                    <button @click="currentPage++" :disabled="currentPage === totalPages"
+                        class="px-3 py-1 text-[#f1c421] rounded-[50px] hover:bg-[#BC2B41] disabled:opacity-50">
+                        >
+                    </button>
         </div>
 
 
