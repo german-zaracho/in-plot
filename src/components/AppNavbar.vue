@@ -45,7 +45,7 @@ export default {
 
         },
         async fetchNotificationsCount() {
-            console.log('asd', this.loggedUser);
+            // console.log('asd', this.loggedUser);
             if (!this.loggedUser?.id) return;
             try {
                 const notifications = await getUserNotifications(this.loggedUser.id);

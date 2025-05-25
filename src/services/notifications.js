@@ -48,10 +48,10 @@ export async function createNotification(data) {
             title: NOTIFICATION_TITLES[data.type],
             createdAt: serverTimestamp(),
         };
-        console.log("Notification data:", notificationData);
+        // console.log("Notification data:", notificationData);
 
         await addDoc(collection(db, "notifications"), notificationData);
-        console.log("Notification created successfully");
+        // console.log("Notification created successfully");
     } catch (error) {
         console.error("[notifications.js] Error creating notification:", error);
         throw error;
@@ -91,7 +91,7 @@ export async function deleteMultipleNotifications(ids) {
     try {
         const deletePromises = ids.map(id => deleteDoc(doc(db, "notifications", id)));
         await Promise.all(deletePromises);
-        console.log("Selected notifications deleted");
+        // console.log("Selected notifications deleted");
     } catch (error) {
         console.error("[notifications.js] Error deleting multiple notifications:", error);
         throw error;

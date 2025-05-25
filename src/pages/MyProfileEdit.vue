@@ -65,8 +65,8 @@ export default {
 <template>
     <h1 class="text-center text-lg font-bold mb-4 text-white">Edit my profile</h1>
 
-    <form action="#" @submit.prevent="handleSubmit">
-        <div class="mb-4">
+    <form action="#" @submit.prevent="handleSubmit" class="p-4 rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10">
+        <div class="mb-4 ">
             <label class="block mb-2 text-white" for="displayName">User name</label>
             <input type="text" id="displayName"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"

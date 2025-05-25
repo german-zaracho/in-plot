@@ -60,8 +60,14 @@ export default {
 <template>
     <h1 class="mb-[20px] font-bold text-center text-white">Edit my Profile Photo</h1>
 
-    <div class="flex gap-4 shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] rounded-[20px] ">
-        <form class="w-1/2" action="#" @submit.prevent="handleSubmit">
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-4 shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] rounded-[20px] ">
+
+        <div class="w-full md:w-1/2 flex flex-col  items-center md:items-start">
+            <h2 class="mb-2 text-white self-start">Preview</h2>
+            <img v-if="editData.photoPreview" :src="editData.photoPreview" alt="photo preview" width="300px">
+        </div>
+
+        <form class="w-full md:w-1/2" action="#" @submit.prevent="handleSubmit">
             <div class="mb-4">
                 <label class="block mb-2 text-white" for="photo">New Photo</label>
                 <input type="file" id="photo"
@@ -88,9 +94,6 @@ export default {
             </div>
 
         </form>
-        <div class="w-1/2">
-            <h2 class="mb-2 text-white">Preview</h2>
-            <img v-if="editData.photoPreview" :src="editData.photoPreview" alt="photo preview" width="300px">
-        </div>
+        
     </div>
 </template>

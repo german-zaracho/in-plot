@@ -227,7 +227,7 @@ export default {
                 class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
                 <div
-                    class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
+                    class="flex flex-row xs:flex-col items-center  justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
 
                     <div
                         class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px] ">

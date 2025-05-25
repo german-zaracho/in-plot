@@ -30,7 +30,7 @@ export default {
                 await login({ ...this.user, });
 
                 this.$router.push({ path: '/myProfile', query: { userState: 'logged' } });
-                console.log("redirect correctly");
+                // console.log("redirect correctly");
             } catch (error) {
                 this.feedback.message = error;
                 console.error("[Login handleSubmit] Error authenticating user: ", error);

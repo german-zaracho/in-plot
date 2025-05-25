@@ -142,7 +142,7 @@ export default {
 <template>
     <h1 class="mb-[20px] font-bold text-center text-white">Edit a review</h1>
 
-    <form action="#" @submit.prevent="handleSubmit" class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px]">
+    <form action="#" @submit.prevent="handleSubmit" class="shadow-2xl ring-2 ring-black ring-opacity-10 p-[20px] rounded-md">
 
         <div class="mb-4">
             <label class="block mb-2 text-white" for="title">Title</label>
@@ -212,7 +212,7 @@ export default {
             <label class="block mb-2 text-white" for="trailer">Trailer (YouTube URL)</label>
             <input id="trailer" type="url"
                 class="w-full p-2 border rounded read-only:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:border-[#f1c421]"
-                placeholder="Ej. https://www.youtube.com/" :readonly="isUploading" v-model="reviewData.trailer"
+                placeholder="e.g. https://www.youtube.com/" :readonly="isUploading" v-model="reviewData.trailer"
                 pattern="https?://(www\.)?youtube\.com/.*" />
             <p v-if="fieldErrors.trailer" class="text-red-500 text-sm mt-1">{{ fieldErrors.trailer }}</p>
         </div>

@@ -135,7 +135,7 @@ export async function deleteChatComment(reviewId, commentId) {
 
         const commentRef = doc(db, `comments/${chatDoc.id}/actualComments`, commentId);
         await deleteDoc(commentRef);
-        console.log(`Comment ${commentId} successfully deleted.`);
+        // console.log(`Comment ${commentId} successfully deleted.`);
     } catch (error) {
         console.error("Error deleting comment:", error);
     }

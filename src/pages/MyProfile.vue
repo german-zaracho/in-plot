@@ -53,7 +53,7 @@ export default {
     <div v-if="feedback.message" class="p-4 mb-4 bg-green-200 rounded">
         {{ feedback.message }}
     </div>
-    <div class="flex gap-4 justify-between">
+    <div class="flex gap-4 justify-between max-w-[1380px]">
         <h1 class="text-2xl font-bold text-white">My Profile</h1>
         <router-link
             class="mb-4 border-[2px] border-[#BC2B41] rounded-lg p-[5px] bg-[#272120] hover:bg-[#3c2f2d] text-[#f1c421] hover:text-[#f1c421] focus:outline-none focus:ring-2 focus:ring-[#f1c421]"

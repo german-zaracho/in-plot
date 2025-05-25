@@ -98,10 +98,10 @@ export default {
         </div>
 
         <div v-for="notification in notifications" :key="notification.id"
-            class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] w-[500px] m-auto bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
+            class="w-full p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] w-[500px] m-auto bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
 
-            <div class="flex flex-row items-center justify-between w-full">
+            <div class="flex flex-row xxxs:flex-col items-center justify-between w-full">
                 <div class="flex items-center gap-2">
                     <input type="checkbox" class="" :value="notification.id" @change="toggleSelection(notification.id)"
                         :checked="selectedNotifications.includes(notification.id)">

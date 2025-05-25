@@ -91,7 +91,7 @@ export default {
 
 <template>
     <section class="p-4">
-        <h2 class="text-xl text-white font-bold mb-4">My Reviews</h2>
+        <h2 class=" text-xl text-white font-bold mb-4">My Reviews</h2>
 
         <div v-if="reviews.length === 0" class="m-auto flex flex-row">
             <div v-if="loading" class="mr-[5px]">
@@ -105,7 +105,7 @@ export default {
                 class="p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto min-h-[300px] bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px] focus:bg-[#3c2f2d]">
 
                 <div
-                    class="flex flex-row xs:flex-col items-center bg-dark-gradient justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
+                    class="flex flex-row xs:flex-col items-center justify-center max-w-[1000px] min-h-[300px] rounded-[20px] xs:p-[20px]">
 
                     <div
                         class="flex-shrink-0 flex flex-col items-center w-32  overflow-hidden rounded bg-none mr-[20px]">
@@ -190,7 +190,7 @@ export default {
 
                 </div>
 
-                <Comment v-if="activeComments[review.id]" :reviewId="review.id" />
+                <Comment v-if="activeComments[review.id]" :reviewId="review.id" :reviewUserId="userId" />
             </li>
         </ul>
 
