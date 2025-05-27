@@ -1,6 +1,6 @@
 <script>
 import { subscribeToAuth } from "../../services/auth";
-import { deleteChatComment } from "../../services/comment"; //new
+import { deleteChatComment } from "../../services/comment";
 import { createNotification } from '../../services/notifications';
 import Loader from '../Loader.vue';
 
@@ -157,7 +157,7 @@ export default {
 
     <h2 class="sr-only">Comments</h2>
 
-    <div class="shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-4 mt-[20px]">
+    <div class="shadow-2xl ring-2 ring-black ring-opacity-10 rounded-[20px] p-4 mt-[20px] bg-[#272120]">
 
         <div v-if="theComments.length === 0" class="flex flex-row items-center mb-4">
             <Loader v-if="showLoader" class="w-[30px] h-[30px] text-white mr-[10px]" />
@@ -166,16 +166,15 @@ export default {
 
         <ul v-else class="flex flex-col items-start gap-4 max-h-[300px] overflow-y-auto">
             <li v-for="comment in theComments" :key="comment.id" :class="{
-                'self-end bg-green-200': comment.user_id === loggedUser.id,
-                'bg-gray-200': comment.user_id !== loggedUser.id, 'w-[300px]': true,
+                'self-end bg-dark-gradient-invert': comment.user_id === loggedUser.id,
+                'bg-dark-gradient': comment.user_id !== loggedUser.id, 'w-[300px]': true,
                 'w-[80%] sm:w-[300px]': true
             }" class="mb-3 rounded-[20px] p-[10px]">
 
-                <div>
+                <div class="text-white">
                     <router-link :to="`/users/${comment.user_id}`"
-                        class="text-blue-700 font-bold focus:outline-none focus:ring-2 focus:ring-blue-400 focus:rounded-lg">{{
-                            comment.displayName || comment.email }}</router-link>
-                    wrote:
+                        class="text-[#f1c421] font-bold focus:outline-none focus:ring-2 focus:ring-blue-400 focus:rounded-lg">{{
+                            comment.displayName || comment.email }}</router-link>:
                 </div>
 
                 <div v-if="editingCommentId === comment.id">
@@ -199,9 +198,9 @@ export default {
                         deleted</div>
 
                     <div v-else>
-                        <div>{{ comment.text }}</div>
+                        <div class="text-white">{{ comment.text }}</div>
 
-                        <div class="text-sm text-gray-700">{{ formatDate(comment.created_at) || "Sending..." }}</div>
+                        <div class="text-sm text-[#a8784e]">{{ formatDate(comment.created_at) || "Sending..." }}</div>
 
                         <button v-if="loggedUser.role === 'admin'" @click="startEditing(comment)"
                             class="text-white bg-blue-500 p-1 rounded mt-1 w-[70px] focus:outline-none focus:ring-2 focus:ring-black">Edit</button>

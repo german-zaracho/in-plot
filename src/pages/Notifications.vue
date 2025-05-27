@@ -20,10 +20,12 @@ export default {
     },
     async mounted() {
         unsubscribeFromAuth = subscribeToAuth(async (userData) => {
+
             if (userData?.id) {
                 this.userId = userData.id;
                 await this.fetchNotifications();
             }
+
         });
     },
     unmounted() {
@@ -31,7 +33,9 @@ export default {
     },
     methods: {
         async fetchNotifications() {
+
             this.loading = true;
+
             try {
                 this.notifications = await getUserNotifications(this.userId);
             } catch (error) {
@@ -39,16 +43,21 @@ export default {
             } finally {
                 this.loading = false;
             }
+
         },
         toggleSelection(notificationId) {
+
             const index = this.selectedNotifications.indexOf(notificationId);
+
             if (index === -1) {
                 this.selectedNotifications.push(notificationId);
             } else {
                 this.selectedNotifications.splice(index, 1);
             }
+
         },
         async deleteSelectedNotifications() {
+
             if (this.selectedNotifications.length === 0) return;
 
             try {
@@ -61,14 +70,18 @@ export default {
             } catch (error) {
                 console.error("Error deleting selected notifications:", error);
             }
+
         },
         toggleDetails(notificationId) {
+
             const index = this.expandedNotifications.indexOf(notificationId);
+
             if (index === -1) {
                 this.expandedNotifications.push(notificationId);
             } else {
                 this.expandedNotifications.splice(index, 1);
             }
+            
         },
     }
 };
@@ -98,7 +111,7 @@ export default {
         </div>
 
         <div v-for="notification in notifications" :key="notification.id"
-            class="w-full p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] w-[500px] m-auto bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
+            class="w-full p-4 mb-[20px] flex flex-col items-start justify-center relative rounded-[20px] shadow-2xl ring-2 ring-black ring-opacity-10 max-w-[1000px] m-auto bg-dark-gradient xs:items-center xs:p-[20px] xs:rounded-[10px]">
 
 
             <div class="flex flex-row xxxs:flex-col items-center justify-between w-full">
@@ -113,8 +126,6 @@ export default {
                     {{ expandedNotifications.includes(notification.id) ? 'Show less' : 'Show more' }}
                 </button>
             </div>
-
-            <!-- <h2 class="font-semibold">{{ notification.title }}</h2> -->
 
             <div v-if="expandedNotifications.includes(notification.id)"
                 class="flex flex-col gap-2 content-notification my-[10px] w-full">

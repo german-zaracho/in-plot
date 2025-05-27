@@ -10,7 +10,7 @@ export default {
         return {
             isUserMenuOpen: false,
             isMobileMenuOpen: false,
-            notificationsCount: 0, // Cambiar esto, solo testeo
+            notificationsCount: 0,
         };
     },
     methods: {
@@ -112,7 +112,7 @@ export default {
                 <template v-if="loggedUser.id">
                     <div class="flex flex-row items-center space-x-4">
                         <!-- Notification Icon -->
-                        <div class="relative cursor-pointer">
+                        <div class="relative cursor-pointer hidden md:block">
                             <router-link to="/notifications">
                                 <span class="material-symbols-outlined text-[#f1c421] text-3xl">
                                     notifications
@@ -187,6 +187,13 @@ export default {
                         <li><router-link
                                 class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
                                 to="/feed">Media Reviews</router-link></li>
+                        <li>
+                            <router-link
+                                clss="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
+                                to="/notifications">
+                                Notifications
+                            </router-link>
+                        </li>
                         <li><router-link
                                 class="block py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:ring-offset-2"
                                 to="/myProfile" @click="toggleUserMenu">My Profile</router-link></li>
@@ -197,6 +204,7 @@ export default {
                                         loggedUser.email }} (Log out)</button>
                             </form>
                         </li>
+
                     </template>
 
                     <template v-else>

@@ -18,7 +18,7 @@ export default {
     props: {
         userId: { type: String, required: true },
         userRole: { type: String, required: true },
-        reviewId: { type: String, required: false } //new
+        reviewId: { type: String, required: false }
     },
     components: { SkeletonReview, Comment, VueSkeletonLoader, SkeletonReviews, MobileSkeletonReviews, Loader },
     data() {
@@ -49,7 +49,8 @@ export default {
             if (!date) return null;
 
             const localDate = new Date(date.seconds * 1000);  // Convert seconds to milliseconds
-            localDate.setHours(localDate.getHours() - 3);  // Sets the time for the UTC-3 (Argentina) time zone
+            // localDate.setHours(localDate.getHours() - 3);  // Sets the time for the UTC-3 (Argentina) time zone
+            localDate.setHours(localDate.getHours() );
 
             const formatter = new Intl.DateTimeFormat('es-AR', {
                 day: '2-digit', month: '2-digit', year: 'numeric',
@@ -87,7 +88,7 @@ export default {
             this.deleting = true;
 
             if (!this.reviewToDeleteId) return;
-            console.log("ID of the review to delete:", this.reviewToDeleteId);
+            // console.log("ID of the review to delete:", this.reviewToDeleteId);
 
             try {
                 if (deleteAllComments(this.reviewToDeleteId)) {
@@ -102,9 +103,10 @@ export default {
                         senderPhotoURL: this.user.photoURL,
                     });
                 }
-                console.log("Review successfully deleted.");
+                // console.log("Review successfully deleted.");
                 this.reviews = this.reviews.filter(review => review.id !== this.reviewToDeleteId);
                 this.reviewToDeleteId = null;
+                //to reload the view
                 this.$router.push({ path: '/temp' }).then(() => {
                     this.$router.replace({ path: '/feed', query: { reviewState: 'reviewDeleted' } });
                 });
@@ -130,7 +132,7 @@ export default {
 
     computed: {
         isMobile() {
-            return window.innerWidth < 431;
+            return window.innerWidth < 604;
         },
         filteredReviews() {
             if (this.selectedType === 'all') {
@@ -188,10 +190,10 @@ export default {
 
     <section class="p-4">
 
-        <div class="flex flex-row justify-between items-center max-w-[1000px] m-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-center max-w-[1000px] m-auto">
             <h1 class="text-2xl font-bold mb-4 text-white">Reviews</h1>
 
-            <!-- Filtro por tipo -->
+            <!-- Filter -->
             <div class="mb-4">
                 <label class="mr-2 font-semibold text-white">Filter: </label>
                 <select v-model="selectedType" class="border rounded p-2 py-1 px-2 text-sm">
@@ -204,7 +206,7 @@ export default {
             <div v-if="reviewId || $route.query.reviewId" class="text-right mb-4 max-w-[1000px] m-auto">
                 <button @click="showAllReviews"
                     class="text-[#f1c421] hover:text-[wheat] rounded-lg bg-[#272120] hover:bg-[#3c2f2d] py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:bg-[#3c2f2d]">
-                    Mostrar todas las reviews
+                    Show all of the reviews
                 </button>
             </div>
 

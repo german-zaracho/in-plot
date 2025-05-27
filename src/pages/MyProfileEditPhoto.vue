@@ -2,6 +2,7 @@
 import Loader from '../components/Loader.vue';
 import { editMyProfilePhoto } from '../services/user-profile';
 import { validatePostFields } from '../services/validation';
+
 export default {
     name: 'MyProfileEditPhoto',
     components: { Loader },
@@ -52,6 +53,7 @@ export default {
             });
 
             reader.readAsDataURL(this.editData.photo);
+            
         },
     }
 }

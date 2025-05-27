@@ -27,6 +27,7 @@ export default {
         }
     },
     mounted() {
+
         unsubscribeFromAuth = subscribeToAuth(newUserData => this.loggedUser = newUserData);
         // console.log('User profile');
 
@@ -42,6 +43,7 @@ export default {
         } else if (this.$route?.query?.userState === 'logged') {
             this.feedback.message = "Hello again! It's great to have you here.";
         } 
+        
     },
     unmounted() {
         unsubscribeFromAuth();

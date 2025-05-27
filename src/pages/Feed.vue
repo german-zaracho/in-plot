@@ -30,11 +30,9 @@ export default {
 
     },
     beforeDestroy() {
-
         if (this.unsubscribeAuth) {
             this.unsubscribeAuth();
         }
-
     },
 }
 </script>

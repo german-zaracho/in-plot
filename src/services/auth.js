@@ -131,18 +131,14 @@ export function subscribeToAuth(callback) {
  * @param {Function} callback 
  */
 function notify(callback) {
-
     callback({ ...userData });
-
 }
 
 /**
  * Notifies all observers
  */
 function notifyAll() {
-
     observers.forEach(callback => notify(callback));
-
 }
 
 /**

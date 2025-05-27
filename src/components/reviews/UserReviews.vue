@@ -46,8 +46,8 @@ export default {
             if (!date) return null;
 
             const localDate = new Date(date.seconds * 1000);  // Convert seconds to milliseconds
-            localDate.setHours(localDate.getHours() - 3);  // Sets the time for the UTC-3 (Argentina) time zone
-
+            // localDate.setHours(localDate.getHours() - 3);  // Sets the time for the UTC-3 (Argentina) time zone
+            localDate.setHours(localDate.getHours() );
             const formatter = new Intl.DateTimeFormat('es-AR', {
                 day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'

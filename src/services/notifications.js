@@ -40,6 +40,10 @@ const NOTIFICATION_TITLES = {
 export async function createNotification(data) {
     try {
 
+        if (data.senderName === null || data.senderName === undefined) {
+            data.senderName = "Someone";
+        };
+
         data.message = `${data.senderName} ${NOTIFICATION_MESSAGES[data.type]}`;
 
         const notificationData = {
@@ -64,6 +68,7 @@ export async function createNotification(data) {
  * @returns {Promise<Array>}
  */
 export async function getUserNotifications(userId) {
+
     try {
         const notificationsRef = collection(db, "notifications");
         const q = query(
@@ -71,7 +76,7 @@ export async function getUserNotifications(userId) {
             where("userId", "==", userId),
             orderBy("createdAt", "desc")
         );
-        // const q = query(notificationsRef, where("userId", "==", userId)); 
+
         const querySnapshot = await getDocs(q);
 
         const notifications = querySnapshot.docs.map(doc => ({
@@ -84,10 +89,11 @@ export async function getUserNotifications(userId) {
         console.error("[notifications.js] Error fetching notifications:", error);
         throw error;
     }
+
 }
 
-
 export async function deleteMultipleNotifications(ids) {
+
     try {
         const deletePromises = ids.map(id => deleteDoc(doc(db, "notifications", id)));
         await Promise.all(deletePromises);
@@ -96,6 +102,7 @@ export async function deleteMultipleNotifications(ids) {
         console.error("[notifications.js] Error deleting multiple notifications:", error);
         throw error;
     }
+    
 }
 
 

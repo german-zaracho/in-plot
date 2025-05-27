@@ -37,7 +37,7 @@ export async function createNewReview(coverImage, data) {
             created_at: serverTimestamp(),
         });
 
-        console.log('Review created successfully!');
+        // console.log('Review created successfully!');
     } catch (error) {
         console.error('[media-reviews.js createNewReview] Error creating review:', error);
         throw error;
@@ -111,10 +111,8 @@ export async function getReviewById(id) {
 }
 
 export async function updateReview(reviewId, reviewData) {
-
     const reviewRef = doc(db, "media-reviews", reviewId);
     await updateDoc(reviewRef, reviewData);
-
 }
 
 /**
@@ -166,7 +164,7 @@ export async function deleteReview(reviewId) {
             try {
                 const coverRef = ref(storage, coverURL);
                 await deleteObject(coverRef);
-                console.log("Cover image deleted successfully");
+                // console.log("Cover image deleted successfully");
             } catch (storageError) {
                 console.error("Error deleting cover image:", storageError);
             }
@@ -174,7 +172,7 @@ export async function deleteReview(reviewId) {
 
         // Delete the review from Firestore
         await deleteDoc(reviewRef);
-        console.log("Review deleted successfully");
+        // console.log("Review deleted successfully");
     } catch (error) {
         console.error("Error deleting review:", error);
         throw error;

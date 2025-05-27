@@ -27,10 +27,8 @@ export const storage = getStorage(app);
  */
 
 export async function uploadFile(path, file) {
-
     const fileRef = ref(storage, path);
     await uploadBytes(fileRef, file);
-
 }
 
 /**
@@ -40,8 +38,6 @@ export async function uploadFile(path, file) {
  */
 
 export async function getFileURL(path) {
-
     const fileRef = ref(storage, path);
     return await getDownloadURL(fileRef);
-
 }

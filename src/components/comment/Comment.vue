@@ -16,15 +16,12 @@ export default {
             comments: [],
             unsubscribeFromComments: null,
         }
-
     },
     methods: {
         addComment(newComment) {
-
             // console.log('passing newComment and reviewId', newComment, this.reviewId);
             saveChatComment(this.reviewId, newComment);
             // console.log('comments', this.comments);
-
         },
         updateComment(commentId, newText) {
             updateChatComment(this.reviewId, commentId, newText);
@@ -50,12 +47,10 @@ export default {
 
     },
     unmounted() {
-
         // this.unsubscribeFromComments();
         if (typeof this.unsubscribeFromComments === 'function') {
             this.unsubscribeFromComments();
         }
-
     }
 }
 </script>

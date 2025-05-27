@@ -39,6 +39,7 @@ export default {
 
         this.user = await getUserProfileById(this.$route.params.id);
         this.loading = false;
+        
     },
     unmounted() {
         unsubscribeFromAuth();

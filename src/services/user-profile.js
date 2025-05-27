@@ -51,10 +51,8 @@ export async function createUserProfile(id, { email, role = "role" }) {
  * @param {{displayName: string, favMovie: string, favSeries: string, anAdditionalComment:string, photoURL: string }} data
  */
 export async function editUserProfile(id, data) {
-
     const profileRef = doc(db, `user-profiles/${id}`);
     return await updateDoc(profileRef, data);
-
 }
 
 
@@ -63,8 +61,8 @@ export async function editUserProfile(id, data) {
  * @param {File} photo - The photo to be uploaded.
  */
 export async function editMyProfilePhoto(photo) {
-    try {
 
+    try {
         const user = auth.currentUser;
         // console.log("info", auth.currentUser, user.uid);
         const userId = user.uid;
@@ -83,6 +81,7 @@ export async function editMyProfilePhoto(photo) {
         console.error("[user-profile.js editMyProfilePhoto] Error editing profile picture:", error);
         throw error;
     }
+
 }
 
 /**
@@ -90,6 +89,7 @@ export async function editMyProfilePhoto(photo) {
  * @param {{ displayName: string, favMovie: string, favSeries: string, anAdditionalComment: string }} data
  */
 export async function editMyProfile({ displayName, favMovie, favSeries, anAdditionalComment }) {
+
     try {
         const user = auth.currentUser;
         const userId = user.uid;

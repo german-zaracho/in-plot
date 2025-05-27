@@ -32,6 +32,7 @@ const validationSchema = {
 
 // Generic validator that runs the schema and applies rules
 export function validatePostFields(data, fieldsToValidate) {
+
     const errors = {};
 
     fieldsToValidate.forEach((field) => {
@@ -98,6 +99,7 @@ export function validatePostFields(data, fieldsToValidate) {
                 return;
             }
         }
+        
     });
 
     return errors;

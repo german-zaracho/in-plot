@@ -116,24 +116,18 @@ export default {
 
         },
         toggleDropdown(event) {
-
             event.stopPropagation();
             this.dropdownVisible = !this.dropdownVisible;
-
         },
         selectYear(year) {
-
             this.reviewData.year = year;
             this.dropdownVisible = false;
-
         },
         handleOutsideClick(event) {
-
             const dropdownContainer = this.$refs.dropdownContainer;
             if (dropdownContainer && !dropdownContainer.contains(event.target)) {
                 this.dropdownVisible = false;
             }
-
         },
     }
 }
