@@ -83,7 +83,7 @@ export default {
                 <!-- NavBar options -->
                 <div class="flex items-center">
                     <div class="flex items-center mr-[20px]">
-                        <img class="h-10 w-10 mr-[10px]" src="./../../inPlot.ico" alt="logo">
+                        <img class="h-10 w-10 mr-[10px]" src= "/inPlot.ico" alt="logo">
                         <router-link :to="{ name: 'home' }"
                             class=" text-white text-xl logo focus:outline-none focus:ring-2 focus:ring-[#f1c421] focus:rounded-lg">
                             In<span class="text-[#f1c421]">Plot</span>
